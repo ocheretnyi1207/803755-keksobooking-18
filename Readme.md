@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Антон Очеретный](https://up.htmlacademy.ru/javascript/18/user/803755).
-* Наставник: `Неизвестно`.
+* Наставник: [Дамир Рысаев](https://htmlacademy.ru/profile/id36230).
 
 ---
 
