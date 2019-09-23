@@ -1,54 +1,99 @@
 'use strict';
-// Mohs data
-var numberAvatars = ['01', '02', '03', '04', '05', '06', '07', '08']; //число для аватары
-var titles = [];
-var addressHouses = [];
-var costHouses = [];
-var typeHouses = [];
-var numberRoomHouses = [];
-var numberGuestsHouses = [];
-var timeCheckins = ['12:00', '13:00', '14:00'];
-var timeCheckouts = ['12:00', '13:00', '14:00'];
-var featureHouses = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+// Mohs data
+
+var numberAvatars = ['01', '02', '03', '04', '05', '06', '07', '08'];
+var titleAds = ['1 объявление', '2 объявление', '3 объявление', '4 объявление', '5 объявление', '6 объявление', '7 объявление', '8 объявление'];
+var houseAdress = ['Лиговский пр-кт', 'Растанная ул.', 'Курляндская ул', 'Будапештская ул.', 'Средний проспект ВО', 'ул. Белинского', 'Литейный пр', 'ул. Маяковского'];
+var houseCosts = [1250, 2845, 5000, 12384, 10200, 50000, 35000, 28000];
+var houseTypes = ['palace', 'flat', 'house', 'bungalo'];
+var houseNumberRooms = [1, 2, 3, 4, 5];
+var houseNumberGuests = [1, 2, 3, 4, 5];
+var timeEntrys = ['12:00', '13:00', '14:00'];
+var timeDepartures = ['12:00', '13:00', '14:00'];
+var houseFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var houseDefinitions = ['Качественный ремонт', 'Около метро', 'Тихие соседи', 'Рядом магазины', 'Красивый вид из окон', 'Много детских площадок', 'Недалеко парки'];
+var houseImage = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var coordinateX = [250, 300, 350, 400, 450, 500, 550, 600];
+var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
 
 var NUMBER_ADS = 8; // количество похожих объявлений
 
-// Функция генерации случайного числа
+var similarAdsTemplate = document.querySelector('.card').content;
 
-var generate = function (arr) {
-  var min = 0;
-  var max = arr.length;
-  var randomNumber = Math.floor(Math.random() * ((max - min) + min));
-  return arr[randomNumber];
+
+// Функция генерации рандомного индекса элемента массива
+
+var getRandomIndexElement = function (arr) {
+  var minIndex = 0;
+  var maxIndex = arr.length;
+  var randomIndex = Math.floor(Math.random() * ((maxIndex - minIndex) + minIndex));
+  return randomIndex;
 };
 
+// Функция генерации рандомного элемента массива
 
+var getRandomArrayElement = function (arr) {
+  var randomIndex = getRandomIndexElement(arr);
+  return arr[randomIndex];
+};
 
+var similarAds = [];
 
-var obj[i] = {
-  {
+for (var i = 0; i < NUMBER_ADS; i++) {
+
+  indexAvatars[i] = getRandomArrayElement(numberAvatars);
+  houseClasses[i] = getRandomArrayElement(houseTypes);
+  timeCheckins[i] = getRandomArrayElement(timeEntrys);
+  timeCheckouts[i] = getRandomArrayElement(timeDepartures);
+  houseAmeneties[i] = getRandomArrayElement(houseFeatures);
+  houseDescription[i] = getRandomArrayElement(houseDefinitions);
+  housePhotos[i] = getRandomArrayElement(houseImage);
+  locationX[i] = getRandomArrayElement(coordinateX);
+  locationY[i] = getRandomArrayElement(coordinateY);
+
+  similarAds[i] = {
     "author": {
-      "avatar": строка, адрес изображения вида img/avatars/user{{xx}}.png, где {{xx}} это число от 1 до 8 с ведущим нулём. Например, 01, 02 и т. д. Адреса изображений не повторяются
-
-    "offer": {
-      "title": строка, заголовок предложения
-      "address": строка, адрес предложения. Для простоты пусть пока представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
-      "price": число, стоимость
-      "type": строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
-      "rooms": число, количество комнат
-      "guests": число, количество гостей, которое можно разместить
-      "checkin": строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00,
-      "checkout": строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
-      "features": массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner",
-      "description": строка с описанием,
-      "photos": массив строк случайной длины, содержащий адреса фотографий "http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"
+      "avatar": 'img/avatars/user' + (indexAvatars[i]).toString(10) + '.png',
     },
 
-    "location": {
-      "x": случайное число, координата x метки на карте. Значение ограничено размерами блока, в котором перетаскивается метка.
-      "y": случайное число, координата y метки на карте от 130 до 630.
+    "offer": {
+      "title": titleAds[i],
+      "address": houseAdress[i],
+      "price": houseCosts[i],
+      "type": houseClasses[i],
+      "rooms": houseNumberRooms[i],
+      "guests": houseNumberGuests[i],
+      "checkin": timeCheckins[i],
+      "checkout": timeCheckouts[i],
+      "features": houseAmeneties[i],
+      "description": houseDescription[i],
+      "photos": housePhotos[i],
+
+      "location": {
+        "x": locationX[i],
+        "y": locationY[i],
+      }
     }
-  }
+  };
+
+  similarAds.push(similarAds[i]);
 }
+
+// Функция отрисовки объявления
+
+var renderAds = function () {
+  var adsElement = similarAdsTemplate.cloneNode(true);
+
+  return adsElement;
+};
+
+// Вставка шаблонов в список
+
+var fragment = document.createDocumentFragment();
+
+for (i = 0; i < similarAds.length; i++) {
+  fragment.appendChild(renderAds(similarAds[i]));
+}
+
+document.querySelector('.map').classList.remove('map--faded');
