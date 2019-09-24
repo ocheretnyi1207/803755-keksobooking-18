@@ -83,26 +83,26 @@ for (var i = 0; i < NUMBER_ADS; i++) {
   locationY.push([i]);
 
   similarAds[i] = {
-    'author': {
-      'avatar': 'img/avatars/user' + (indexAvatars[i]).toString(10) + '.png',
+    author: {
+      avatar: 'img/avatars/user' + (indexAvatars[i]).toString(10) + '.png',
     },
 
-    'address': houseAdress[i],
-    'offer': {
-      'title': titleAds[i],
-      'address': houseAdress[i],
-      'price': houseCosts[i],
-      'type': houseClasses[i],
-      'rooms': houseNumberRooms[i],
-      'guests': houseNumberGuests[i],
-      'checkin': timeCheckins[i],
-      'checkout': timeCheckouts[i],
-      'features': houseAmeneties[i],
-      'description': houseDescription[i],
-      'photos': housePhotos[i],
-      'location': {
-        'x': locationX[i],
-        'y': locationY[i],
+    address: houseAdress[i],
+    offer: {
+      title: titleAds[i],
+      address: houseAdress[i],
+      price: houseCosts[i],
+      type: houseClasses[i],
+      rooms: houseNumberRooms[i],
+      guests: houseNumberGuests[i],
+      checkin: timeCheckins[i],
+      checkout: timeCheckouts[i],
+      features: houseAmeneties[i],
+      description: houseDescription[i],
+      photos: housePhotos[i],
+      location: {
+        x: locationX[i],
+        y: locationY[i],
       }
     }
   };
@@ -115,7 +115,7 @@ document.querySelector('.map').classList.remove('map--faded');
 
 // Ищем шаблон и место для вставки шаблонов
 
-var similarAdsTemplate = document.querySelector('#pin').content; // шаблон метки
+var similarAdsTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // шаблон метки
 var similarList = document.querySelector('.map'); // вставляем шаблоны на карту
 
 
@@ -123,9 +123,8 @@ var similarList = document.querySelector('.map'); // вставляем шабл
 
 var renderAds = function () {
   var adsElement = similarAdsTemplate.cloneNode(true);
-  adsElement.querySelector('.map-pin').style = ' + 'left:' + (similarAds[i].location.x).toString(10) + ';' + 'top:' + ((similarAds[i].location.y).toString(10) + ';' + ';
-
-  return adsElement;
+  adsElement.style = 'left:' + (similarAds[i].location.x).toString(10) + 'px' + ';' + 'top;' + (similarAds[i].location.y).toString(10) + 'px' + ';';
+  adsElement.querySelector('img').src = similarAds[i].avatar;
 };
 
 // Вставка шаблонов на карту
