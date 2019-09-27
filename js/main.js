@@ -23,8 +23,7 @@ var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
 var getRandomIndexElement = function (arr) {
   var minIndex = 0;
   var maxIndex = arr.length;
-  var randomIndex = Math.floor(Math.random() * ((maxIndex - minIndex) + minIndex));
-  return randomIndex;
+  return Math.floor(Math.random() * ((maxIndex - minIndex) + minIndex));
 };
 
 // Функция получения рандомного элемента массива
@@ -70,24 +69,24 @@ for (var i = 0; i < NUMBER_ADS; i++) {
 // Убираем класс map--faded у карты с классом map
 document.querySelector('.map').classList.remove('map--faded');
 
-// Ищем шаблон и место для вставки шаблонов
+// Шаблон метки
+var similarTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-var similarTemplate = document.querySelector('#pin').content.querySelector('.map__pin'); // шаблон метки
-var similarList = document.querySelector('.map'); // вставляем шаблоны на карту
+// Место для вставки шаблона
+var similarList = document.querySelector('.map');
 
-
-// Функция отрисовки указателя
-
+// Функция отрисовки map__pin
 var renderTemplate = function () {
   var templateElement = similarTemplate.cloneNode(true);
-  templateElement.style = similarAds[i].x + 'px';
-  templateElement.style = similarAds[i].y + 'px';
+  templateElement.style.left = similarAds[i].x + 'px';
+  templateElement.style.top = similarAds[i].y + 'px';
   templateElement.querySelector('img').src = similarAds[i].avatar;
   templateElement.querySelector('img').alt = similarAds[i].title;
+
+  return templateElement;
 };
 
-// Вставка шаблонов на карту
-
+// Вставка шаблонов map__pin на карту
 var fragment = document.createDocumentFragment();
 
 for (i = 0; i < similarAds.length; i++) {
