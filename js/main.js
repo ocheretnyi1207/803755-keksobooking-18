@@ -70,27 +70,27 @@ for (var i = 0; i < NUMBER_ADS; i++) {
 document.querySelector('.map').classList.remove('map--faded');
 
 // Шаблон метки
-var similarTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Место для вставки шаблона
-var similarList = document.querySelector('.map');
+var similarMapPinList = document.querySelector('.map');
 
 // Функция отрисовки map__pin
-var renderTemplate = function () {
-  var templateElement = similarTemplate.cloneNode(true);
-  templateElement.style.left = similarAds[i].x + 'px';
-  templateElement.style.top = similarAds[i].y + 'px';
-  templateElement.querySelector('img').src = similarAds[i].avatar;
-  templateElement.querySelector('img').alt = similarAds[i].title;
+var renderMapPinTemplate = function () {
+  var templateMapPinElement = similarMapPinTemplate.cloneNode(true);
+  templateMapPinElement.style.left = similarAds[i].x + 'px';
+  templateMapPinElement.style.top = similarAds[i].y + 'px';
+  templateMapPinElement.querySelector('img').src = similarAds[i].avatar;
+  templateMapPinElement.querySelector('img').alt = similarAds[i].title;
 
-  return templateElement;
+  return templateMapPinElement;
 };
 
 // Вставка шаблонов map__pin на карту
 var fragment = document.createDocumentFragment();
 
 for (i = 0; i < similarAds.length; i++) {
-  fragment.appendChild(renderTemplate(similarAds[i]));
+  fragment.appendChild(renderMapPinTemplate(similarAds[i]));
 }
 
-similarList.appendChild(fragment);
+similarMapPinList.appendChild(fragment);
