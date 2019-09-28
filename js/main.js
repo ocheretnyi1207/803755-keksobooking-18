@@ -119,18 +119,18 @@ var renderCardTemplate = function () {
   templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds[i].offer.rooms).toString(10) + ' комнаты для ' + (similarAds[i].offer.guests).toString(10) + ' гостей';
   templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds[i].offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds[i].offer.checkout).toString(10);
   templateCardElement.querySelector('.popup__description').textContent = similarAds[i].offer.description;
-  if (similarAds[i].offer.type === 'flat') {
-    templateCardElement.querySelector('.popup__type').textContent = 'Квартира';
-  }
-  if (similarAds[i].offer.type === 'bungalo') {
-    templateCardElement.querySelector('.popup__type').textContent = 'Бунгало';
-  }
-  if (similarAds[i].offer.type === 'palace') {
-    templateCardElement.querySelector('.popup__type').textContent = 'Дворец';
-  }
-  if (similarAds[i].offer.type === 'house') {
-    templateCardElement.querySelector('.popup__type').textContent = 'Дом';
-  }
+
+  var translationValues = function (selector, incomingType, outgoingType) {
+    if (similarAds[i].offer.type === incomingType) {
+      templateCardElement.querySelector(selector).textContent = outgoingType;
+    }
+  };
+
+  translationValues('.popup__type', 'flat', 'Квартира');
+  translationValues('.popup__type', 'bungalo', 'Бунгало');
+  translationValues('.popup__type', 'palace', 'Дворец');
+  translationValues('.popup__type', 'house', 'Дом');
+
   templateCardElement.querySelector('.popup__photo').src = similarAds[i].offer.photos;
   templateCardElement.querySelector('.popup__avatar').src = similarAds[i].author.avatar;
 
