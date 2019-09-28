@@ -13,7 +13,15 @@ var houseNumberGuests = [1, 2, 3, 4, 5];
 var timeCheckins = ['12:00', '13:00', '14:00'];
 var timeCheckouts = ['12:00', '13:00', '14:00'];
 var houseFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var houseDescriptions = ['Качественный ремонт', 'Около метро', 'Тихие соседи', 'Рядом магазины', 'Красивый вид из окон', 'Много детских площадок', 'Недалеко парки'];
+var houseDescriptions = [
+  'Большая площадь квартиры',
+  'Около метро',
+  'Тихие соседи',
+  'Рядом магазины',
+  'Красивый вид из окон',
+  'Много детских площадок',
+  'Недалеко парки'
+];
 var housePhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var coordinateX = [250, 300, 350, 400, 450, 500, 550, 600];
 var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
@@ -53,7 +61,7 @@ for (var i = 0; i < NUMBER_ADS; i++) {
       checkin: getRandomArrayElement(timeCheckins),
       checkout: getRandomArrayElement(timeCheckouts),
       features: houseFeatures,
-      description: houseDescriptions[i],
+      description: getRandomArrayElement(houseDescriptions),
       photos: getRandomArrayElement(housePhotos),
     },
 
@@ -110,8 +118,21 @@ var renderCardTemplate = function () {
   templateCardElement.querySelector('.popup__type').textContent = similarAds[i].offer.type;
   templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds[i].offer.rooms).toString(10) + ' комнаты для ' + (similarAds[i].offer.guests).toString(10) + ' гостей';
   templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds[i].offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds[i].offer.checkout).toString(10);
-
+  templateCardElement.querySelector('.popup__description').textContent = similarAds[i].offer.description;
+  if (similarAds[i].offer.type === 'flat') {
+    templateCardElement.querySelector('.popup__type').textContent = 'Квартира';
+  }
+  if (similarAds[i].offer.type === 'bungalo') {
+    templateCardElement.querySelector('.popup__type').textContent = 'Бунгало';
+  }
+  if (similarAds[i].offer.type === 'palace') {
+    templateCardElement.querySelector('.popup__type').textContent = 'Дворец';
+  }
+  if (similarAds[i].offer.type === 'house') {
+    templateCardElement.querySelector('.popup__type').textContent = 'Дом';
+  }
   templateCardElement.querySelector('.popup__photo').src = similarAds[i].offer.photos;
+  templateCardElement.querySelector('.popup__avatar').src = similarAds[i].author.avatar;
 
   return templateCardElement;
 };
