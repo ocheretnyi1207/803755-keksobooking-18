@@ -45,22 +45,22 @@ for (var i = 0; i < NUMBER_ADS; i++) {
 
     offer: {
       title: titleAds[i],
-      address: houseAddress[i],
+      address: getRandomArrayElement(houseAddress),
       price: housePrice[i],
       type: getRandomArrayElement(houseTypes),
       rooms: getRandomArrayElement(houseNumberRooms),
       guests: getRandomArrayElement(houseNumberGuests),
       checkin: getRandomArrayElement(timeCheckins),
       checkout: getRandomArrayElement(timeCheckouts),
-      features: getRandomArrayElement(houseFeatures),
+      features: houseFeatures,
       description: houseDescriptions[i],
       photos: getRandomArrayElement(housePhotos),
+    },
 
-      location: {
-        x: coordinateX[i],
-        y: coordinateY[i],
-      }
-    }
+    location: {
+      x: coordinateX[i],
+      y: coordinateY[i],
+    },
   };
 
   similarAds.push(similarAds[i]);
@@ -69,57 +69,49 @@ for (var i = 0; i < NUMBER_ADS; i++) {
 // Убираем класс map--faded у карты с классом map
 document.querySelector('.map').classList.remove('map--faded');
 
-// Шаблон #pin (метка)
+// Шаблон #pin
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
 // Место для вставки шаблона #pin
-var similarMapList = document.querySelector('.map');
+var similarMapPinsList = document.querySelector('.map__pins');
 
-// Функция отрисовки map__pin
+// Функция отрисовки шаблона #pin
 var renderMapPinTemplate = function () {
   var templateMapPinElement = similarMapPinTemplate.cloneNode(true);
-  templateMapPinElement.style.left = similarAds[i].x + 'px';
-  templateMapPinElement.style.top = similarAds[i].y + 'px';
-  templateMapPinElement.querySelector('img').src = similarAds[i].avatar;
-  templateMapPinElement.querySelector('img').alt = similarAds[i].title;
+  templateMapPinElement.style.left = similarAds[i].location.x + 'px';
+  templateMapPinElement.style.top = similarAds[i].location.y + 'px';
+  templateMapPinElement.querySelector('img').src = similarAds[i].author.avatar;
+  templateMapPinElement.querySelector('img').alt = similarAds[i].offer.title;
 
   return templateMapPinElement;
 };
 
-// Вставка шаблонов #pin в .map
+// Вставка шаблона #pin в .map__pins
 var fragment = document.createDocumentFragment();
 
 for (i = 0; i < similarAds.length; i++) {
   fragment.appendChild(renderMapPinTemplate(similarAds[i]));
 }
 
-similarMapList.appendChild(fragment);
-
-// Место вставки сгенерированных JS объектов
-var similarMapPinsList = document.querySelector('.map-pins');
-
-// Вставка сгенерированных JS объектов в .map-pins
-for (i = 0; i < similarAds.length; i++) {
-  fragment.appendChild(similarAds[i]);
-}
-
 similarMapPinsList.appendChild(fragment);
 
 // Шаблон #card
-var similarCardTemplate = document.querySelector('#card').conent.querySelector('.map__card');
+var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
+// Место для вставки шаблона #card
+var similarMapCardsList = document.querySelector('.map');
 
 // Функция отрисовки модального окна с объявлением
 var renderCardTemplate = function () {
   var templateCardElement = similarCardTemplate.cloneNode(true);
-  templateCardElement.querySelector('.popup__title').textContent = similarAds[i].title;
-  templateCardElement.querySelector('.popup__text--address').textContent = similarAds[i].address;
-  templateCardElement.querySelector('.popup__text--price').textContent = (similarAds[i].price).toString(10) + 'Р/ночь';
-  templateCardElement.querySelector('.popup__type').textContent = similarAds[i].type;
-  templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds[i].rooms).toString(10) + 'комнаты для' + (similarAds[i].guests).toString(10);
-  templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после' + (similarAds[i].checkin).toString(10) + ',' + 'выезд до' + (similarAds[i].checkout).toString(10);
-  templateCardElement.querySelector('.popup__features').textcontent = similarAds[i].features;
-  templateCardElement.querySelector('.popup__photos').src = similarAds[i].photos;
-  templateCardElement.querySelector('.popup__avatar').src = similarAds[i].avatar;
+  templateCardElement.querySelector('.popup__title').textContent = similarAds[i].offer.title;
+  templateCardElement.querySelector('.popup__text--address').textContent = similarAds[i].offer.address;
+  templateCardElement.querySelector('.popup__text--price').textContent = (similarAds[i].offer.price).toString(10) + ' Р/ночь';
+  templateCardElement.querySelector('.popup__type').textContent = similarAds[i].offer.type;
+  templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds[i].offer.rooms).toString(10) + ' комнаты для ' + (similarAds[i].offer.guests).toString(10) + ' гостей';
+  templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds[i].offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds[i].offer.checkout).toString(10);
+
+  templateCardElement.querySelector('.popup__photo').src = similarAds[i].offer.photos;
 
   return templateCardElement;
 };
@@ -129,4 +121,4 @@ for (i = 0; i < similarAds.length; i++) {
   fragment.appendChild(renderCardTemplate(similarAds[i]));
 }
 
-similarMapList.appendChild(fragment);
+similarMapCardsList.appendChild(fragment);
