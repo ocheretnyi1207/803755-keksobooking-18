@@ -69,16 +69,11 @@ for (var i = 0; i < NUMBER_ADS; i++) {
 // Убираем класс map--faded у карты с классом map
 document.querySelector('.map').classList.remove('map--faded');
 
-// Шаблон метки
+// Шаблон #pin (метка)
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-// Место для вставки шаблона
-var similarMapPinList = document.querySelector('.map');
-
-// Шаблон модального окна с информацией об объявлении
-var similarCardTemplate = document.querySelector('#card').content.querySelector('.map-card');
-
-var similarCardList = document.querySelector('.map__pins');
+// Место для вставки шаблона #pin
+var similarMapList = document.querySelector('.map');
 
 // Функция отрисовки map__pin
 var renderMapPinTemplate = function () {
@@ -91,7 +86,29 @@ var renderMapPinTemplate = function () {
   return templateMapPinElement;
 };
 
-// Функция отрисовки модального окна с информацией об объявлении
+// Вставка шаблонов #pin в .map
+var fragment = document.createDocumentFragment();
+
+for (i = 0; i < similarAds.length; i++) {
+  fragment.appendChild(renderMapPinTemplate(similarAds[i]));
+}
+
+similarMapList.appendChild(fragment);
+
+// Место вставки сгенерированных JS объектов
+var similarMapPinsList = document.querySelector('.map-pins');
+
+// Вставка сгенерированных JS объектов в .map-pins
+for (i = 0; i < similarAds.length; i++) {
+  fragment.appendChild(similarAds[i]);
+}
+
+similarMapPinsList.appendChild(fragment);
+
+// Шаблон #card
+var similarCardTemplate = document.querySelector('#card').conent.querySelector('.map__card');
+
+// Функция отрисовки модального окна с объявлением
 var renderCardTemplate = function () {
   var templateCardElement = similarCardTemplate.cloneNode(true);
   templateCardElement.querySelector('.popup__title').textContent = similarAds[i].title;
@@ -103,16 +120,13 @@ var renderCardTemplate = function () {
   templateCardElement.querySelector('.popup__features').textcontent = similarAds[i].features;
   templateCardElement.querySelector('.popup__photos').src = similarAds[i].photos;
   templateCardElement.querySelector('.popup__avatar').src = similarAds[i].avatar;
+
   return templateCardElement;
 };
 
-// Вставка шаблонов на карту
-var fragment = document.createDocumentFragment();
-
+// Вставка шаблонов #card в .map-card
 for (i = 0; i < similarAds.length; i++) {
-  fragment.appendChild(renderMapPinTemplate(similarAds[i]));
   fragment.appendChild(renderCardTemplate(similarAds[i]));
 }
 
-similarMapPinList.appendChild(fragment);
-similarCardList.appendChild(fragment);
+similarMapList.appendChild(fragment);
