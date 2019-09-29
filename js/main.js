@@ -118,18 +118,30 @@ var renderCardTemplate = function () {
   templateCardElement.querySelector('.popup__type').textContent = similarAds[i].offer.type;
   templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds[i].offer.rooms).toString(10) + ' комнаты для ' + (similarAds[i].offer.guests).toString(10) + ' гостей';
   templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds[i].offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds[i].offer.checkout).toString(10);
+
+  var getComfortInAds = function (comfort) {
+    templateCardElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
+  };
+
+  getComfortInAds('wifi');
+  getComfortInAds('dishwasher');
+  getComfortInAds('parking');
+  getComfortInAds('washer');
+  getComfortInAds('elevator');
+  getComfortInAds('conditioner');
+
   templateCardElement.querySelector('.popup__description').textContent = similarAds[i].offer.description;
 
-  var translationValues = function (selector, incomingType, outgoingType) {
+  var translationValues = function (incomingType, outgoingType) {
     if (similarAds[i].offer.type === incomingType) {
-      templateCardElement.querySelector(selector).textContent = outgoingType;
+      templateCardElement.querySelector('.popup__type').textContent = outgoingType;
     }
   };
 
-  translationValues('.popup__type', 'flat', 'Квартира');
-  translationValues('.popup__type', 'bungalo', 'Бунгало');
-  translationValues('.popup__type', 'palace', 'Дворец');
-  translationValues('.popup__type', 'house', 'Дом');
+  translationValues('flat', 'Квартира');
+  translationValues('bungalo', 'Бунгало');
+  translationValues('palace', 'Дворец');
+  translationValues('house', 'Дом');
 
   templateCardElement.querySelector('.popup__photo').src = similarAds[i].offer.photos;
   templateCardElement.querySelector('.popup__avatar').src = similarAds[i].author.avatar;
@@ -143,3 +155,7 @@ for (i = 0; i < similarAds.length; i++) {
 }
 
 similarMapCardsList.appendChild(fragment);
+
+similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
+
+
