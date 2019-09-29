@@ -74,9 +74,6 @@ for (var i = 0; i < NUMBER_ADS; i++) {
   similarAds.push(similarAds[i]);
 }
 
-// Убираем класс map--faded у карты с классом map
-document.querySelector('.map').classList.remove('map--faded');
-
 // Шаблон #pin
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -157,5 +154,14 @@ for (i = 0; i < similarAds.length; i++) {
 similarMapCardsList.appendChild(fragment);
 
 similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
+
+
+var mapPinMain = document.querySelector('.map__pin--main');
+
+// Добавляем обработчик события на .map__pin--main
+mapPinMain.addEventListener('mousedown', function(){
+  document.querySelector('.map').classList.remove('map--faded');
+  document.querySelector('.ad-form').classList.remove('.ad-form--disabled');
+});
 
 
