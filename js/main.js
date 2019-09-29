@@ -158,10 +158,20 @@ similarMapCardsList.appendChild(document.querySelector('.map__filters-container'
 
 var mapPinMain = document.querySelector('.map__pin--main');
 
-// Добавляем обработчик события на .map__pin--main
-mapPinMain.addEventListener('mousedown', function(){
+// Добавляем обработчик событий на .map__pin--main
+// по нажатию на кнопку мыши
+mapPinMain.addEventListener('mousedown', function () {
   document.querySelector('.map').classList.remove('map--faded');
-  document.querySelector('.ad-form').classList.remove('.ad-form--disabled');
+  document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+});
+
+
+// по нажатию на Enter
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    document.querySelector('.map').classList.remove('map--faded');
+    document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+  }
 });
 
 
