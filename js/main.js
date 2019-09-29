@@ -158,7 +158,7 @@ similarMapCardsList.appendChild(document.querySelector('.map__filters-container'
 
 var mapPinMain = document.querySelector('.map__pin--main');
 
-// Добавляем обработчик событий на .map__pin--main
+// Делаем страницу активной. Добавляем обработчик событий на .map__pin--main
 // по нажатию на кнопку мыши
 mapPinMain.addEventListener('mousedown', function () {
   document.querySelector('.map').classList.remove('map--faded');
