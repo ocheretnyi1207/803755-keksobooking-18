@@ -1,7 +1,13 @@
 'use strict';
 
+
 // Входные данные
 var NUMBER_ADS = 8; // количество похожих объявлений
+var LOCATION_X_PIN = 570; // координаты метки по горизонтали
+var LOCATION_Y_PIN = 375; // координаты метки по вертикали
+var HEIGHT_POINTER_PIN = 22; // высота указателя метки
+var WIDTH_PIN = 62; // ширина мекти
+var HEIGHT_PIN = 58 + HEIGHT_POINTER_PIN; // высота метки
 
 var indexAvatars = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var titleAds = ['1 объявление', '2 объявление', '3 объявление', '4 объявление', '5 объявление', '6 объявление', '7 объявление', '8 объявление'];
@@ -26,16 +32,16 @@ var housePhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http:/
 var coordinateX = [250, 300, 350, 400, 450, 500, 550, 600];
 var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
 
-// Функция получения рандомного индекса элемента массива
 
+// Функция получения рандомного индекса элемента массива
 var getRandomIndexElement = function (arr) {
   var minIndex = 0;
   var maxIndex = arr.length;
   return Math.floor(Math.random() * ((maxIndex - minIndex) + minIndex));
 };
 
-// Функция получения рандомного элемента массива
 
+// Функция получения рандомного элемента массива
 var getRandomArrayElement = function (arr) {
   var randomIndex = getRandomIndexElement(arr);
   return arr[randomIndex];
@@ -74,11 +80,14 @@ for (var i = 0; i < NUMBER_ADS; i++) {
   similarAds.push(similarAds[i]);
 }
 
+
 // Шаблон #pin
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
+
 // Место для вставки шаблона #pin
 var similarMapPinsList = document.querySelector('.map__pins');
+
 
 // Функция отрисовки шаблона #pin
 var renderMapPinTemplate = function () {
@@ -91,6 +100,7 @@ var renderMapPinTemplate = function () {
   return templateMapPinElement;
 };
 
+
 // Вставка шаблона #pin в .map__pins
 var fragment = document.createDocumentFragment();
 
@@ -100,11 +110,14 @@ for (i = 0; i < similarAds.length; i++) {
 
 similarMapPinsList.appendChild(fragment);
 
+
 // Шаблон #card
 var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
+
 // Место для вставки шаблона #card
 var similarMapCardsList = document.querySelector('.map');
+
 
 // Функция отрисовки модального окна с объявлением
 var renderCardTemplate = function () {
@@ -146,23 +159,41 @@ var renderCardTemplate = function () {
   return templateCardElement;
 };
 
+
 // Вставка шаблонов #card в .map-card
 for (i = 0; i < similarAds.length; i++) {
   fragment.appendChild(renderCardTemplate(similarAds[i]));
 }
 
 similarMapCardsList.appendChild(fragment);
-
 similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
 
 
-var mapPinMain = document.querySelector('.map__pin--main');
+// Добавляем атрибут disabled всем элементам формы (при неактивной странице)
+var formFieldset = document.querySelector('.ad-form').querySelectorAll('.ad-form__element');
+
+for (i = 0; i < formFieldset.length; i++) {
+  formFieldset[i].disabled = 'disabled';
+}
+
+
+// Вставляем координаты пина в поле адреса (при неактивной странице)
+document.querySelector('#address').value = (LOCATION_X_PIN + (WIDTH_PIN / 2)) + ', ' + (LOCATION_Y_PIN + ((HEIGHT_PIN - HEIGHT_POINTER_PIN) / 2));
+
 
 // Делаем страницу активной. Добавляем обработчик событий на .map__pin--main
 // по нажатию на кнопку мыши
+var mapPinMain = document.querySelector('.map__pin--main');
+
 mapPinMain.addEventListener('mousedown', function () {
   document.querySelector('.map').classList.remove('map--faded');
   document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+
+  for (i = 0; i < formFieldset.length; i++) {
+    formFieldset[i].disabled = '';
+  }
+
+  document.querySelector('#address').value = Math.floor(LOCATION_X_PIN + (WIDTH_PIN / 2)) + ', ' + Math.floor(LOCATION_Y_PIN + HEIGHT_PIN);
 });
 
 
