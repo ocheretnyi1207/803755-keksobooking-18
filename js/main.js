@@ -90,12 +90,12 @@ var similarMapPinsList = document.querySelector('.map__pins');
 
 
 // Функция отрисовки шаблона #pin
-var renderMapPinTemplate = function () {
+var renderMapPinTemplate = function (similarAds) {
   var templateMapPinElement = similarMapPinTemplate.cloneNode(true);
-  templateMapPinElement.style.left = similarAds[i].location.x + 'px';
-  templateMapPinElement.style.top = similarAds[i].location.y + 'px';
-  templateMapPinElement.querySelector('img').src = similarAds[i].author.avatar;
-  templateMapPinElement.querySelector('img').alt = similarAds[i].offer.title;
+  templateMapPinElement.style.left = similarAds.location.x + 'px';
+  templateMapPinElement.style.top = similarAds.location.y + 'px';
+  templateMapPinElement.querySelector('img').src = similarAds.author.avatar;
+  templateMapPinElement.querySelector('img').alt = similarAds.offer.title;
 
   return templateMapPinElement;
 };
@@ -120,14 +120,14 @@ var similarMapCardsList = document.querySelector('.map');
 
 
 // Функция отрисовки модального окна с объявлением
-var renderCardTemplate = function () {
+var renderCardTemplate = function (similarAds) {
   var templateCardElement = similarCardTemplate.cloneNode(true);
-  templateCardElement.querySelector('.popup__title').textContent = similarAds[i].offer.title;
-  templateCardElement.querySelector('.popup__text--address').textContent = similarAds[i].offer.address;
-  templateCardElement.querySelector('.popup__text--price').textContent = (similarAds[i].offer.price).toString(10) + ' Р/ночь';
-  templateCardElement.querySelector('.popup__type').textContent = similarAds[i].offer.type;
-  templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds[i].offer.rooms).toString(10) + ' комнаты для ' + (similarAds[i].offer.guests).toString(10) + ' гостей';
-  templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds[i].offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds[i].offer.checkout).toString(10);
+  templateCardElement.querySelector('.popup__title').textContent = similarAds.offer.title;
+  templateCardElement.querySelector('.popup__text--address').textContent = similarAds.offer.address;
+  templateCardElement.querySelector('.popup__text--price').textContent = (similarAds.offer.price).toString(10) + ' Р/ночь';
+  templateCardElement.querySelector('.popup__type').textContent = similarAds.offer.type;
+  templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds.offer.rooms).toString(10) + ' комнаты для ' + (similarAds.offer.guests).toString(10) + ' гостей';
+  templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds.offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds.offer.checkout).toString(10);
 
   var getComfortInAds = function (comfort) {
     templateCardElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
@@ -140,10 +140,10 @@ var renderCardTemplate = function () {
   getComfortInAds('elevator');
   getComfortInAds('conditioner');
 
-  templateCardElement.querySelector('.popup__description').textContent = similarAds[i].offer.description;
+  templateCardElement.querySelector('.popup__description').textContent = similarAds.offer.description;
 
   var translationValues = function (incomingType, outgoingType) {
-    if (similarAds[i].offer.type === incomingType) {
+    if (similarAds.offer.type === incomingType) {
       templateCardElement.querySelector('.popup__type').textContent = outgoingType;
     }
   };
@@ -153,8 +153,8 @@ var renderCardTemplate = function () {
   translationValues('palace', 'Дворец');
   translationValues('house', 'Дом');
 
-  templateCardElement.querySelector('.popup__photo').src = similarAds[i].offer.photos;
-  templateCardElement.querySelector('.popup__avatar').src = similarAds[i].author.avatar;
+  templateCardElement.querySelector('.popup__photo').src = similarAds.offer.photos;
+  templateCardElement.querySelector('.popup__avatar').src = similarAds.author.avatar;
 
   return templateCardElement;
 };
