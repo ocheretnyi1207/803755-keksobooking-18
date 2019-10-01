@@ -90,12 +90,12 @@ var similarMapPinsList = document.querySelector('.map__pins');
 
 
 // Функция отрисовки шаблона #pin
-var renderMapPinTemplate = function (similarAds) {
+var renderMapPinTemplate = function (elementArrayObject) {
   var templateMapPinElement = similarMapPinTemplate.cloneNode(true);
-  templateMapPinElement.style.left = similarAds.location.x + 'px';
-  templateMapPinElement.style.top = similarAds.location.y + 'px';
-  templateMapPinElement.querySelector('img').src = similarAds.author.avatar;
-  templateMapPinElement.querySelector('img').alt = similarAds.offer.title;
+  templateMapPinElement.style.left = elementArrayObject.location.x + 'px';
+  templateMapPinElement.style.top = elementArrayObject.location.y + 'px';
+  templateMapPinElement.querySelector('img').src = elementArrayObject.author.avatar;
+  templateMapPinElement.querySelector('img').alt = elementArrayObject.offer.title;
 
   return templateMapPinElement;
 };
@@ -120,14 +120,14 @@ var similarMapCardsList = document.querySelector('.map');
 
 
 // Функция отрисовки модального окна с объявлением
-var renderCardTemplate = function (similarAds) {
+var renderCardTemplate = function (elementArrayObject) {
   var templateCardElement = similarCardTemplate.cloneNode(true);
-  templateCardElement.querySelector('.popup__title').textContent = similarAds.offer.title;
-  templateCardElement.querySelector('.popup__text--address').textContent = similarAds.offer.address;
-  templateCardElement.querySelector('.popup__text--price').textContent = (similarAds.offer.price).toString(10) + ' Р/ночь';
-  templateCardElement.querySelector('.popup__type').textContent = similarAds.offer.type;
-  templateCardElement.querySelector('.popup__text--capacity').textContent = (similarAds.offer.rooms).toString(10) + ' комнаты для ' + (similarAds.offer.guests).toString(10) + ' гостей';
-  templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (similarAds.offer.checkin).toString(10) + ', ' + 'выезд до ' + (similarAds.offer.checkout).toString(10);
+  templateCardElement.querySelector('.popup__title').textContent = elementArrayObject.offer.title;
+  templateCardElement.querySelector('.popup__text--address').textContent = elementArrayObject.offer.address;
+  templateCardElement.querySelector('.popup__text--price').textContent = (elementArrayObject.offer.price).toString(10) + ' Р/ночь';
+  templateCardElement.querySelector('.popup__type').textContent = elementArrayObject.offer.type;
+  templateCardElement.querySelector('.popup__text--capacity').textContent = (elementArrayObject.offer.rooms).toString(10) + ' комнаты для ' + (elementArrayObject.offer.guests).toString(10) + ' гостей';
+  templateCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (elementArrayObject.offer.checkin).toString(10) + ', ' + 'выезд до ' + (elementArrayObject.offer.checkout).toString(10);
 
   var getComfortInAds = function (comfort) {
     templateCardElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
@@ -140,10 +140,10 @@ var renderCardTemplate = function (similarAds) {
   getComfortInAds('elevator');
   getComfortInAds('conditioner');
 
-  templateCardElement.querySelector('.popup__description').textContent = similarAds.offer.description;
+  templateCardElement.querySelector('.popup__description').textContent = elementArrayObject.offer.description;
 
   var translationValues = function (incomingType, outgoingType) {
-    if (similarAds.offer.type === incomingType) {
+    if (elementArrayObject.offer.type === incomingType) {
       templateCardElement.querySelector('.popup__type').textContent = outgoingType;
     }
   };
@@ -153,8 +153,8 @@ var renderCardTemplate = function (similarAds) {
   translationValues('palace', 'Дворец');
   translationValues('house', 'Дом');
 
-  templateCardElement.querySelector('.popup__photo').src = similarAds.offer.photos;
-  templateCardElement.querySelector('.popup__avatar').src = similarAds.author.avatar;
+  templateCardElement.querySelector('.popup__photo').src = elementArrayObject.offer.photos;
+  templateCardElement.querySelector('.popup__avatar').src = elementArrayObject.author.avatar;
 
   return templateCardElement;
 };
@@ -205,4 +205,11 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
+// Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
 
+document.querySelector('#type').addEventListener('onclick', function () {
+  if (document.querySelector('#type').options.value === 'bungalo') {
+    document.querySelector('#price').min = 0;
+    document.querySelector('#price').placeholder = '0';
+  }
+});
