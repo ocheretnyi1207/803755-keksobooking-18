@@ -206,10 +206,14 @@ mapPinMain.addEventListener('keydown', function (evt) {
 });
 
 // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
+var selectTypeOfHouse = document.querySelector('#type');
 
-document.querySelector('#type').addEventListener('onclick', function () {
-  if (document.querySelector('#type').options.value === 'bungalo') {
-    document.querySelector('#price').min = 0;
-    document.querySelector('#price').placeholder = '0';
+selectTypeOfHouse.addEventListener('change', function () {
+  selectTypeOfHouse.querySelectorAll('options');
+  for (i = 0; i < selectTypeOfHouse.length; i++) { 
+    if (selectTypeOfHouse.options[i].value === 'bungalo') {
+      document.querySelector('#price').min = 0;
+      document.querySelector('#price').placeholder = '0';
+    }
   }
 });
