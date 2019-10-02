@@ -206,14 +206,30 @@ mapPinMain.addEventListener('keydown', function (evt) {
 });
 
 // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
-var selectTypeOfHouse = document.querySelector('#type');
+var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
+  if (document.querySelector(idSelect).options[indexOption].selected) {
+    document.querySelector(idPriceFieldForm).min = valueMinPrice;
+    document.querySelector(idPriceFieldForm).placeholder = valuePlaceholder;
+  }
+};
 
-selectTypeOfHouse.addEventListener('change', function () {
-  selectTypeOfHouse.querySelectorAll('options');
-  for (i = 0; i < selectTypeOfHouse.length; i++) { 
-    if (selectTypeOfHouse.options[i].value === 'bungalo') {
-      document.querySelector('#price').min = 0;
-      document.querySelector('#price').placeholder = '0';
-    }
+document.querySelector('#type').addEventListener('change', function () {
+
+  dependPriceChangeOfTypeHouse('#type', '#price', 0, 0, '0');
+  dependPriceChangeOfTypeHouse('#type', '#price', 1, 1000, '1000');
+  dependPriceChangeOfTypeHouse('#type', '#price', 2, 5000, '5000');
+  dependPriceChangeOfTypeHouse('#type', '#price', 3, 10000, '10000');
+});
+
+// Сценарий соответствия количества гостей и количества комнат
+var selectRoomNumber = document.querySelector('#room_namber');
+
+var selectGuestNumber = document.querySelector('#capacity');
+
+selectRoomNumber.addEventListener('invalid', function (evt) {
+
+  if ((selectRoomNumber.options[0].selected && selectGuestNumber.options[0].selected).validity.valid) {
+    selectRoomNumber.setCustomValidity('Вы можете забронировать 1 комнату для 1 гостя');
+    selectGuestNumber.setCustomValidity('Вы можете забронировать 1 комнату для 1 гостя');
   }
 });
