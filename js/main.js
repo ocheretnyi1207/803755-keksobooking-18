@@ -222,14 +222,25 @@ document.querySelector('#type').addEventListener('change', function () {
 });
 
 // Сценарий соответствия количества гостей и количества комнат
-var selectRoomNumber = document.querySelector('#room_namber');
+var selectRoomNumber = document.querySelector('#room_number');
 
 var selectGuestNumber = document.querySelector('#capacity');
 
-selectRoomNumber.addEventListener('invalid', function (evt) {
+selectGuestNumber.addEventListener('change', function (evt) {
 
-  if ((selectRoomNumber.options[0].selected && selectGuestNumber.options[0].selected).validity.valid) {
-    selectRoomNumber.setCustomValidity('Вы можете забронировать 1 комнату для 1 гостя');
-    selectGuestNumber.setCustomValidity('Вы можете забронировать 1 комнату для 1 гостя');
+  if (selectRoomNumber.options[0].selected && selectGuestNumber.options[0].selected  || selectGuestNumber.options[1].selected || selectGuestNumber.options[3].selected) {
+    alert('Вы можете забронировать 1 комнату для 1 гостя');
+  }
+
+  if (selectRoomNumber.options[1].selected && selectGuestNumber.options[0].selected || selectGuestNumber.options[3].selected) {
+    alert('Вы можете забронировать 2 комнаты для 1 или 2 гостей');
+  }
+
+  if (selectRoomNumber.options[2].selected && selectGuestNumber.options[3]) {
+    alert('Вы можете забронировать 3 комнаты для 1, 2 или 3 гостей');
+  }
+
+  if (selectRoomNumber.options[3].selected && selectGuestNumber.options[0].selected || selectGuestNumber.options[1].selected || selectGuestNumber.options[2].selected) {
+    alert('Вы можете забронировать 100 комнат не для гостей');
   }
 });
