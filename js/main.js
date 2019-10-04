@@ -226,21 +226,29 @@ var selectRoomNumber = document.querySelector('#room_number');
 
 var selectGuestNumber = document.querySelector('#capacity');
 
-selectGuestNumber.addEventListener('change', function (evt) {
-
-  if (selectRoomNumber.options[0].selected && selectGuestNumber.options[0].selected  || selectGuestNumber.options[1].selected || selectGuestNumber.options[3].selected) {
-    alert('Вы можете забронировать 1 комнату для 1 гостя');
+selectRoomNumber.addEventListener('change', function () {
+  if (selectRoomNumber.options[0].selected) {
+    selectGuestNumber.options[0].disabled = 'disabled';
+    selectGuestNumber.options[1].disabled = 'disabled';
+    selectGuestNumber.options[2].disabled = '';
+    selectGuestNumber.options[3].disabled = 'disabled';
   }
-
-  if (selectRoomNumber.options[1].selected && selectGuestNumber.options[0].selected || selectGuestNumber.options[3].selected) {
-    alert('Вы можете забронировать 2 комнаты для 1 или 2 гостей');
+  if (selectRoomNumber.options[1].selected) {
+    selectGuestNumber.options[0].disabled = 'disabled';
+    selectGuestNumber.options[1].disabled = '';
+    selectGuestNumber.options[2].disabled = '';
+    selectGuestNumber.options[3].disabled = 'disabled';
   }
-
-  if (selectRoomNumber.options[2].selected && selectGuestNumber.options[3]) {
-    alert('Вы можете забронировать 3 комнаты для 1, 2 или 3 гостей');
+  if (selectRoomNumber.options[2].selected) {
+    selectGuestNumber.options[0].disabled = '';
+    selectGuestNumber.options[1].disabled = '';
+    selectGuestNumber.options[2].disabled = '';
+    selectGuestNumber.options[3].disabled = 'disabled';
   }
-
-  if (selectRoomNumber.options[3].selected && selectGuestNumber.options[0].selected || selectGuestNumber.options[1].selected || selectGuestNumber.options[2].selected) {
-    alert('Вы можете забронировать 100 комнат не для гостей');
+  if (selectRoomNumber.options[3].selected) {
+    selectGuestNumber.options[0].disabled = 'disabled';
+    selectGuestNumber.options[1].disabled = 'disabled';
+    selectGuestNumber.options[2].disabled = 'disabled';
+    selectGuestNumber.options[3].disabled = '';
   }
 });
