@@ -252,3 +252,8 @@ selectRoomNumber.addEventListener('change', function () {
     selectGuestNumber.options[3].disabled = '';
   }
 });
+
+// Сценарий закрытия карточки объявления
+document.querySelector('.popup__close').addEventListener('click', function () {
+  document.querySelector('.map__card').style = 'display: none';
+});
