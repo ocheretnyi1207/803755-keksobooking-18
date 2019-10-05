@@ -226,16 +226,23 @@ var selectRoomNumber = document.querySelector('#room_number');
 
 var selectGuestNumber = document.querySelector('#capacity');
 
+selectGuestNumber.options[0].disabled = 'disabled';
+selectGuestNumber.options[1].disabled = 'disabled';
+selectGuestNumber.options[2].selected = 'selected';
+selectGuestNumber.options[3].disabled = 'disabled';
+
 selectRoomNumber.addEventListener('change', function () {
   if (selectRoomNumber.options[0].selected) {
     selectGuestNumber.options[0].disabled = 'disabled';
     selectGuestNumber.options[1].disabled = 'disabled';
     selectGuestNumber.options[2].disabled = '';
+    selectGuestNumber.options[2].selected = 'selected';
     selectGuestNumber.options[3].disabled = 'disabled';
   }
   if (selectRoomNumber.options[1].selected) {
     selectGuestNumber.options[0].disabled = 'disabled';
     selectGuestNumber.options[1].disabled = '';
+    selectGuestNumber.options[1].selected = 'selected';
     selectGuestNumber.options[2].disabled = '';
     selectGuestNumber.options[3].disabled = 'disabled';
   }
@@ -243,6 +250,7 @@ selectRoomNumber.addEventListener('change', function () {
     selectGuestNumber.options[0].disabled = '';
     selectGuestNumber.options[1].disabled = '';
     selectGuestNumber.options[2].disabled = '';
+    selectGuestNumber.options[0].selected = 'selected';
     selectGuestNumber.options[3].disabled = 'disabled';
   }
   if (selectRoomNumber.options[3].selected) {
@@ -250,10 +258,16 @@ selectRoomNumber.addEventListener('change', function () {
     selectGuestNumber.options[1].disabled = 'disabled';
     selectGuestNumber.options[2].disabled = 'disabled';
     selectGuestNumber.options[3].disabled = '';
+    selectGuestNumber.options[3].selected = 'selected';
   }
 });
 
 // Сценарий закрытия карточки объявления
-document.querySelector('.popup__close').addEventListener('click', function () {
-  document.querySelector('.map__card').style = 'display: none';
-});
+var cartAds = document.querySelectorAll('.map__card');
+var btnCloseAds = document.querySelectorAll('popup__close');
+
+for (i = 0; i < cartAds.length; i++) {
+  btnCloseAds[i].addEventListener('click', function () {
+    cartAds[i].style.background = 'red';
+  });
+}
