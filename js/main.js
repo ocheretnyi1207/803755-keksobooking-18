@@ -262,12 +262,11 @@ selectRoomNumber.addEventListener('change', function () {
   }
 });
 
-// Сценарий закрытия карточки объявления
-var cartAds = document.querySelectorAll('.map__card');
-var btnCloseAds = document.querySelectorAll('popup__close');
+// Сценарий закрытия окна с объявлением
 
-for (i = 0; i < cartAds.length; i++) {
-  btnCloseAds[i].addEventListener('click', function () {
-    cartAds[i].style.background = 'red';
-  });
-}
+var cardAds = document.querySelectorAll('.map__card');
+var btnCloseAds = document.querySelectorAll('.popup__close');
+
+btnCloseAds[8].addEventListener('click', function () {
+  cardAds[8].style.display = 'none';
+});
