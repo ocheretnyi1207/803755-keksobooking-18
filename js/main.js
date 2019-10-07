@@ -278,17 +278,25 @@ selectCheckoutTime.addEventListener('change', function () {
 
 
 // Сценарий закрытия карточки объявления
-var cartAds = document.querySelectorAll('.map__card');
-var btnCloseAds = document.querySelectorAll('.popup__close');
 
-/*
-for (i = 0; i < cartAds.length; i++) {
-  btnCloseAds[i].addEventListener('click', function () {
-    cartAds[i].style.display = 'none';
-  });
-}
-*/
+var buttonCloseAdsClickHandler = function (evt) {
+  if (evt.target.className === 'popup__close') {
+    evt.target.closest('.map__card').style.display = 'none';
+  }
+};
 
-btnCloseAds[7].addEventListener('click', function () {
-  cartAds[7].style.display = 'none';
-});
+var articleMapCardKeydownHandler = function (evt) {
+  if (evt.target.className === 'popup__close' && evt.keyCode === 27) {
+    evt.target.closest('.map__card').style.display = 'none';
+  }
+};
+
+var buttonMapPinKeydownHandler = function (evt) {
+  if (evt.target.className === 'map__pin' && evt.keyCode === 13) {
+    document.querySelector('.map__card').style.display = 'block';
+  }
+};
+
+similarMapCardsList.addEventListener('click', buttonCloseAdsClickHandler);
+similarMapCardsList.addEventListener('keydown', articleMapCardKeydownHandler);
+similarMapCardsList.addEventListener('keydown', buttonMapPinKeydownHandler);
