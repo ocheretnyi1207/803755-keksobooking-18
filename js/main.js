@@ -19,15 +19,7 @@ var houseNumberGuests = [1, 2, 3, 4, 5];
 var timeCheckins = ['12:00', '13:00', '14:00'];
 var timeCheckouts = ['12:00', '13:00', '14:00'];
 var houseFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var houseDescriptions = [
-  'Большая площадь квартиры',
-  'Около метро',
-  'Тихие соседи',
-  'Рядом магазины',
-  'Красивый вид из окон',
-  'Много детских площадок',
-  'Недалеко парки'
-];
+var houseDescriptions = ['Большая площадь квартиры', 'Около метро', 'Тихие соседи', 'Рядом магазины', 'Красивый вид из окон', 'Много детских площадок', 'Недалеко парки'];
 var housePhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var coordinateX = [250, 300, 350, 400, 450, 500, 550, 600];
 var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
@@ -51,35 +43,35 @@ var getRandomArrayElement = function (arr) {
 var similarAds = [];
 
 for (var i = 0; i < NUMBER_ADS; i++) {
+  similarAds.push(
 
-  similarAds[i] = {
-    author: {
-      avatar: 'img/avatars/user' + getRandomArrayElement(indexAvatars).toString(10) + '.png',
-    },
+      {
+        author: {
+          avatar: 'img/avatars/user' + getRandomArrayElement(indexAvatars).toString(10) + '.png',
+        },
 
-    offer: {
-      title: titleAds[i],
-      address: getRandomArrayElement(houseAddress),
-      price: housePrice[i],
-      type: getRandomArrayElement(houseTypes),
-      rooms: getRandomArrayElement(houseNumberRooms),
-      guests: getRandomArrayElement(houseNumberGuests),
-      checkin: getRandomArrayElement(timeCheckins),
-      checkout: getRandomArrayElement(timeCheckouts),
-      features: houseFeatures,
-      description: getRandomArrayElement(houseDescriptions),
-      photos: getRandomArrayElement(housePhotos),
-    },
+        offer: {
+          title: titleAds[i],
+          address: getRandomArrayElement(houseAddress),
+          price: housePrice[i],
+          type: getRandomArrayElement(houseTypes),
+          rooms: getRandomArrayElement(houseNumberRooms),
+          guests: getRandomArrayElement(houseNumberGuests),
+          checkin: getRandomArrayElement(timeCheckins),
+          checkout: getRandomArrayElement(timeCheckouts),
+          features: houseFeatures,
+          description: getRandomArrayElement(houseDescriptions),
+          photos: getRandomArrayElement(housePhotos),
+        },
 
-    location: {
-      x: coordinateX[i],
-      y: coordinateY[i],
-    },
-  };
+        location: {
+          x: coordinateX[i],
+          y: coordinateY[i],
+        }
+      }
 
-  similarAds.push(similarAds[i]);
+  );
 }
-
 
 // Шаблон #pin
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -262,11 +254,41 @@ selectRoomNumber.addEventListener('change', function () {
   }
 });
 
-// Сценарий закрытия окна с объявлением
+// Сценарий соответствия времени заезда и времени выезда
 
-var cardAds = document.querySelectorAll('.map__card');
+var selectCheckinTime = document.querySelector('#timein');
+var selectCheckoutTime = document.querySelector('#timeout');
+
+
+selectCheckinTime.addEventListener('change', function () {
+  for (i = 0; i < selectCheckinTime.length; i++) {
+    if (selectCheckinTime[i].selected) {
+      selectCheckoutTime[i].selected = 'selected';
+    }
+  }
+});
+
+selectCheckoutTime.addEventListener('change', function () {
+  for (i = 0; i < selectCheckoutTime.length; i++) {
+    if (selectCheckoutTime[i].selected) {
+      selectCheckinTime[i].selected = 'selected';
+    }
+  }
+});
+
+
+// Сценарий закрытия карточки объявления
+var cartAds = document.querySelectorAll('.map__card');
 var btnCloseAds = document.querySelectorAll('.popup__close');
 
-btnCloseAds[8].addEventListener('click', function () {
-  cardAds[8].style.display = 'none';
+/*
+for (i = 0; i < cartAds.length; i++) {
+  btnCloseAds[i].addEventListener('click', function () {
+    cartAds[i].style.display = 'none';
+  });
+}
+*/
+
+btnCloseAds[7].addEventListener('click', function () {
+  cartAds[7].style.display = 'none';
 });
