@@ -8,6 +8,8 @@ var LOCATION_Y_PIN = 375; // координаты метки по вертика
 var HEIGHT_POINTER_PIN = 22; // высота указателя метки
 var WIDTH_PIN = 62; // ширина мекти
 var HEIGHT_PIN = 58 + HEIGHT_POINTER_PIN; // высота метки
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 var indexAvatars = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var titleAds = ['1 объявление', '2 объявление', '3 объявление', '4 объявление', '5 объявление', '6 объявление', '7 объявление', '8 объявление'];
@@ -19,15 +21,7 @@ var houseNumberGuests = [1, 2, 3, 4, 5];
 var timeCheckins = ['12:00', '13:00', '14:00'];
 var timeCheckouts = ['12:00', '13:00', '14:00'];
 var houseFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var houseDescriptions = [
-  'Большая площадь квартиры',
-  'Около метро',
-  'Тихие соседи',
-  'Рядом магазины',
-  'Красивый вид из окон',
-  'Много детских площадок',
-  'Недалеко парки'
-];
+var houseDescriptions = ['Большая площадь квартиры', 'Около метро', 'Тихие соседи', 'Рядом магазины', 'Красивый вид из окон', 'Много детских площадок', 'Недалеко парки'];
 var housePhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var coordinateX = [250, 300, 350, 400, 450, 500, 550, 600];
 var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
@@ -51,35 +45,35 @@ var getRandomArrayElement = function (arr) {
 var similarAds = [];
 
 for (var i = 0; i < NUMBER_ADS; i++) {
+  similarAds.push(
 
-  similarAds[i] = {
-    author: {
-      avatar: 'img/avatars/user' + getRandomArrayElement(indexAvatars).toString(10) + '.png',
-    },
+      {
+        author: {
+          avatar: 'img/avatars/user' + getRandomArrayElement(indexAvatars).toString(10) + '.png',
+        },
 
-    offer: {
-      title: titleAds[i],
-      address: getRandomArrayElement(houseAddress),
-      price: housePrice[i],
-      type: getRandomArrayElement(houseTypes),
-      rooms: getRandomArrayElement(houseNumberRooms),
-      guests: getRandomArrayElement(houseNumberGuests),
-      checkin: getRandomArrayElement(timeCheckins),
-      checkout: getRandomArrayElement(timeCheckouts),
-      features: houseFeatures,
-      description: getRandomArrayElement(houseDescriptions),
-      photos: getRandomArrayElement(housePhotos),
-    },
+        offer: {
+          title: titleAds[i],
+          address: getRandomArrayElement(houseAddress),
+          price: housePrice[i],
+          type: getRandomArrayElement(houseTypes),
+          rooms: getRandomArrayElement(houseNumberRooms),
+          guests: getRandomArrayElement(houseNumberGuests),
+          checkin: getRandomArrayElement(timeCheckins),
+          checkout: getRandomArrayElement(timeCheckouts),
+          features: houseFeatures,
+          description: getRandomArrayElement(houseDescriptions),
+          photos: getRandomArrayElement(housePhotos),
+        },
 
-    location: {
-      x: coordinateX[i],
-      y: coordinateY[i],
-    },
-  };
+        location: {
+          x: coordinateX[i],
+          y: coordinateY[i],
+        }
+      }
 
-  similarAds.push(similarAds[i]);
+  );
 }
-
 
 // Шаблон #pin
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -199,7 +193,7 @@ mapPinMain.addEventListener('mousedown', function () {
 
 // по нажатию на Enter
 mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 13) {
+  if (evt.keyCode === ENTER_KEYCODE) {
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   }
@@ -261,3 +255,63 @@ selectRoomNumber.addEventListener('change', function () {
     selectGuestNumber.options[3].selected = 'selected';
   }
 });
+
+// Сценарий соответствия времени заезда и времени выезда
+
+var selectCheckinTime = document.querySelector('#timein');
+var selectCheckoutTime = document.querySelector('#timeout');
+
+
+selectCheckinTime.addEventListener('change', function () {
+  for (i = 0; i < selectCheckinTime.length; i++) {
+    if (selectCheckinTime[i].selected) {
+      selectCheckoutTime[i].selected = 'selected';
+    }
+  }
+});
+
+selectCheckoutTime.addEventListener('change', function () {
+  for (i = 0; i < selectCheckoutTime.length; i++) {
+    if (selectCheckoutTime[i].selected) {
+      selectCheckinTime[i].selected = 'selected';
+    }
+  }
+});
+
+
+// Сценарий закрытия карточки объявления
+// по клику на кнопку закрытия
+var buttonCloseAdsClickHandler = function (evt) {
+  if (evt.target.className === 'popup__close') {
+    evt.target.closest('.map__card').style.display = 'none';
+  }
+};
+
+similarMapCardsList.addEventListener('click', buttonCloseAdsClickHandler);
+
+// по нажатию на ESC
+var articleMapCardKeydownHandler = function (evt) {
+  if (evt.target.className === 'popup__close') {
+    if (evt.keyCode === ESC_KEYCODE) {
+      evt.target.closest('.map__card').style.display = 'none';
+    }
+  }
+};
+
+similarMapCardsList.addEventListener('keydown', articleMapCardKeydownHandler);
+
+// Сценарий открытия карточки объявления по нажатию на Enter
+var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+var mapCard = document.querySelectorAll('.map__card');
+
+var cardAdsOpen = function (index) {
+  return function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      mapCard[index].style.display = 'block';
+    }
+  };
+};
+
+for (i = 0; i < mapPin.length; i++) {
+  mapPin[i].addEventListener('keydown', cardAdsOpen(i));
+}
