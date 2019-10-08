@@ -1,6 +1,6 @@
 'use strict';
 
-
+// Модуль util.js
 // Входные данные
 var NUMBER_ADS = 8; // количество похожих объявлений
 var LOCATION_X_PIN = 570; // координаты метки по горизонтали
@@ -26,6 +26,9 @@ var housePhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http:/
 var coordinateX = [250, 300, 350, 400, 450, 500, 550, 600];
 var coordinateY = [150, 200, 250, 300, 350, 400, 450, 500];
 
+// ------------------------------------------------------------------------------------------
+
+// Модуль data.js
 
 // Функция получения рандомного индекса элемента массива
 var getRandomIndexElement = function (arr) {
@@ -75,6 +78,7 @@ for (var i = 0; i < NUMBER_ADS; i++) {
   );
 }
 
+// -------------------------------------------------
 // Шаблон #pin
 var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -104,7 +108,7 @@ for (i = 0; i < similarAds.length; i++) {
 
 similarMapPinsList.appendChild(fragment);
 
-
+// -------------------------------------------------------------------------------------------
 // Шаблон #card
 var similarCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
@@ -162,7 +166,7 @@ for (i = 0; i < similarAds.length; i++) {
 similarMapCardsList.appendChild(fragment);
 similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
 
-
+// -----------------------------------------------------------------------------------------------
 // Добавляем атрибут disabled всем элементам формы (при неактивной странице)
 var formFieldset = document.querySelector('.ad-form').querySelectorAll('.ad-form__element');
 
