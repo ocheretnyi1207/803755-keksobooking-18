@@ -8,6 +8,8 @@ var LOCATION_Y_PIN = 375; // координаты метки по вертика
 var HEIGHT_POINTER_PIN = 22; // высота указателя метки
 var WIDTH_PIN = 62; // ширина мекти
 var HEIGHT_PIN = 58 + HEIGHT_POINTER_PIN; // высота метки
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 var indexAvatars = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var titleAds = ['1 объявление', '2 объявление', '3 объявление', '4 объявление', '5 объявление', '6 объявление', '7 объявление', '8 объявление'];
@@ -191,7 +193,7 @@ mapPinMain.addEventListener('mousedown', function () {
 
 // по нажатию на Enter
 mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === 13) {
+  if (evt.keyCode === ENTER_KEYCODE) {
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
   }
@@ -278,25 +280,38 @@ selectCheckoutTime.addEventListener('change', function () {
 
 
 // Сценарий закрытия карточки объявления
-
+// по клику на кнопку закрытия
 var buttonCloseAdsClickHandler = function (evt) {
   if (evt.target.className === 'popup__close') {
     evt.target.closest('.map__card').style.display = 'none';
   }
 };
 
-var articleMapCardKeydownHandler = function (evt) {
-  if (evt.target.className === 'popup__close' && evt.keyCode === 27) {
-    evt.target.closest('.map__card').style.display = 'none';
-  }
-};
-
-var buttonMapPinKeydownHandler = function (evt) {
-  if (evt.target.className === 'map__pin' && evt.keyCode === 13) {
-    document.querySelector('.map__card').style.display = 'block';
-  }
-};
-
 similarMapCardsList.addEventListener('click', buttonCloseAdsClickHandler);
+
+// по нажатию на ESC
+var articleMapCardKeydownHandler = function (evt) {
+  if (evt.target.className === 'popup__close') {
+    if (evt.keyCode === ESC_KEYCODE) {
+      evt.target.closest('.map__card').style.display = 'none';
+    }
+  }
+};
+
 similarMapCardsList.addEventListener('keydown', articleMapCardKeydownHandler);
-similarMapCardsList.addEventListener('keydown', buttonMapPinKeydownHandler);
+
+// Сценарий открытия карточки объявления по нажатию на Enter
+var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+var mapCard = document.querySelectorAll('.map__card');
+
+var cardAdsOpen = function (index) {
+  return function (evt) {
+    if (evt.keyCode === ENTER_KEYCODE) {
+      mapCard[index].style.display = 'block';
+    }
+  };
+};
+
+for (i = 0; i < mapPin.length; i++) {
+  mapPin[i].addEventListener('keydown', cardAdsOpen(i));
+}
