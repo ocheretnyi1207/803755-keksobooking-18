@@ -14,9 +14,14 @@
     return arr[randomIndex];
   };
 
+  window.data = {
+
+  };
+
   var similarAds = [];
 
   for (var i = 0; i < window.util.NUMBER_ADS; i++) {
+
     similarAds.push(
 
         {
@@ -46,5 +51,7 @@
 
     );
   }
+
+  window.similarAds = similarAds;
 
 })();
