@@ -16,8 +16,9 @@
   // по нажатию на кнопку мыши
   var mapPinMain = document.querySelector('.map__pin--main');
 
-  /*
-  mapPinMain.addEventListener('mousedown', function () {
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
@@ -25,9 +26,57 @@
       formFieldset[i].disabled = '';
     }
 
-    document.querySelector('#address').value = Math.floor(window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + Math.floor(window.util.LOCATION_Y_PIN + window.util.HEIGHT_PIN);
+    // Сценарий перемещения метки
+    var startCoordinates = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var mouseMoveHandler = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var displacement = {
+        x: startCoordinates.x - moveEvt.clientX,
+        y: startCoordinates.y - moveEvt.clientY
+      };
+
+      startCoordinates = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      if ((mapPinMain.offsetTop - displacement.y) < 130) {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+      } else if ((mapPinMain.offsetTop - displacement.y) > 630) {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+      } else if ((mapPinMain.offsetLeft - displacement.x) < 0) {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+      } else if ((mapPinMain.offsetLeft - displacement.x + window.util.WIDTH_PIN) > 1200) {
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+      } else {
+        mapPinMain.style.left = (mapPinMain.offsetLeft - displacement.x).toString(10) + 'px';
+        mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y).toString(10) + 'px';
+      }
+
+    };
+
+    var mouseUpHandler = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+
+    // document.querySelector('#address').value = Math.floor(window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + Math.floor(window.util.LOCATION_Y_PIN + window.util.HEIGHT_PIN);
   });
-*/
+
   // по нажатию на Enter
   mapPinMain.addEventListener('keydown', function (evt) {
 
@@ -82,43 +131,5 @@
   for (i = 0; i < mapPin.length; i++) {
     mapPin[i].addEventListener('keydown', cardAdsOpen(i));
   }
-
-  // Сценарий перемещения метки по карте
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-
-    var startCoordinates = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-
-    var mouseMoveHandler = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var displacement = {
-        x: startCoordinates.x - moveEvt.clientX,
-        y: startCoordinates.y - moveEvt.clientY
-      };
-
-      startCoordinates = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      mapPinMain.style.left = (mapPinMain.offsetLeft - displacement.x).toString(10) + 'px';
-      mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y).toString(10) + 'px';
-    };
-
-    var mouseUpHandler = function (upEvt) {
-      upEvt.preventDefault();
-
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
-    };
-
-    document.removeEventListener('mousemove', mouseMoveHandler);
-    document.removeEventListener('mouseup', mouseUpHandler);
-
-  });
 
 })();
