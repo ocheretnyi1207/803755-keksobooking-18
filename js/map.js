@@ -12,10 +12,11 @@
   // Вставляем координаты пина в поле адреса (при неактивной странице)
   document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
 
-  // Делаем страницу активной. Добавляем обработчик событий на .map__pin--main
+  // Делаем страницу активной
   // по нажатию на кнопку мыши
   var mapPinMain = document.querySelector('.map__pin--main');
 
+  /*
   mapPinMain.addEventListener('mousedown', function () {
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
@@ -26,7 +27,7 @@
 
     document.querySelector('#address').value = Math.floor(window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + Math.floor(window.util.LOCATION_Y_PIN + window.util.HEIGHT_PIN);
   });
-
+*/
   // по нажатию на Enter
   mapPinMain.addEventListener('keydown', function (evt) {
 
@@ -81,5 +82,43 @@
   for (i = 0; i < mapPin.length; i++) {
     mapPin[i].addEventListener('keydown', cardAdsOpen(i));
   }
+
+  // Сценарий перемещения метки по карте
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoordinates = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var mouseMoveHandler = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var displacement = {
+        x: startCoordinates.x - moveEvt.clientX,
+        y: startCoordinates.y - moveEvt.clientY
+      };
+
+      startCoordinates = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      mapPinMain.style.left = (mapPinMain.offsetLeft - displacement.x).toString(10) + 'px';
+      mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y).toString(10) + 'px';
+    };
+
+    var mouseUpHandler = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+
+  });
 
 })();
