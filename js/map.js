@@ -45,10 +45,10 @@
         y: moveEvt.clientY
       };
 
-      if ((mapPinMain.offsetTop - displacement.y) < 130) {
+      if ((mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) < 130) {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
-      } else if ((mapPinMain.offsetTop - displacement.y) > 630) {
+      } else if ((mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) > 630) {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
       } else if ((mapPinMain.offsetLeft - displacement.x) < 0) {
@@ -62,6 +62,7 @@
         mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y).toString(10) + 'px';
       }
 
+      document.querySelector('#address').value = (mapPinMain.offsetLeft - displacement.x) + ', ' + (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
     };
 
     var mouseUpHandler = function (upEvt) {
@@ -73,8 +74,6 @@
 
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
-
-    // document.querySelector('#address').value = Math.floor(window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + Math.floor(window.util.LOCATION_Y_PIN + window.util.HEIGHT_PIN);
   });
 
   // по нажатию на Enter
