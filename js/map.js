@@ -62,7 +62,7 @@
         mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y).toString(10) + 'px';
       }
 
-      document.querySelector('#address').value = (mapPinMain.offsetLeft - displacement.x) + ', ' + (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
+      document.querySelector('#address').value = (mapPinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) + ', ' + (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
     };
 
     var mouseUpHandler = function (upEvt) {
