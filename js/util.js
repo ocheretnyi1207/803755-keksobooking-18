@@ -7,8 +7,8 @@
   var HEIGHT_POINTER_PIN = 22; // высота указателя метки
   var WIDTH_PIN = 62; // ширина мекти
   var HEIGHT_PIN = 58 + HEIGHT_POINTER_PIN; // высота метки
-  var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
+  var ESC_KEYCODE = 27; // кейкод ESC
+  var ENTER_KEYCODE = 13; // кейкод ENTER
 
   var indexAvatars = ['01', '02', '03', '04', '05', '06', '07', '08'];
   var titleAds = ['1 объявление', '2 объявление', '3 объявление', '4 объявление', '5 объявление', '6 объявление', '7 объявление', '8 объявление'];
