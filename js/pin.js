@@ -20,12 +20,15 @@
   };
 
   // Вставка шаблона #pin в .map__pins
-  var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < window.util.NUMBER_ADS; i++) {
-    fragment.appendChild(renderMapPinTemplate(window.similarAds[i]));
-  }
+  window.load(function (similarAds) {
+    var fragment = document.createDocumentFragment();
 
-  similarMapPinsList.appendChild(fragment);
+    for (var i = 0; i < window.util.NUMBER_ADS; i++) {
+      fragment.appendChild(renderMapPinTemplate(similarAds[i]));
+    }
+
+    similarMapPinsList.appendChild(fragment);
+  });
 
 })();
