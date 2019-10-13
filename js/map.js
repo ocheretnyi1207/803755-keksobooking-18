@@ -51,16 +51,7 @@
       var isLeftLimit = (mapPinMain.offsetLeft - displacement.x) < 0;
       var isRightLimit = (mapPinMain.offsetLeft - displacement.x + window.util.WIDTH_PIN) > 1200;
 
-      if (isTopLimit) {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      } else if (isBottomLimit) {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      } else if (isLeftLimit) {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      } else if (isRightLimit) {
+      if (isTopLimit || isBottomLimit || isLeftLimit || isRightLimit) {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
       } else {
