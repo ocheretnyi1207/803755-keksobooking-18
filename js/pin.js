@@ -19,16 +19,24 @@
     return templateMapPinElement;
   };
 
+  /*
   // Вставка шаблона #pin в .map__pins
 
-  window.load(function (similarAds) {
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < window.util.NUMBER_ADS; i++) {
+    fragment.appendChild(renderMapPinTemplate(window.util.similarAds[i]));
+  }
+
+  similarMapPinsList.appendChild(fragment);
+  */
+  window.load('https://js.dump.academy/keksobooking/data', function () {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < window.util.NUMBER_ADS; i++) {
-      fragment.appendChild(renderMapPinTemplate(similarAds[i]));
+      fragment.appendChild(renderMapPinTemplate());
     }
 
     similarMapPinsList.appendChild(fragment);
   });
-
 })();
