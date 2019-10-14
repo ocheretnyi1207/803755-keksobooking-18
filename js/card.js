@@ -1,3 +1,4 @@
+/*
 'use strict';
 
 (function () {
@@ -60,3 +61,4 @@
   similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
 
 })();
+*/

@@ -34,6 +34,7 @@
     HEIGHT_PIN: HEIGHT_PIN,
     ESC_KEYCODE: ESC_KEYCODE,
     ENTER_KEYCODE: ENTER_KEYCODE,
+
     indexAvatars: indexAvatars,
     titleAds: titleAds,
     houseAddress: houseAddress,
@@ -48,6 +49,7 @@
     housePhotos: housePhotos,
     coordinateX: coordinateX,
     coordinateY: coordinateY,
+
   };
 
 })();
