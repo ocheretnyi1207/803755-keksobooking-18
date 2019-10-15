@@ -1,4 +1,3 @@
-/*
 'use strict';
 
 (function () {
@@ -51,14 +50,14 @@
   };
 
   // Вставка шаблонов #card в .map-card
-  var fragment = document.createDocumentFragment();
+  window.load(function (data) {
+    var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < window.util.NUMBER_ADS; i++) {
-    fragment.appendChild(renderCardTemplate(window.similarAds[i]));
-  }
+    for (var i = 0; i < window.util.NUMBER_ADS; i++) {
+      fragment.appendChild(renderCardTemplate(data[i]));
+    }
 
-  similarMapCardsList.appendChild(fragment);
-  similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
-
+    similarMapCardsList.appendChild(fragment);
+    similarMapCardsList.appendChild(document.querySelector('.map__filters-container'));
+  });
 })();
-*/

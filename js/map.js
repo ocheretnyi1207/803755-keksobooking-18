@@ -125,7 +125,7 @@
     };
   };
 
-  for (i = 0; i < mapPin.length; i++) {
+  for (i = 0; i < window.util.NUMBER_ADS; i++) {
     mapPin[i].addEventListener('keydown', cardAdsOpen(i));
   }
 

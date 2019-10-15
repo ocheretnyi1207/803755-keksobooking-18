@@ -1,4 +1,3 @@
-/*
 'use strict';
 
 (function () {
@@ -52,4 +51,3 @@
   window.similarAds = similarAds;
 
 })();
-*/
