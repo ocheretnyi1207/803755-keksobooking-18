@@ -3,24 +3,32 @@
 (function () {
 
   // Шаблон #pin
-  var similarMapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+  var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   // Место для вставки шаблона #pin
-  var similarMapPinsList = document.querySelector('.map__pins');
+  var mapPins = document.querySelector('.map__pins');
+
+  /*
+  // Шаблон #error
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+
+  // Место для вставки шаблона #error
+  var errorMain = document.querySelector('main');
+  */
 
   // Функция отрисовки шаблона #pin
   var renderMapPinTemplate = function (arrayElement) {
-    var templateMapPinElement = similarMapPinTemplate.cloneNode(true);
-    templateMapPinElement.style.left = arrayElement.location.x + 'px';
-    templateMapPinElement.style.top = arrayElement.location.y + 'px';
-    templateMapPinElement.querySelector('img').src = arrayElement.author.avatar;
-    templateMapPinElement.querySelector('img').alt = arrayElement.offer.title;
+    var mapPinTemplateElement = mapPinTemplate.cloneNode(true);
+    mapPinTemplateElement.style.left = arrayElement.location.x + 'px';
+    mapPinTemplateElement.style.top = arrayElement.location.y + 'px';
+    mapPinTemplateElement.querySelector('img').src = arrayElement.author.avatar;
+    mapPinTemplateElement.querySelector('img').alt = arrayElement.offer.title;
 
-    return templateMapPinElement;
+    return mapPinTemplateElement;
   };
 
-  // Вставка шаблона #pin в .map__pin
-  window.load(function (data) {
+  // Вставка шаблона #pin в .map__pins в случае получения данных от сервера
+  var successPinHandler = function (data) {
 
     var fragment = document.createDocumentFragment();
 
@@ -28,6 +36,8 @@
       fragment.appendChild(renderMapPinTemplate(data[i]));
     }
 
-    similarMapPinsList.appendChild(fragment);
-  });
+    mapPins.appendChild(fragment);
+  };
+
+  window.load(successPinHandler);
 })();

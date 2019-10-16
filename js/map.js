@@ -2,10 +2,18 @@
 
 (function () {
 
+  // Делаем все пины и карточки с объявлениями неактивными
+  var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  var mapCard = document.querySelectorAll('.map__card');
+
+  for (var i = 0; i < mapPin.length; i++) {
+    mapPin[i].style.display = 'none';
+  }
+
   // Добавляем атрибут disabled всем элементам формы (при неактивной странице)
   var formFieldset = document.querySelector('.ad-form').querySelectorAll('.ad-form__element');
 
-  for (var i = 0; i < formFieldset.length; i++) {
+  for (i = 0; i < formFieldset.length; i++) {
     formFieldset[i].disabled = 'disabled';
   }
 
@@ -112,10 +120,7 @@
   map.addEventListener('keydown', articleMapCardKeydownHandler);
 
   // Сценарий открытия карточки объявления по нажатию на Enter
-  var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  var mapCard = document.querySelectorAll('.map__card');
-
-  var cardAdsOpen = function (index) {
+  function cardAdsOpen(index) {
     return function (evt) {
 
       if (evt.keyCode === window.util.ENTER_KEYCODE) {
@@ -123,7 +128,8 @@
       }
 
     };
-  };
+  }
+
 
   for (i = 0; i < window.util.NUMBER_ADS; i++) {
     mapPin[i].addEventListener('keydown', cardAdsOpen(i));
