@@ -49,8 +49,7 @@
     return cardTemplateElement;
   };
 
-  // Вставка шаблонов #card в .map-card
-  window.load(function (data) {
+  window.successCardHandler = (function (data) {
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < window.util.NUMBER_ADS; i++) {

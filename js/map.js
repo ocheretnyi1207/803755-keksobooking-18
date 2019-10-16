@@ -2,23 +2,17 @@
 
 (function () {
 
-  // Делаем все пины и карточки с объявлениями неактивными
-  var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  var mapCard = document.querySelectorAll('.map__card');
-
-  for (var i = 0; i < mapPin.length; i++) {
-    mapPin[i].style.display = 'none';
-  }
-
   // Добавляем атрибут disabled всем элементам формы (при неактивной странице)
   var formFieldset = document.querySelector('.ad-form').querySelectorAll('.ad-form__element');
 
-  for (i = 0; i < formFieldset.length; i++) {
+  for (var i = 0; i < formFieldset.length; i++) {
     formFieldset[i].disabled = 'disabled';
   }
 
+
   // Вставляем координаты пина в поле адреса (при неактивной странице)
   document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
+
 
   // Делаем страницу активной
   // по нажатию на кнопку мыши
@@ -34,7 +28,10 @@
       formFieldset[i].disabled = '';
     }
 
-    // Сценарий перемещения метки
+    // Отрисовка пинов на карте
+    window.load(window.successPinHandler);
+
+    // Перемещение метки по карте
     var startCoordinates = {
       x: evt.clientX,
       y: evt.clientY
@@ -53,7 +50,7 @@
         y: moveEvt.clientY
       };
 
-      // Ограничение перемещения метки по вертикали и горизонтали
+      // Ограничение перемещения метки
       var isTopLimit = (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) < 130;
       var isBottomLimit = (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) > 630;
       var isLeftLimit = (mapPinMain.offsetLeft - displacement.x) < 0;
@@ -88,9 +85,11 @@
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
       document.querySelector('.map').classList.remove('map--faded');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+      window.load(window.successPinHandler);
     }
 
   });
+
 
   // Сценарий закрытия карточки объявления
   // по клику на кнопку закрытия
@@ -119,7 +118,7 @@
 
   map.addEventListener('keydown', articleMapCardKeydownHandler);
 
-  // Сценарий открытия карточки объявления по нажатию на Enter
+  // Открытие объявления по нажатию Enter на пине
   function cardAdsOpen(index) {
     return function (evt) {
 
@@ -130,6 +129,8 @@
     };
   }
 
+  var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+  var mapCard = document.querySelectorAll('.map__card');
 
   for (i = 0; i < window.util.NUMBER_ADS; i++) {
     mapPin[i].addEventListener('keydown', cardAdsOpen(i));

@@ -27,8 +27,7 @@
     return mapPinTemplateElement;
   };
 
-  // Вставка шаблона #pin в .map__pins в случае получения данных от сервера
-  var successPinHandler = function (data) {
+  window.successPinHandler = function (data) {
 
     var fragment = document.createDocumentFragment();
 
@@ -38,6 +37,4 @@
 
     mapPins.appendChild(fragment);
   };
-
-  window.load(successPinHandler);
 })();
