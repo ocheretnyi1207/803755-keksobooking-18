@@ -13,7 +13,7 @@
   // Место для вставки шаблона #card
   var map = document.querySelector('.map');
 
-  // Функция отрисовки шаблона #pin
+  // Функция отрисовки пинов
   var renderMapPinTemplate = function (arrayElement) {
     var mapPinTemplateElement = mapPinTemplate.cloneNode(true);
     mapPinTemplateElement.style.left = arrayElement.location.x + 'px';
@@ -24,7 +24,7 @@
     return mapPinTemplateElement;
   };
 
-  // Функция отрисовки модального окна с объявлением
+  // Функция отрисовки объявления
   var renderCardTemplate = function (arrayElement) {
 
     var cardTemplateElement = cardTemplate.cloneNode(true);
@@ -84,48 +84,50 @@
     }
 
     map.appendChild(fragmentMapCard);
+
+    var mapCard = document.querySelectorAll('.map__card');
+
+    for (i = 0; i < mapCard.length; i++) {
+      mapCard[i].style.display = 'none';
+    }
+
     map.appendChild(document.querySelector('.map__filters-container'));
 
 
-    // Сценарий закрытия объявления по клику на кнопку закрытия
-    var buttonCloseAdsClickHandler = function (evt) {
-
-      if (evt.target.classList.contains('popup__close')) {
-        evt.target.closest('.map__card').style.display = 'none';
-      }
-
-    };
-
-    map.addEventListener('click', buttonCloseAdsClickHandler);
-
-    // Сценарий закрытия объявления по нажатию на Esc
-    var articleMapCardKeydownHandler = function (evt) {
-
-      if (evt.keyCode === window.util.ESC_KEYCODE && evt.target.classList.contains('popup__close')) {
-        evt.target.closest('.map__card').style.display = 'none';
-      }
-
-    };
-
-    map.addEventListener('keydown', articleMapCardKeydownHandler);
-
-    // Открытие объявления по нажатию Enter на пине
+    // Открытие объявления по клику на пин
     var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    var mapCard = document.querySelectorAll('.map__card');
 
-    function cardAdsOpen(index) {
-      return function (evt) {
-
-        if (evt.keyCode === window.util.ENTER_KEYCODE) {
-          mapCard[index].style.display = 'block';
-        }
-
+    var cardAdsOpenClickHandler = function (index) {
+      return function () {
+        mapCard[index].style.display = 'block';
       };
-    }
+    };
 
     for (i = 0; i < window.util.NUMBER_ADS; i++) {
-      mapPin[i].addEventListener('keydown', cardAdsOpen(i));
+      mapPin[i].addEventListener('click', cardAdsOpenClickHandler(i));
     }
   };
+
+  // Закрытие объявления по клику на кнопку закрытия
+  var cardAdsCloseClickHandler = function (evt) {
+
+    if (evt.target.classList.contains('popup__close')) {
+      evt.target.closest('.map__card').style.display = 'none';
+    }
+
+  };
+
+  map.addEventListener('click', cardAdsCloseClickHandler);
+
+  // Сценарий закрытия объявления по нажатию на Esc
+  var articleMapCardKeydownHandler = function (evt) {
+
+    if (evt.keyCode === window.util.ESC_KEYCODE && evt.target.classList.contains('popup__close')) {
+      evt.target.closest('.map__card').style.display = 'none';
+    }
+
+  };
+
+  map.addEventListener('keydown', articleMapCardKeydownHandler);
 
 })();
