@@ -14,8 +14,7 @@
   document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
 
 
-  // Делаем страницу активной
-  // по нажатию на кнопку мыши
+  // Делаем страницу активной по нажатию на кнопку мыши
   var mapPinMain = document.querySelector('.map__pin--main');
 
   mapPinMain.addEventListener('mousedown', function (evt) {
@@ -29,7 +28,7 @@
     }
 
     // Отрисовка пинов на карте
-    window.load(window.successPinHandler);
+    window.load(window.renderElements);
 
     // Перемещение метки по карте
     var startCoordinates = {
@@ -79,61 +78,16 @@
     document.addEventListener('mouseup', mouseUpHandler);
   });
 
-  // по нажатию на Enter
+  // Делаем страницу активной по нажатию на Enter
   mapPinMain.addEventListener('keydown', function (evt) {
 
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
       document.querySelector('.map').classList.remove('map--faded');
       document.querySelector('.ad-form').classList.remove('ad-form--disabled');
-      window.load(window.successPinHandler);
+      window.load(window.pinHandler);
     }
 
   });
 
-
-  // Сценарий закрытия карточки объявления
-  // по клику на кнопку закрытия
-  var buttonCloseAdsClickHandler = function (evt) {
-
-    if (evt.target.className === 'popup__close') {
-      evt.target.closest('.map__card').style.display = 'none';
-    }
-
-  };
-
-  var map = document.querySelector('.map');
-  map.addEventListener('click', buttonCloseAdsClickHandler);
-
-  // по нажатию на ESC
-  var articleMapCardKeydownHandler = function (evt) {
-
-    if (evt.target.className === 'popup__close') {
-
-      if (evt.keyCode === window.util.ESC_KEYCODE) {
-        evt.target.closest('.map__card').style.display = 'none';
-      }
-
-    }
-  };
-
-  map.addEventListener('keydown', articleMapCardKeydownHandler);
-
-  // Открытие объявления по нажатию Enter на пине
-  function cardAdsOpen(index) {
-    return function (evt) {
-
-      if (evt.keyCode === window.util.ENTER_KEYCODE) {
-        mapCard[index].style.display = 'block';
-      }
-
-    };
-  }
-
-  var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-  var mapCard = document.querySelectorAll('.map__card');
-
-  for (i = 0; i < window.util.NUMBER_ADS; i++) {
-    mapPin[i].addEventListener('keydown', cardAdsOpen(i));
-  }
 
 })();
