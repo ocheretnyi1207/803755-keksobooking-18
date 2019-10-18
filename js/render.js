@@ -4,14 +4,18 @@
   // Шаблон #pin
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
+
   // Место для вставки шаблона #pin
   var mapPins = document.querySelector('.map__pins');
+
 
   // Шаблон #card
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
+
   // Место для вставки шаблона #card
   var map = document.querySelector('.map');
+
 
   // Функция отрисовки пинов
   var renderMapPinTemplate = function (arrayElement) {
@@ -23,6 +27,7 @@
 
     return mapPinTemplateElement;
   };
+
 
   // Функция отрисовки объявления
   var renderCardTemplate = function (arrayElement) {
@@ -65,9 +70,11 @@
     return cardTemplateElement;
   };
 
-  // Рендер пинов и объявлений
+
+  // Рендер элементов
   window.renderElements = function (data) {
 
+    // Рендер пинов
     var fragmentMapPin = document.createDocumentFragment();
 
     for (var i = 0; i < window.util.NUMBER_ADS; i++) {
@@ -76,7 +83,7 @@
 
     mapPins.appendChild(fragmentMapPin);
 
-
+    // Рендер объявлений
     var fragmentMapCard = document.createDocumentFragment();
 
     for (i = 0; i < window.util.NUMBER_ADS; i++) {
@@ -85,6 +92,7 @@
 
     map.appendChild(fragmentMapCard);
 
+    // Деактивация объявлений после загрузки
     var mapCard = document.querySelectorAll('.map__card');
 
     for (i = 0; i < mapCard.length; i++) {
@@ -93,41 +101,18 @@
 
     map.appendChild(document.querySelector('.map__filters-container'));
 
-
     // Открытие объявления по клику на пин
-    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var aciveMapPinClickHandler = function (evt) {
 
-    var cardAdsOpenClickHandler = function (index) {
-      return function () {
-        mapCard[index].style.display = 'block';
-      };
+      evt.preventDefault();
+
+      if (evt.target.tagName === 'IMG') {
+        evt.target.closest('.map__pin').classList.add('map__pin--active');
+      }
+
     };
 
-    for (i = 0; i < window.util.NUMBER_ADS; i++) {
-      mapPin[i].addEventListener('click', cardAdsOpenClickHandler(i));
-    }
+    mapPins.addEventListener('click', aciveMapPinClickHandler);
   };
-
-  // Закрытие объявления по клику на кнопку закрытия
-  var cardAdsCloseClickHandler = function (evt) {
-
-    if (evt.target.classList.contains('popup__close')) {
-      evt.target.closest('.map__card').style.display = 'none';
-    }
-
-  };
-
-  map.addEventListener('click', cardAdsCloseClickHandler);
-
-  // Сценарий закрытия объявления по нажатию на Esc
-  var articleMapCardKeydownHandler = function (evt) {
-
-    if (evt.keyCode === window.util.ESC_KEYCODE && evt.target.classList.contains('popup__close')) {
-      evt.target.closest('.map__card').style.display = 'none';
-    }
-
-  };
-
-  map.addEventListener('keydown', articleMapCardKeydownHandler);
 
 })();
