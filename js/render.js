@@ -110,7 +110,7 @@
 
       for (i = 0; i < mapPin.length; i++) {
         if (mapPin[i].classList.contains('map__pin--active')) {
-          mapPin[i].classList.remove('.map__pin--active');
+          mapPin[i].classList.remove('map__pin--active');
         }
       }
 
