@@ -101,12 +101,12 @@
 
     map.appendChild(document.querySelector('.map__filters-container'));
 
-    // Открытие объявления по клику на пин
+    // Вешаем класс map__pin--active на активную метку
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
     var aciveMapPinClickHandler = function (evt) {
 
       evt.preventDefault();
-
-      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
       for (i = 0; i < mapPin.length; i++) {
         if (mapPin[i].classList.contains('map__pin--active')) {
@@ -121,6 +121,74 @@
     };
 
     mapPins.addEventListener('click', aciveMapPinClickHandler);
-  };
 
+    // Открытие объявления по клику
+    var cardAdsOpenClickHandler = function (index) {
+      return function () {
+
+        for (var j = 0; j < mapCard.length; j++) {
+          if (mapCard[j].style.display === 'block') {
+            mapCard[j].style.display = 'none';
+          }
+        }
+
+        mapCard[index].style.display = 'block';
+
+      };
+    };
+
+    for (i = 0; i < mapPin.length; i++) {
+      mapPin[i].addEventListener('click', cardAdsOpenClickHandler(i));
+    }
+
+    // Открытие объявления по нажатию Enter
+    var cardAdsOpenKeydownHandler = function (index) {
+      return function (evt) {
+
+        if (evt.keyCode === 13) {
+
+          for (var j = 0; j < mapCard.length; j++) {
+            if (mapCard[j].style.display === 'block') {
+              mapCard[j].style.display = 'none';
+            }
+          }
+
+          mapCard[index].style.display = 'block';
+        }
+
+      };
+    };
+
+    for (i = 0; i < mapPin.length; i++) {
+      mapPin[i].addEventListener('keydown', cardAdsOpenKeydownHandler(i));
+    }
+
+    // Закрытие объявления по клику на кнопку закрытия
+    var cardAdsCloseClickHandler = function (evt) {
+
+      if (evt.target.className === 'popup__close') {
+        evt.target.closest('.map__card').style.display = 'none';
+      }
+
+    };
+
+    map.addEventListener('click', cardAdsCloseClickHandler);
+
+    // Закрытие объявления по нажатию Esc
+    var cardAdsCloseKeydownHandler = function (index) {
+      return function (evt) {
+
+        if (evt.keyCode === 27) {
+          mapCard[index].style.display = 'none';
+        }
+      };
+    };
+
+    for (i = 0; i < mapCard.length; i++) {
+
+      if (mapCard[i].style.display === 'block') {
+        mapCard[i].addEventListener('keydown', cardAdsCloseKeydownHandler);
+      }
+    }
+  };
 })();
