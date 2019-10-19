@@ -106,7 +106,15 @@
 
       evt.preventDefault();
 
-      if (evt.target.tagName === 'IMG') {
+      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+      for (i = 0; i < mapPin.length; i++) {
+        if (mapPin[i].classList.contains('map__pin--active')) {
+          mapPin[i].classList.remove('.map__pin--active');
+        }
+      }
+
+      if (evt.target.tagName === 'IMG' && evt.target.className !== 'map__pin--main') {
         evt.target.closest('.map__pin').classList.add('map__pin--active');
       }
 
