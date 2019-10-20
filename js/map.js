@@ -23,8 +23,8 @@
       formFieldset[i].disabled = '';
     }
 
-    // Отрисовка пинов на карте
-    window.load(window.renderElements);
+    // Отрисовка пинов, объявлений, ошибок
+    window.load(window.renderElements, window.renderError);
 
     mapPinMain.removeEventListener('click', activateMapClickHandler);
   };

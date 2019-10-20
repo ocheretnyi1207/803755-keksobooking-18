@@ -80,6 +80,13 @@
     errorTemplate.textContent = errorMessage;
   };
 
+  // Рендер ошибки
+  window.renderError = function (errorMessage) {
+    var fragmentError = document.createDocumentFragment();
+    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
+    main.appendChild(fragmentError);
+  };
+
 
   // Рендер элементов
   window.renderElements = function (data) {
@@ -99,11 +106,6 @@
     for (i = 0; i < window.util.NUMBER_ADS; i++) {
       fragmentMapCard.appendChild(renderCardTemplate(data[i]));
     }
-
-    // Рендер сообщения об ошибке
-    var fragmentError = document.createDocumentFragment();
-    fragmentError.appendChild(renderErrorMessageTemplate());
-    main.appendChild(fragmentError);
 
     map.appendChild(fragmentMapCard);
 
