@@ -59,7 +59,6 @@
   mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    // Перемещение метки по карте
     var startCoordinates = {
       x: evt.clientX,
       y: evt.clientY

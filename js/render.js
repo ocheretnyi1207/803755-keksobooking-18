@@ -4,14 +4,12 @@
   // Шаблон #pin
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-
   // Место для вставки шаблона #pin
   var mapPins = document.querySelector('.map__pins');
 
 
   // Шаблон #card
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
 
   // Место для вставки шаблона #card
   var map = document.querySelector('.map');
@@ -20,9 +18,7 @@
   // Шаблон #error
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
-
   // Место для вставки шаблона #error
-
   var main = document.querySelector('main');
 
 
@@ -80,11 +76,10 @@
   };
 
   // Функция отрисовки сообщения об ошибке
-
-  var renderErrorMessageTemplate = function () {
-    errorTemplate.textContent = a;
+  var renderErrorMessageTemplate = function (errorMessage) {
+    errorTemplate.textContent = errorMessage;
   };
-  renderErrorMessageTemplate();
+
 
   // Рендер элементов
   window.renderElements = function (data) {
@@ -104,6 +99,11 @@
     for (i = 0; i < window.util.NUMBER_ADS; i++) {
       fragmentMapCard.appendChild(renderCardTemplate(data[i]));
     }
+
+    // Рендер сообщения об ошибке
+    var fragmentError = document.createDocumentFragment();
+    fragmentError.appendChild(renderErrorMessageTemplate());
+    main.appendChild(fragmentError);
 
     map.appendChild(fragmentMapCard);
 
