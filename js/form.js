@@ -77,4 +77,7 @@
     }
   });
 
+  // Отправка данных из формы на сервер
+  var form = document.querySelector('.ad-form');
+
 })();
