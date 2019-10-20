@@ -16,7 +16,7 @@
 
 
   // Шаблон #error
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error__message');
 
   // Место для вставки шаблона #error
   var main = document.querySelector('main');
@@ -76,8 +76,8 @@
   };
 
   // Функция отрисовки сообщения об ошибке
-  var renderErrorMessageTemplate = function (errorMessage) {
-    errorTemplate.textContent = errorMessage;
+  var renderErrorMessageTemplate = function (message) {
+    errorTemplate.textContent = message;
   };
 
   // Рендер ошибки
