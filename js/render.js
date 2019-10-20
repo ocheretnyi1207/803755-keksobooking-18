@@ -17,6 +17,15 @@
   var map = document.querySelector('.map');
 
 
+  // Шаблон #error
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+
+
+  // Место для вставки шаблона #error
+
+  var main = document.querySelector('main');
+
+
   // Функция отрисовки пинов
   var renderMapPinTemplate = function (arrayElement) {
     var mapPinTemplateElement = mapPinTemplate.cloneNode(true);
@@ -70,6 +79,12 @@
     return cardTemplateElement;
   };
 
+  // Функция отрисовки сообщения об ошибке
+
+  var renderErrorMessageTemplate = function () {
+    errorTemplate.textContent = a;
+  };
+  renderErrorMessageTemplate();
 
   // Рендер элементов
   window.renderElements = function (data) {
