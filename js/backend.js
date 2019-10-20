@@ -37,7 +37,9 @@
 
     xhr.open('POST', URL);
     xhr.send(data);
-    successCallback();
+    xhr.addEventListener('load', function () {
+      successCallback(xhr);
+    });
   };
 
 })();

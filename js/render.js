@@ -16,7 +16,7 @@
 
 
   // Шаблон #error
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error__message');
 
   // Место для вставки шаблона #error
   var main = document.querySelector('main');
@@ -76,8 +76,15 @@
   };
 
   // Функция отрисовки сообщения об ошибке
-  var renderErrorMessageTemplate = function (errorMessage) {
-    errorTemplate.textContent = errorMessage;
+  var renderErrorMessageTemplate = function (message) {
+    errorTemplate.textContent = message;
+  };
+
+  // Рендер ошибки
+  window.renderError = function (errorMessage) {
+    var fragmentError = document.createDocumentFragment();
+    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
+    main.appendChild(fragmentError);
   };
 
 
@@ -99,11 +106,6 @@
     for (i = 0; i < window.util.NUMBER_ADS; i++) {
       fragmentMapCard.appendChild(renderCardTemplate(data[i]));
     }
-
-    // Рендер сообщения об ошибке
-    var fragmentError = document.createDocumentFragment();
-    fragmentError.appendChild(renderErrorMessageTemplate());
-    main.appendChild(fragmentError);
 
     map.appendChild(fragmentMapCard);
 
