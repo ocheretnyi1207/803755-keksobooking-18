@@ -2,7 +2,7 @@
 
 (function () {
   // Добавление атрибута disabled полям формы при неактивной странице
-  var formFieldset = document.querySelector('.ad-form').querySelectorAll('.ad-form__element');
+  var formFieldset = document.querySelectorAll('fieldset');
 
   for (var i = 0; i < formFieldset.length; i++) {
     formFieldset[i].disabled = 'disabled';

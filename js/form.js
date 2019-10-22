@@ -80,4 +80,54 @@
   // Отправка данных из формы на сервер
   var form = document.querySelector('.ad-form');
 
+  form.addEventListener('submit', function (evt) {
+    window.upload(new FormData(form), function () {
+      // Убираем значения полей
+      form.querySelector('#title').value = '';
+      form.querySelector('#price').value = '';
+      form.querySelector('#description').value = '';
+
+      // Удаляем пины и объявления
+      var map = document.querySelector('.map');
+      var mapCards = document.querySelectorAll('.map__card');
+      var mapPins = document.querySelector('.map__pins');
+      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+      function removePinAdsAfterSubmitForm(parent, child) {
+        for (var i = 0; i < child.length; i++) {
+          parent.removeChild(child[i]);
+        }
+      }
+
+      removePinAdsAfterSubmitForm(map, mapCards);
+      removePinAdsAfterSubmitForm(mapPins, mapPin);
+
+      // Добавляем всем fieldset формы атрибут disabled
+      var fieldsetForm = form.querySelectorAll('fieldset');
+
+      for (var i = 0; i < fieldsetForm.length; i++) {
+        fieldsetForm[i].disabled = 'disabled';
+      }
+
+      // Возвращаем метку map__pin--main в исходное состояние
+      var mapPinMain = document.querySelector('.map__pin--main');
+      mapPinMain.style.left = 570 + 'px';
+      mapPinMain.style.top = 375 + 'px';
+      document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
+
+      // Убираем checked у чекбоксов в фильтре
+      var checkboxFilter = document.querySelectorAll('input[type=checkbox]:checked');
+
+      for (i = 0; i < checkboxFilter.length; i++) {
+        checkboxFilter[i].checked = '';
+      }
+
+      // Добавляем карте класс map--faded
+      document.querySelector('.map').classList.add('map--faded');
+      form.classList.add('ad-form--disabled');
+    });
+
+    evt.preventDefault();
+  });
+
 })();
