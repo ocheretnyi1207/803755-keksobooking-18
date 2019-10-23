@@ -1,6 +1,43 @@
 'use strict';
 
 (function () {
+  // Шаблон #success
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
+
+  // Шаблон #error
+  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+
+  // Место для вставки шаблона success и error
+  var main = document.querySelector('main');
+
+  // Функция отрисовки сообщения об успешной отправке данных
+  var renderSuccessMessageTemplate = function (message) {
+    var successTemplateElement = successTemplate.cloneNode(true);
+    successTemplateElement.querySelector('.success__message').textContent = message;
+
+    return successTemplateElement;
+  };
+
+  // Рендер успешной топравки
+  window.renderSuccess = function (successMessage) {
+    var fragmentSuccess = document.createDocumentFragment();
+    fragmentSuccess.appendChild(renderSuccessMessageTemplate(successMessage));
+  };
+
+  // Функция отрисовки сообщения об ошибке
+  var renderErrorMessageTemplate = function (message) {
+    var errorTemplateElement = errorTemplate.cloneNode(true);
+    errorTemplateElement.querySelector('.error__message').textContent = message;
+
+    return errorTemplateElement;
+  };
+
+  // Рендер ошибки
+  window.renderError = function (errorMessage) {
+    var fragmentError = document.createDocumentFragment();
+    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
+    main.appendChild(fragmentError);
+  };
 
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
@@ -82,6 +119,10 @@
 
   form.addEventListener('submit', function (evt) {
     window.upload(new FormData(form), function () {
+
+      // Выводим сообщение об успешной отправке данных
+
+
       // Убираем значения полей
       form.querySelector('#title').value = '';
       form.querySelector('#price').value = '';
