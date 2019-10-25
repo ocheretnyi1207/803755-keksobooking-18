@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
     if (document.querySelector(idSelect).options[indexOption].selected) {
@@ -16,6 +15,7 @@
     dependPriceChangeOfTypeHouse('#type', '#price', 2, 5000, '5000');
     dependPriceChangeOfTypeHouse('#type', '#price', 3, 10000, '10000');
   });
+
 
   // Сценарий соответствия количества гостей и количества комнат
   var selectRoomNumber = document.querySelector('#room_number');
@@ -57,6 +57,7 @@
     }
   });
 
+
   // Сценарий соответствия времени заезда и времени выезда
   var selectCheckinTime = document.querySelector('#timein');
   var selectCheckoutTime = document.querySelector('#timeout');
@@ -75,6 +76,15 @@
         selectCheckinTime[i].selected = 'selected';
       }
     }
+  });
+
+
+  // Отправка данных из формы на сервер
+  var form = document.querySelector('.ad-form');
+
+  form.addEventListener('submit', function (evt) {
+    window.upload(new FormData(form), window.renderSuccessUpload, window.renderError);
+    evt.preventDefault();
   });
 
 })();
