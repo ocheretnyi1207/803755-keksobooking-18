@@ -1,44 +1,6 @@
 'use strict';
 
 (function () {
-  // Шаблон #success
-  var successTemplate = document.querySelector('#success').content.querySelector('.success');
-
-  // Шаблон #error
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-
-  // Место для вставки шаблона success и error
-  var main = document.querySelector('main');
-
-  // Функция отрисовки сообщения об успешной отправке данных
-  var renderSuccessMessageTemplate = function (message) {
-    var successTemplateElement = successTemplate.cloneNode(true);
-    successTemplateElement.querySelector('.success__message').textContent = message;
-
-    return successTemplateElement;
-  };
-
-  // Рендер успешной топравки
-  window.renderSuccess = function (successMessage) {
-    var fragmentSuccess = document.createDocumentFragment();
-    fragmentSuccess.appendChild(renderSuccessMessageTemplate(successMessage));
-  };
-
-  // Функция отрисовки сообщения об ошибке
-  var renderErrorMessageTemplate = function (message) {
-    var errorTemplateElement = errorTemplate.cloneNode(true);
-    errorTemplateElement.querySelector('.error__message').textContent = message;
-
-    return errorTemplateElement;
-  };
-
-  // Рендер ошибки
-  window.renderError = function (errorMessage) {
-    var fragmentError = document.createDocumentFragment();
-    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
-    main.appendChild(fragmentError);
-  };
-
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
     if (document.querySelector(idSelect).options[indexOption].selected) {
@@ -53,6 +15,7 @@
     dependPriceChangeOfTypeHouse('#type', '#price', 2, 5000, '5000');
     dependPriceChangeOfTypeHouse('#type', '#price', 3, 10000, '10000');
   });
+
 
   // Сценарий соответствия количества гостей и количества комнат
   var selectRoomNumber = document.querySelector('#room_number');
@@ -94,6 +57,7 @@
     }
   });
 
+
   // Сценарий соответствия времени заезда и времени выезда
   var selectCheckinTime = document.querySelector('#timein');
   var selectCheckoutTime = document.querySelector('#timeout');
@@ -114,60 +78,12 @@
     }
   });
 
+
   // Отправка данных из формы на сервер
   var form = document.querySelector('.ad-form');
 
   form.addEventListener('submit', function (evt) {
-    window.upload(new FormData(form), function () {
-
-      // Выводим сообщение об успешной отправке данных
-
-
-      // Убираем значения полей
-      form.querySelector('#title').value = '';
-      form.querySelector('#price').value = '';
-      form.querySelector('#description').value = '';
-
-      // Удаляем пины и объявления
-      var map = document.querySelector('.map');
-      var mapCards = document.querySelectorAll('.map__card');
-      var mapPins = document.querySelector('.map__pins');
-      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-
-      function removePinAdsAfterSubmitForm(parent, child) {
-        for (var i = 0; i < child.length; i++) {
-          parent.removeChild(child[i]);
-        }
-      }
-
-      removePinAdsAfterSubmitForm(map, mapCards);
-      removePinAdsAfterSubmitForm(mapPins, mapPin);
-
-      // Добавляем всем fieldset формы атрибут disabled
-      var fieldsetForm = form.querySelectorAll('fieldset');
-
-      for (var i = 0; i < fieldsetForm.length; i++) {
-        fieldsetForm[i].disabled = 'disabled';
-      }
-
-      // Возвращаем метку map__pin--main в исходное состояние
-      var mapPinMain = document.querySelector('.map__pin--main');
-      mapPinMain.style.left = 570 + 'px';
-      mapPinMain.style.top = 375 + 'px';
-      document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
-
-      // Убираем checked у чекбоксов в фильтре
-      var checkboxFilter = document.querySelectorAll('input[type=checkbox]:checked');
-
-      for (i = 0; i < checkboxFilter.length; i++) {
-        checkboxFilter[i].checked = '';
-      }
-
-      // Добавляем карте класс map--faded
-      document.querySelector('.map').classList.add('map--faded');
-      form.classList.add('ad-form--disabled');
-    });
-
+    window.upload(new FormData(form), window.renderSuccessUpload, window.renderError);
     evt.preventDefault();
   });
 

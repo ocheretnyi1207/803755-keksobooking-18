@@ -3,23 +3,20 @@
 (function () {
   // Шаблон #pin
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
-  // Место для вставки шаблона #pin
   var mapPins = document.querySelector('.map__pins');
 
 
   // Шаблон #card
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
-  // Место для вставки шаблона #card
   var map = document.querySelector('.map');
 
 
   // Шаблон #error
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
-
-  // Место для вставки шаблона #error
   var main = document.querySelector('main');
+
+  // Шаблон #success
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
 
 
   // Функция отрисовки пинов
@@ -32,7 +29,6 @@
 
     return mapPinTemplateElement;
   };
-
 
   // Функция отрисовки объявления
   var renderCardTemplate = function (arrayElement) {
@@ -83,15 +79,16 @@
     return errorTemplateElement;
   };
 
-  // Рендер ошибки
-  window.renderError = function (errorMessage) {
-    var fragmentError = document.createDocumentFragment();
-    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
-    main.appendChild(fragmentError);
+  // Функция отрисовки сообщения об успешной отправке данных
+  var renderSuccessMessageTemplate = function (message) {
+    var successTemplateElement = successTemplate.cloneNode(true);
+    successTemplateElement.querySelector('.success__message').textContent = message;
+
+    return successTemplateElement;
   };
 
-  // Рендер элементов
-  window.renderElements = function (data) {
+  // Рендер элементов при загрузке данных с сервера
+  window.renderElementsLoad = function (data) {
 
     // Рендер пинов
     var fragmentMapPin = document.createDocumentFragment();
@@ -164,7 +161,7 @@
     var cardAdsOpenKeydownHandler = function (index) {
       return function (evt) {
 
-        if (evt.keyCode === 13) {
+        if (evt.keyCode === window.ENTER_KEYCODE) {
 
           for (var j = 0; j < mapCard.length; j++) {
             if (mapCard[j].style.display === 'block') {
@@ -197,7 +194,7 @@
     var cardAdsCloseKeydownHandler = function (index) {
       return function (evt) {
 
-        if (evt.keyCode === 27) {
+        if (evt.keyCode === window.ESC_KEYCODE) {
           mapCard[index].style.display = 'none';
         }
       };
@@ -210,4 +207,63 @@
       }
     }
   };
+
+  // Отправка данных на сервер
+  window.renderSuccessUpload = function (successMessage) {
+
+    var fragmentSuccess = document.createDocumentFragment();
+    fragmentSuccess.appendChild(renderSuccessMessageTemplate(successMessage));
+    main.appendChild(fragmentSuccess);
+
+    // Убираем значения полей
+    var form = document.querySelector('.ad-form');
+    form.querySelector('#title').value = '';
+    form.querySelector('#price').value = '';
+    form.querySelector('#description').value = '';
+
+    // Удаляем пины и объявления
+    var mapCards = document.querySelectorAll('.map__card');
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    function removePinAdsAfterSubmitForm(parent, child) {
+      for (var i = 0; i < child.length; i++) {
+        parent.removeChild(child[i]);
+      }
+    }
+
+    removePinAdsAfterSubmitForm(map, mapCards);
+    removePinAdsAfterSubmitForm(mapPins, mapPin);
+
+    // Добавляем всем fieldset формы атрибут disabled
+    var fieldsetForm = form.querySelectorAll('fieldset');
+
+    for (var i = 0; i < fieldsetForm.length; i++) {
+      fieldsetForm[i].disabled = 'disabled';
+    }
+
+    // Возвращаем метку map__pin--main в исходное состояние
+    var mapPinMain = document.querySelector('.map__pin--main');
+    mapPinMain.style.left = 570 + 'px';
+    mapPinMain.style.top = 375 + 'px';
+    document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
+
+    // Убираем checked у чекбоксов в фильтре
+    var checkboxFilter = document.querySelectorAll('input[type=checkbox]:checked');
+
+    for (i = 0; i < checkboxFilter.length; i++) {
+      checkboxFilter[i].checked = '';
+    }
+
+    // Добавляем карте класс map--faded
+    document.querySelector('.map').classList.add('map--faded');
+    form.classList.add('ad-form--disabled');
+  };
+
+  // Рендер ошибки при загрузке с сервера
+  window.renderError = function (errorMessage) {
+    var fragmentError = document.createDocumentFragment();
+    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
+    main.appendChild(fragmentError);
+  };
+
 })();

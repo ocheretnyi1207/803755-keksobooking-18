@@ -49,5 +49,4 @@
   }
 
   window.similarAds = similarAds;
-
 })();

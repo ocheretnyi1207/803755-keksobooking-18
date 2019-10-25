@@ -24,7 +24,7 @@
     }
 
     // Отрисовка пинов, объявлений, ошибок
-    window.load(window.renderElements, window.renderError);
+    window.load(window.renderElementsLoad, window.renderError);
 
     mapPinMain.removeEventListener('click', activateMapClickHandler);
   };
@@ -46,7 +46,7 @@
       }
 
       // Отрисовка пинов, объявлений, ошибок
-      window.load(window.renderElements, window.renderError);
+      window.load(window.renderElementsLoad, window.renderError);
 
       mapPinMain.removeEventListener('click', activateMapClickHandler);
     }
@@ -87,8 +87,8 @@
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
       } else {
-        mapPinMain.style.left = (mapPinMain.offsetLeft - displacement.x).toString(10) + 'px';
-        mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y).toString(10) + 'px';
+        mapPinMain.style.left = (mapPinMain.offsetLeft - displacement.x) + 'px';
+        mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y) + 'px';
       }
 
       document.querySelector('#address').value = (mapPinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) + ', ' + (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
