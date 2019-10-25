@@ -259,7 +259,7 @@
     form.classList.add('ad-form--disabled');
   };
 
-  // Рендер ошибки при загрузке с сервера
+  // Рендер ошибки
   window.renderError = function (errorMessage) {
     var fragmentError = document.createDocumentFragment();
     fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
