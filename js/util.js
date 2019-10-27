@@ -9,6 +9,11 @@
   var HEIGHT_PIN = 66 + HEIGHT_POINTER_PIN; // высота метки
   var ESC_KEYCODE = 27; // кейкод ESC
   var ENTER_KEYCODE = 13; // кейкод ENTER
+  var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
+  var URL_UPLOAD = 'https://js.dump.academy/keksobooking/';
+  var SERVER_RESPONCE_SUCCESS = 200;
+  var TIMEOUT = 10000;
+
 
   window.util = {
     NUMBER_ADS: NUMBER_ADS,
@@ -19,5 +24,9 @@
     HEIGHT_PIN: HEIGHT_PIN,
     ESC_KEYCODE: ESC_KEYCODE,
     ENTER_KEYCODE: ENTER_KEYCODE,
+    URL_LOAD: URL_LOAD,
+    URL_UPLOAD: URL_UPLOAD,
+    SERVER_RESPONCE_SUCCESS: SERVER_RESPONCE_SUCCESS,
+    TIMEOUT: TIMEOUT,
   };
 })();

@@ -1,25 +1,18 @@
 'use strict';
 
 (function () {
-  // Шаблон #pin
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
 
-
-  // Шаблон #card
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var map = document.querySelector('.map');
 
-
-  // Шаблон #error
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var main = document.querySelector('main');
 
-  // Шаблон #success
-  var successTemplate = document.querySelector('#success').content.querySelector('.success');
 
-
-  // Функция отрисовки пинов
+  // Функция отрисовки пинов из шаблона
   var renderMapPinTemplate = function (arrayElement) {
     var mapPinTemplateElement = mapPinTemplate.cloneNode(true);
     mapPinTemplateElement.style.left = arrayElement.location.x + 'px';
@@ -30,7 +23,7 @@
     return mapPinTemplateElement;
   };
 
-  // Функция отрисовки объявления
+  // Функция отрисовки объявления из шаблона
   var renderCardTemplate = function (arrayElement) {
 
     var cardTemplateElement = cardTemplate.cloneNode(true);
@@ -71,7 +64,7 @@
     return cardTemplateElement;
   };
 
-  // Функция отрисовки сообщения об ошибке
+  // Функция отрисовки сообщения об ошибке из шаблона
   var renderErrorMessageTemplate = function (message) {
     var errorTemplateElement = errorTemplate.cloneNode(true);
     errorTemplateElement.querySelector('.error__message').textContent = message;
@@ -79,7 +72,7 @@
     return errorTemplateElement;
   };
 
-  // Функция отрисовки сообщения об успешной отправке данных
+  // Функция отрисовки сообщения об успешной отправке данных из шаблона
   var renderSuccessMessageTemplate = function (message) {
     var successTemplateElement = successTemplate.cloneNode(true);
     successTemplateElement.querySelector('.success__message').textContent = message;
@@ -191,21 +184,15 @@
     map.addEventListener('click', cardAdsCloseClickHandler);
 
     // Закрытие объявления по нажатию Esc
-    var cardAdsCloseKeydownHandler = function (index) {
-      return function (evt) {
-
-        if (evt.keyCode === window.ESC_KEYCODE) {
-          mapCard[index].style.display = 'none';
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        for (i = 0; i < mapCard.length; i++) {
+          if (mapCard[i].style.display === 'block') {
+            mapCard[i].style.display = 'none';
+          }
         }
-      };
-    };
-
-    for (i = 0; i < mapCard.length; i++) {
-
-      if (mapCard[i].style.display === 'block') {
-        mapCard[i].addEventListener('keydown', cardAdsCloseKeydownHandler);
       }
-    }
+    });
   };
 
   // Отправка данных на сервер
@@ -243,8 +230,8 @@
 
     // Возвращаем метку map__pin--main в исходное состояние
     var mapPinMain = document.querySelector('.map__pin--main');
-    mapPinMain.style.left = 570 + 'px';
-    mapPinMain.style.top = 375 + 'px';
+    mapPinMain.style.left = window.util.LOCATION_X_PIN + 'px';
+    mapPinMain.style.top = window.util.LOCATION_Y_PIN + 'px';
     document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
 
     // Убираем checked у чекбоксов в фильтре
