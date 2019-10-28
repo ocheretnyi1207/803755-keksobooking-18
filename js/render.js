@@ -82,7 +82,6 @@
 
   // Рендер элементов при загрузке данных с сервера
   window.renderElementsLoad = function (data) {
-    window.similarAds = data;
 
     // Рендер пинов
     var fragmentMapPin = document.createDocumentFragment();
