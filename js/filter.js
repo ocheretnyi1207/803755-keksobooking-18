@@ -6,95 +6,56 @@
   var housingPrice = mapFilters.querySelector('#housing-price');
   var housingRooms = mapFilters.querySelector('#housing-rooms');
   var housingGuests = mapFilters.querySelector('#housing-guests');
-  var housingFeatures = mapFilters.querySelector('#housing-features');
 
-  window.filter = function (data) {
 
-    if (housingType.options[0].selected) {
-      window.renderElementsLoad(data);
-    }
+  var defaultFilter = (housingType.options[0].selected || housingPrice.options[0].selected ||
+    housingRooms.options[0].selected || housingGuests.options[0].selected);
 
-    housingType.addEventListener('change', function () {
 
+  // Удаление лишних элементов при фильтрации по типу жилья
+  var removeElements = function (childNode, parentNode) {
+    Array.from(childNode).forEach(function (element) {
+      parentNode.removeChild(element);
+    });
+  };
+
+  // Функция фильтрации по типу жилья
+  var filterData = function (data, filter, index, parameterFilter) {
+    if (filter.options[index].selected) {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       var mapPins = document.querySelector('.map__pins');
       var mapCard = document.querySelectorAll('.map__card');
       var map = document.querySelector('.map');
 
-      if (housingType.options[0].selected) {
+      removeElements(mapPin, mapPins);
+      removeElements(mapCard, map);
+
+      var sortAds = data.filter(function (element) {
+        return element.offer.type === parameterFilter;
+      });
+
+      window.renderElementsLoad(sortAds);
+    }
+  };
+
+  window.filter = function (data) {
+
+    if (defaultFilter) {
+      window.renderElementsLoad(data);
+    }
+
+    housingType.addEventListener('change', function () {
+
+      // Фильтрация по типу дома
+      if (defaultFilter) {
         window.renderElementsLoad(data);
       }
 
-      if (housingType.options[1].selected) {
+      filterData(data, housingType, 1, 'palace');
+      filterData(data, housingType, 2, 'flat');
+      filterData(data, housingType, 3, 'house');
+      filterData(data, housingType, 4, 'bungalo');
 
-        Array.from(mapPin).forEach(function (element) {
-          mapPins.removeChild(element);
-        });
-
-        Array.from(mapCard).forEach(function (element) {
-          map.removeChild(element);
-        });
-
-        var sortAds = data.filter(function (element) {
-          return element.offer.type === 'palace';
-        });
-
-        window.renderElementsLoad(sortAds);
-      }
-
-
-      if (housingType.options[2].selected) {
-
-        Array.from(mapPin).forEach(function (element) {
-          mapPins.removeChild(element);
-        });
-
-        Array.from(mapCard).forEach(function (element) {
-          map.removeChild(element);
-        });
-
-
-        sortAds = data.filter(function (element) {
-          return element.offer.type === 'flat';
-        });
-
-        window.renderElementsLoad(sortAds);
-      }
-
-
-      if (housingType.options[3].selected) {
-
-        Array.from(mapPin).forEach(function (element) {
-          mapPins.removeChild(element);
-        });
-
-        Array.from(mapCard).forEach(function (element) {
-          map.removeChild(element);
-        });
-
-        sortAds = data.filter(function (element) {
-          return element.offer.type === 'house';
-        });
-
-        window.renderElementsLoad(sortAds);
-      }
-
-      if (housingType.options[4].selected) {
-
-        Array.from(mapPin).forEach(function (element) {
-          mapPins.removeChild(element);
-        });
-
-        Array.from(mapCard).forEach(function (element) {
-          map.removeChild(element);
-        });
-
-        sortAds = data.filter(function (element) {
-          return element.offer.type === 'bungalo';
-        });
-
-        window.renderElementsLoad(sortAds);
-      }
     });
   };
 
