@@ -1,48 +1,41 @@
 'use strict';
 
 (function () {
-  // Шаблон #pin
   var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
 
-
-  // Шаблон #card
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
   var map = document.querySelector('.map');
 
-
-  // Шаблон #error
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var main = document.querySelector('main');
 
-  // Шаблон #success
-  var successTemplate = document.querySelector('#success').content.querySelector('.success');
 
+  // Функция отрисовки пинов из шаблона
+  var renderMapPin = function (arrayElement) {
+    var mapPinElement = mapPinTemplate.cloneNode(true);
+    mapPinElement.style.left = arrayElement.location.x + 'px';
+    mapPinElement.style.top = arrayElement.location.y + 'px';
+    mapPinElement.querySelector('img').src = arrayElement.author.avatar;
+    mapPinElement.querySelector('img').alt = arrayElement.offer.title;
 
-  // Функция отрисовки пинов
-  var renderMapPinTemplate = function (arrayElement) {
-    var mapPinTemplateElement = mapPinTemplate.cloneNode(true);
-    mapPinTemplateElement.style.left = arrayElement.location.x + 'px';
-    mapPinTemplateElement.style.top = arrayElement.location.y + 'px';
-    mapPinTemplateElement.querySelector('img').src = arrayElement.author.avatar;
-    mapPinTemplateElement.querySelector('img').alt = arrayElement.offer.title;
-
-    return mapPinTemplateElement;
+    return mapPinElement;
   };
 
-  // Функция отрисовки объявления
-  var renderCardTemplate = function (arrayElement) {
+  // Функция отрисовки объявления из шаблона
+  var renderCard = function (arrayElement) {
 
-    var cardTemplateElement = cardTemplate.cloneNode(true);
-    cardTemplateElement.querySelector('.popup__title').textContent = arrayElement.offer.title;
-    cardTemplateElement.querySelector('.popup__text--address').textContent = arrayElement.offer.address;
-    cardTemplateElement.querySelector('.popup__text--price').textContent = (arrayElement.offer.price).toString(10) + ' Р/ночь';
-    cardTemplateElement.querySelector('.popup__type').textContent = arrayElement.offer.type;
-    cardTemplateElement.querySelector('.popup__text--capacity').textContent = (arrayElement.offer.rooms).toString(10) + ' комнаты для ' + (arrayElement.offer.guests).toString(10) + ' гостей';
-    cardTemplateElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + (arrayElement.offer.checkin).toString(10) + ', ' + 'выезд до ' + (arrayElement.offer.checkout).toString(10);
+    var cardElement = cardTemplate.cloneNode(true);
+    cardElement.querySelector('.popup__title').textContent = arrayElement.offer.title;
+    cardElement.querySelector('.popup__text--address').textContent = arrayElement.offer.address;
+    cardElement.querySelector('.popup__text--price').textContent = arrayElement.offer.price + ' Р/ночь';
+    cardElement.querySelector('.popup__type').textContent = arrayElement.offer.type;
+    cardElement.querySelector('.popup__text--capacity').textContent = arrayElement.offer.rooms + ' комнаты для ' + arrayElement.offer.guests + ' гостей';
+    cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayElement.offer.checkin + ', ' + 'выезд до ' + arrayElement.offer.checkout;
 
     var getComfortInAds = function (comfort) {
-      cardTemplateElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
+      cardElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
     };
 
     getComfortInAds('wifi');
@@ -52,11 +45,11 @@
     getComfortInAds('elevator');
     getComfortInAds('conditioner');
 
-    cardTemplateElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
+    cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
 
     var translationValues = function (typeEnglish, typeRussian) {
       if (arrayElement.offer.type === typeEnglish) {
-        cardTemplateElement.querySelector('.popup__type').textContent = typeRussian;
+        cardElement.querySelector('.popup__type').textContent = typeRussian;
       }
     };
 
@@ -65,26 +58,26 @@
     translationValues('palace', 'Дворец');
     translationValues('house', 'Дом');
 
-    cardTemplateElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
-    cardTemplateElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;
+    cardElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
+    cardElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;
 
-    return cardTemplateElement;
+    return cardElement;
   };
 
-  // Функция отрисовки сообщения об ошибке
-  var renderErrorMessageTemplate = function (message) {
-    var errorTemplateElement = errorTemplate.cloneNode(true);
-    errorTemplateElement.querySelector('.error__message').textContent = message;
+  // Функция отрисовки сообщения об ошибке из шаблона
+  var renderErrorMessage = function (message) {
+    var errorElement = errorTemplate.cloneNode(true);
+    errorElement.querySelector('.error__message').textContent = message;
 
-    return errorTemplateElement;
+    return errorElement;
   };
 
-  // Функция отрисовки сообщения об успешной отправке данных
-  var renderSuccessMessageTemplate = function (message) {
-    var successTemplateElement = successTemplate.cloneNode(true);
-    successTemplateElement.querySelector('.success__message').textContent = message;
+  // Функция отрисовки сообщения об успешной отправке данных из шаблона
+  var renderSuccessMessage = function (message) {
+    var successElement = successTemplate.cloneNode(true);
+    successElement.querySelector('.success__message').textContent = message;
 
-    return successTemplateElement;
+    return successElement;
   };
 
   // Рендер элементов при загрузке данных с сервера
@@ -93,8 +86,8 @@
     // Рендер пинов
     var fragmentMapPin = document.createDocumentFragment();
 
-    for (var i = 0; i < window.util.NUMBER_ADS; i++) {
-      fragmentMapPin.appendChild(renderMapPinTemplate(data[i]));
+    for (var i = 0; i < data.length; i++) {
+      fragmentMapPin.appendChild(renderMapPin(data[i]));
     }
 
     mapPins.appendChild(fragmentMapPin);
@@ -102,8 +95,8 @@
     // Рендер объявлений
     var fragmentMapCard = document.createDocumentFragment();
 
-    for (i = 0; i < window.util.NUMBER_ADS; i++) {
-      fragmentMapCard.appendChild(renderCardTemplate(data[i]));
+    for (i = 0; i < data.length; i++) {
+      fragmentMapCard.appendChild(renderCard(data[i]));
     }
 
     map.appendChild(fragmentMapCard);
@@ -191,28 +184,22 @@
     map.addEventListener('click', cardAdsCloseClickHandler);
 
     // Закрытие объявления по нажатию Esc
-    var cardAdsCloseKeydownHandler = function (index) {
-      return function (evt) {
-
-        if (evt.keyCode === window.ESC_KEYCODE) {
-          mapCard[index].style.display = 'none';
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        for (i = 0; i < mapCard.length; i++) {
+          if (mapCard[i].style.display === 'block') {
+            mapCard[i].style.display = 'none';
+          }
         }
-      };
-    };
-
-    for (i = 0; i < mapCard.length; i++) {
-
-      if (mapCard[i].style.display === 'block') {
-        mapCard[i].addEventListener('keydown', cardAdsCloseKeydownHandler);
       }
-    }
+    });
   };
 
   // Отправка данных на сервер
   window.renderSuccessUpload = function (successMessage) {
 
     var fragmentSuccess = document.createDocumentFragment();
-    fragmentSuccess.appendChild(renderSuccessMessageTemplate(successMessage));
+    fragmentSuccess.appendChild(renderSuccessMessage(successMessage));
     main.appendChild(fragmentSuccess);
 
     // Убираем значения полей
@@ -243,8 +230,8 @@
 
     // Возвращаем метку map__pin--main в исходное состояние
     var mapPinMain = document.querySelector('.map__pin--main');
-    mapPinMain.style.left = 570 + 'px';
-    mapPinMain.style.top = 375 + 'px';
+    mapPinMain.style.left = window.util.LOCATION_X_PIN + 'px';
+    mapPinMain.style.top = window.util.LOCATION_Y_PIN + 'px';
     document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
 
     // Убираем checked у чекбоксов в фильтре
@@ -262,7 +249,7 @@
   // Рендер ошибки при загрузке с сервера
   window.renderError = function (errorMessage) {
     var fragmentError = document.createDocumentFragment();
-    fragmentError.appendChild(renderErrorMessageTemplate(errorMessage));
+    fragmentError.appendChild(renderErrorMessage(errorMessage));
     main.appendChild(fragmentError);
   };
 
