@@ -6,6 +6,7 @@
   var housingPrice = mapFilters.querySelector('#housing-price');
   var housingRooms = mapFilters.querySelector('#housing-rooms');
   var housingGuests = mapFilters.querySelector('#housing-guests');
+  var housingFeatures = mapFilters.querySelectorAll('#housing-features');
 
   // Дефолтный фильтр
   var defaultFilter = (housingType.options[0].selected || housingPrice.options[0].selected ||
@@ -20,7 +21,7 @@
   };
 
   // Функция фильтрации по типу жилья
-  var filterTypeHouse = function (data, filterName, index, parameterFilter) {
+  var filterTypeHouse = function (data, filterName, index, parametrFilter) {
     if (filterName.options[index].selected) {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       var mapPins = document.querySelector('.map__pins');
@@ -31,7 +32,7 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.type === parameterFilter;
+        return element.offer.type === parametrFilter;
       });
 
       window.renderElementsLoad(sortAds);
@@ -51,6 +52,63 @@
 
       var sortAds = data.filter(function (element) {
         return (element.offer.price >= min && element.offer.price < max);
+      });
+
+      window.renderElementsLoad(sortAds);
+    }
+  };
+
+  // Функция фильтрации по кол-ву комнат
+  var filterNumberRooms = function (data, filterName, index, parametrFilter) {
+    if (filterName.options[index].selected) {
+      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var mapPins = document.querySelector('.map__pins');
+      var mapCard = document.querySelectorAll('.map__card');
+      var map = document.querySelector('.map');
+
+      removeElements(mapPin, mapPins);
+      removeElements(mapCard, map);
+
+      var sortAds = data.filter(function (element) {
+        return element.offer.rooms === parametrFilter;
+      });
+
+      window.renderElementsLoad(sortAds);
+    }
+  };
+
+  // Функция фильтрации по кол-ву гостей
+  var filterNumberGuests = function (data, filterName, index, parametrFilter) {
+    if (filterName.options[index].selected) {
+      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var mapPins = document.querySelector('.map__pins');
+      var mapCard = document.querySelectorAll('.map__card');
+      var map = document.querySelector('.map');
+
+      removeElements(mapPin, mapPins);
+      removeElements(mapCard, map);
+
+      var sortAds = data.filter(function (element) {
+        return element.offer.guests === parametrFilter;
+      });
+
+      window.renderElementsLoad(sortAds);
+    }
+  };
+
+  var filterFeatures = function (data, index, parametrFilter) {
+    var checkboxes = housingFeatures.querySelectorAll('input[type=checkbox]');
+    if (checkboxes[index].checked === 'checked') {
+      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var mapPins = document.querySelector('.map__pins');
+      var mapCard = document.querySelectorAll('.map__card');
+      var map = document.querySelector('.map');
+
+      removeElements(mapPin, mapPins);
+      removeElements(mapCard, map);
+
+      var sortAds = data.filter(function (element) {
+        return element.offer.features === parametrFilter;
       });
 
       window.renderElementsLoad(sortAds);
@@ -90,6 +148,40 @@
       filterPrice(data, housingPrice, 3, 50000, Infinity);
 
     });
+
+    housingRooms.addEventListener('change', function () {
+
+      // Фильтрация по кол-ву комнат
+      if (defaultFilter) {
+        window.renderElementsLoad(data);
+      }
+
+      filterNumberRooms(data, housingRooms, 1, 1);
+      filterNumberRooms(data, housingRooms, 2, 2);
+      filterNumberRooms(data, housingRooms, 3, 3);
+    });
+
+    housingGuests.addEventListener('change', function () {
+
+      // Фильтрация по кол-ву гостей
+      if (defaultFilter) {
+        window.renderElementsLoad(data);
+      }
+      filterNumberGuests(data, housingGuests, 1, 2);
+      filterNumberGuests(data, housingGuests, 2, 1);
+      filterNumberGuests(data, housingGuests, 3, 0);
+    });
+
+    housingFeatures.addEventListener('change', function () {
+
+      // Фильтрация по кол-ву гостей
+      if (defaultFilter) {
+        window.renderElementsLoad(data);
+      }
+      filterFeatures(data, 1, 'wi-fi');
+    });
+
+
   };
 
 })();
