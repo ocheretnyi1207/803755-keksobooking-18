@@ -20,7 +20,7 @@
   };
 
   // Функция фильтрации по типу жилья
-  var filterData = function (data, filter, index, parameterFilter) {
+  var filterData = function (data, filter, index, parametrFilter) {
     if (filter.options[index].selected) {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       var mapPins = document.querySelector('.map__pins');
@@ -31,7 +31,7 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.type === parameterFilter;
+        return element.offer.type === parametrFilter;
       });
 
       window.renderElementsLoad(sortAds);
