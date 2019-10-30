@@ -9,8 +9,8 @@
   var housingFeatures = mapFilters.querySelectorAll('#housing-features');
 
   // Дефолтный фильтр
-  var defaultFilter = (housingType.options[0].selected || housingPrice.options[0].selected ||
-    housingRooms.options[0].selected || housingGuests.options[0].selected);
+  var defaultFilterValues = (housingType.options.value === 'any'.selected || housingPrice.options.value === 'any'.selected ||
+    housingRooms.options.value === 'any'.selected || housingGuests.options.value === 'any'.selected);
 
 
   // Удаление лишних элементов при фильтрации
@@ -21,7 +21,7 @@
   };
 
   // Функция фильтрации по типу жилья
-  var filterTypeHouse = function (data, filterName, index, parametrFilter) {
+  var filterTypeHouse = function (data, filterName, index, parameterFilter) {
     if (filterName.options[index].selected) {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       var mapPins = document.querySelector('.map__pins');
@@ -32,7 +32,7 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.type === parametrFilter;
+        return element.offer.type === parameterFilter;
       });
 
       window.renderElementsLoad(sortAds);
@@ -59,7 +59,7 @@
   };
 
   // Функция фильтрации по кол-ву комнат
-  var filterNumberRooms = function (data, filterName, index, parametrFilter) {
+  var filterNumberRooms = function (data, filterName, index, parameterFilter) {
     if (filterName.options[index].selected) {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       var mapPins = document.querySelector('.map__pins');
@@ -70,7 +70,7 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.rooms === parametrFilter;
+        return element.offer.rooms === parameterFilter;
       });
 
       window.renderElementsLoad(sortAds);
@@ -78,7 +78,7 @@
   };
 
   // Функция фильтрации по кол-ву гостей
-  var filterNumberGuests = function (data, filterName, index, parametrFilter) {
+  var filterNumberGuests = function (data, filterName, index, parameterFilter) {
     if (filterName.options[index].selected) {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
       var mapPins = document.querySelector('.map__pins');
@@ -89,14 +89,14 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.guests === parametrFilter;
+        return element.offer.guests === parameterFilter;
       });
 
       window.renderElementsLoad(sortAds);
     }
   };
 
-  var filterFeatures = function (data, index, parametrFilter) {
+  var filterFeatures = function (data, index, parameterFilter) {
     var checkboxes = housingFeatures.querySelectorAll('input[type=checkbox]');
     if (checkboxes[index].checked === 'checked') {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -108,7 +108,7 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.features === parametrFilter;
+        return element.offer.features === parameterFilter;
       });
 
       window.renderElementsLoad(sortAds);
@@ -118,14 +118,14 @@
 
   window.filter = function (data) {
 
-    if (defaultFilter) {
+    if (defaultFilterValues) {
       window.renderElementsLoad(data);
     }
 
     housingType.addEventListener('change', function () {
 
       // Фильтрация по типу дома
-      if (defaultFilter) {
+      if (defaultFilterValues) {
         window.renderElementsLoad(data);
       }
 
@@ -139,7 +139,7 @@
     housingPrice.addEventListener('change', function () {
 
       // Фильтрация по цене
-      if (defaultFilter) {
+      if (defaultFilterValues) {
         window.renderElementsLoad(data);
       }
 
@@ -152,7 +152,7 @@
     housingRooms.addEventListener('change', function () {
 
       // Фильтрация по кол-ву комнат
-      if (defaultFilter) {
+      if (defaultFilterValues) {
         window.renderElementsLoad(data);
       }
 
@@ -164,7 +164,7 @@
     housingGuests.addEventListener('change', function () {
 
       // Фильтрация по кол-ву гостей
-      if (defaultFilter) {
+      if (defaultFilterValues) {
         window.renderElementsLoad(data);
       }
       filterNumberGuests(data, housingGuests, 1, 2);
@@ -175,7 +175,7 @@
     housingFeatures.addEventListener('change', function () {
 
       // Фильтрация по кол-ву гостей
-      if (defaultFilter) {
+      if (defaultFilterValues) {
         window.renderElementsLoad(data);
       }
       filterFeatures(data, 1, 'wi-fi');
