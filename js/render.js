@@ -263,6 +263,25 @@
     var fragmentError = document.createDocumentFragment();
     fragmentError.appendChild(renderErrorMessage(errorMessage));
     main.appendChild(fragmentError);
+
+    // Закрываем окно об ошибке по нажатию на ESC
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        document.querySelector('.error').parentNode.removeChild(document.querySelector('.error'));
+      }
+    });
+
+    // Закрываем окно об ошибке по клику
+    document.addEventListener('click', function () {
+      document.querySelector('.error').parentNode.removeChild(document.querySelector('.error'));
+    });
+
+    // Закрываем окно об ошибке по клику на кнопку .error__button
+    var errorBtn = document.querySelector('.error__button');
+    errorBtn.addEventListener('click', function () {
+      document.querySelector('error').parentNode.removeChild(document.querySelector('.error'));
+    });
+
   };
 
 })();
