@@ -96,7 +96,7 @@
     }
   };
 
-  var filterFeatures = function (data, index, parameterFilter) {
+  var filterFeatures = function (data, index, parametrFilter) {
     var checkboxes = housingFeatures.querySelectorAll('input[type=checkbox]');
     if (checkboxes[index].checked === 'checked') {
       var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -108,7 +108,7 @@
       removeElements(mapCard, map);
 
       var sortAds = data.filter(function (element) {
-        return element.offer.features === parameterFilter;
+        return element.offer.features === parametrFilter;
       });
 
       window.renderElementsLoad(sortAds);
