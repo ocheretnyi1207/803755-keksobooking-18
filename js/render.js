@@ -244,6 +244,18 @@
     // Добавляем карте класс map--faded
     document.querySelector('.map').classList.add('map--faded');
     form.classList.add('ad-form--disabled');
+
+    // Закрываем окно об успешной отправке сообщения по нажатию на ESC
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        document.querySelector('.success').parentNode.removeChild(document.querySelector('.success'));
+      }
+    });
+
+    // Закрываем окно об успешной отправке сообщения по клику
+    document.addEventListener('click', function () {
+      document.querySelector('.success').parentNode.removeChild(document.querySelector('.success'));
+    });
   };
 
   // Рендер ошибки при загрузке с сервера
