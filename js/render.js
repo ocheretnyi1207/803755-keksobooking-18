@@ -66,18 +66,18 @@
 
     }
 
-    var clearMissingFeatures = function (features) {
+    var clearNonexistentFeatures = function (features) {
       if (cardElement.querySelector('.popup__feature--' + features).textContent === '') {
         cardElement.querySelector('.popup__feature--' + features).parentNode.removeChild(cardElement.querySelector('.popup__feature--' + features));
       }
     };
 
-    clearMissingFeatures('wifi');
-    clearMissingFeatures('dishwasher');
-    clearMissingFeatures('parking');
-    clearMissingFeatures('washer');
-    clearMissingFeatures('elevator');
-    clearMissingFeatures('conditioner');
+    clearNonexistentFeatures('wifi');
+    clearNonexistentFeatures('dishwasher');
+    clearNonexistentFeatures('parking');
+    clearNonexistentFeatures('washer');
+    clearNonexistentFeatures('elevator');
+    clearNonexistentFeatures('conditioner');
 
     cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
 
@@ -99,7 +99,22 @@
         break;
     }
 
-    cardElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
+    var createPhoto = function (width, height, alt, className) {
+      var img = document.createElement('img');
+      img.width = width;
+      img.height = height;
+      img.alt = alt;
+      img.className = className;
+
+      return img;
+    };
+
+    for (i = 0; i < arrayElement.offer.photos.length; i++) {
+      createPhoto(45, 40, 'Фотография жилья', 'popup__photo').src = arrayElement.offer.photos[i];
+    }
+
+    //cardElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
+
     cardElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;
 
     return cardElement;
