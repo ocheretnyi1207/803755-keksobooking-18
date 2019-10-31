@@ -34,29 +34,70 @@
     cardElement.querySelector('.popup__text--capacity').textContent = arrayElement.offer.rooms + ' комнаты для ' + arrayElement.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayElement.offer.checkin + ', ' + 'выезд до ' + arrayElement.offer.checkout;
 
-    var getComfortInAds = function (comfort) {
-      cardElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
-    };
 
-    getComfortInAds('wifi');
-    getComfortInAds('dishwasher');
-    getComfortInAds('parking');
-    getComfortInAds('washer');
-    getComfortInAds('elevator');
-    getComfortInAds('conditioner');
+    for (var i = 0; i < arrayElement.offer.features.length; i++) {
 
-    cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
+      switch (arrayElement.offer.features[i]) {
 
-    var translationValues = function (typeEnglish, typeRussian) {
-      if (arrayElement.offer.type === typeEnglish) {
-        cardElement.querySelector('.popup__type').textContent = typeRussian;
+        case 'wifi':
+          cardElement.querySelector('.popup__feature--wifi').textContent = 'wifi';
+          break;
+
+        case 'dishwasher':
+          cardElement.querySelector('.popup__feature--dishwasher').textContent = 'dishwasher';
+          break;
+
+        case 'parking':
+          cardElement.querySelector('.popup__feature--parking').textContent = 'parking';
+          break;
+
+        case 'washer':
+          cardElement.querySelector('.popup__feature--washer').textContent = 'washer';
+          break;
+
+        case 'elevator':
+          cardElement.querySelector('.popup__feature--elevator').textContent = 'elevator';
+          break;
+
+        case 'conditioner':
+          cardElement.querySelector('.popup__feature--conditioner').textContent = 'conditioner';
+          break;
+      }
+
+    }
+
+    var clearMissingFeatures = function (features) {
+      if (cardElement.querySelector('.popup__feature--' + features).textContent === '') {
+        cardElement.querySelector('.popup__feature--' + features).parentNode.removeChild(cardElement.querySelector('.popup__feature--' + features));
       }
     };
 
-    translationValues('flat', 'Квартира');
-    translationValues('bungalo', 'Бунгало');
-    translationValues('palace', 'Дворец');
-    translationValues('house', 'Дом');
+    clearMissingFeatures('wifi');
+    clearMissingFeatures('dishwasher');
+    clearMissingFeatures('parking');
+    clearMissingFeatures('washer');
+    clearMissingFeatures('elevator');
+    clearMissingFeatures('conditioner');
+
+    cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
+
+    switch (arrayElement.offer.type) {
+      case 'flat':
+        cardElement.querySelector('.popup__type').textContent = 'Квартира';
+        break;
+
+      case 'bungalo':
+        cardElement.querySelector('.popup__type').textContent = 'Бунгало';
+        break;
+
+      case 'palace':
+        cardElement.querySelector('.popup__type').textContent = 'Дворец';
+        break;
+
+      case 'house':
+        cardElement.querySelector('.popup__type').textContent = 'Дом';
+        break;
+    }
 
     cardElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
     cardElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;

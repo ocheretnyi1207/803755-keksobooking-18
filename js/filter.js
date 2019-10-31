@@ -60,6 +60,12 @@
         });
       }
 
+      if (evt.target === housePrice) {
+        sortData = data.filter(function (element) {
+          return element.offer.price >= priceRange.min && element.offer.price < priceRange.max;
+        });
+      }
+
       if (evt.target === houseRooms) {
         sortData = data.filter(function (element) {
           return (element.offer.rooms === +houseRooms.value);
