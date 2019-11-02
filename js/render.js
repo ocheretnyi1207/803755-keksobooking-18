@@ -5,12 +5,12 @@
   var mapPins = document.querySelector('.map__pins');
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var cardPhoto = document.querySelector('#card').content.querySelector('.popup__photo');
   var map = document.querySelector('.map');
 
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var main = document.querySelector('main');
-
 
   // Функция отрисовки пинов из шаблона
   var renderMapPin = function (arrayElement) {
@@ -66,18 +66,18 @@
 
     }
 
-    var clearNonexistentFeatures = function (features) {
+    var clearNonExistentFeatures = function (features) {
       if (cardElement.querySelector('.popup__feature--' + features).textContent === '') {
         cardElement.querySelector('.popup__feature--' + features).parentNode.removeChild(cardElement.querySelector('.popup__feature--' + features));
       }
     };
 
-    clearNonexistentFeatures('wifi');
-    clearNonexistentFeatures('dishwasher');
-    clearNonexistentFeatures('parking');
-    clearNonexistentFeatures('washer');
-    clearNonexistentFeatures('elevator');
-    clearNonexistentFeatures('conditioner');
+    clearNonExistentFeatures('wifi');
+    clearNonExistentFeatures('dishwasher');
+    clearNonExistentFeatures('parking');
+    clearNonExistentFeatures('washer');
+    clearNonExistentFeatures('elevator');
+    clearNonExistentFeatures('conditioner');
 
     cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
 
@@ -99,21 +99,21 @@
         break;
     }
 
-    var createPhoto = function (width, height, alt, className) {
-      var img = document.createElement('img');
-      img.width = width;
-      img.height = height;
-      img.alt = alt;
-      img.className = className;
+    var createPhotos = function (arrayPhotos) {
 
-      return img;
+      var fragmentPhotos = document.createDocumentFragment();
+
+      for (i = 0; i < arrayPhotos.length; i++) {
+        var photo = cardPhoto.cloneNode(true);
+        photo.src = arrayPhotos[i];
+        fragmentPhotos.appendChild(photo);
+      }
+
+      return fragmentPhotos;
     };
 
-    for (i = 0; i < arrayElement.offer.photos.length; i++) {
-      createPhoto(45, 40, 'Фотография жилья', 'popup__photo').src = arrayElement.offer.photos[i];
-    }
-
-    //cardElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
+    cardElement.querySelector('.popup__photo').parentNode.removeChild(cardElement.querySelector('.popup__photo'));
+    cardElement.querySelector('.popup__photos').appendChild(createPhotos(arrayElement.offer.photos));
 
     cardElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;
 

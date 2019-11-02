@@ -52,7 +52,13 @@
       var housePrice = mapFilters.querySelector('#housing-price');
       var houseRooms = mapFilters.querySelector('#housing-rooms');
       var houseGuests = mapFilters.querySelector('#housing-guests');
+      var houseFeatures = mapFilters.querySelector('#housing-features');
       var priceRange = getPriceRange(housePrice.value);
+      console.log(evt.target);
+
+      if (evt.target.value === 'any') {
+        window.renderElementsLoad(data);
+      }
 
       if (evt.target === houseType) {
         var sortData = data.filter(function (element) {
@@ -77,6 +83,7 @@
           return (element.offer.guests === +houseGuests.value);
         });
       }
+
 
       window.renderElementsLoad(sortData);
     });
