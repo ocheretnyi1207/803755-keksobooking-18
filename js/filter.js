@@ -54,33 +54,44 @@
       var houseGuests = mapFilters.querySelector('#housing-guests');
       var houseFeatures = mapFilters.querySelector('#housing-features');
       var priceRange = getPriceRange(housePrice.value);
-      console.log(evt.target);
+
 
       if (evt.target.value === 'any') {
         window.renderElementsLoad(data);
       }
 
-      if (evt.target === houseType) {
+      switch (evt.target) {
+
+        case houseType:
+          var sortData = data.filter(function (element) {
+            return (element.offer.type === houseType.value);
+          });
+          break;
+
+        case housePrice:
+          sortData = data.filter(function (element) {
+            return element.offer.price >= priceRange.min && element.offer.price < priceRange.max;
+          });
+          break;
+
+        case houseRooms:
+          sortData = data.filter(function (element) {
+            return (element.offer.rooms === +houseRooms.value);
+          });
+          break;
+
+        case houseGuests:
+          sortData = data.filter(function (element) {
+            return (element.offer.guests === +houseGuests.value);
+          });
+          break;
+      }
+
+      if (evt.target.id === 'filter-wifi') {
+      console.log(evt.target);
+
         var sortData = data.filter(function (element) {
-          return (element.offer.type === houseType.value);
-        });
-      }
-
-      if (evt.target === housePrice) {
-        sortData = data.filter(function (element) {
-          return element.offer.price >= priceRange.min && element.offer.price < priceRange.max;
-        });
-      }
-
-      if (evt.target === houseRooms) {
-        sortData = data.filter(function (element) {
-          return (element.offer.rooms === +houseRooms.value);
-        });
-      }
-
-      if (evt.target === houseGuests) {
-        sortData = data.filter(function (element) {
-          return (element.offer.guests === +houseGuests.value);
+          return (element.offer.features === 'wifi');
         });
       }
 
