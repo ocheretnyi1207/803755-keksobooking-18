@@ -5,12 +5,12 @@
   var mapPins = document.querySelector('.map__pins');
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var cardPhoto = document.querySelector('#card').content.querySelector('.popup__photo');
   var map = document.querySelector('.map');
 
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var main = document.querySelector('main');
-
 
   // Функция отрисовки пинов из шаблона
   var renderMapPin = function (arrayElement) {
@@ -23,6 +23,7 @@
     return mapPinElement;
   };
 
+
   // Функция отрисовки объявления из шаблона
   var renderCard = function (arrayElement) {
 
@@ -34,35 +35,92 @@
     cardElement.querySelector('.popup__text--capacity').textContent = arrayElement.offer.rooms + ' комнаты для ' + arrayElement.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayElement.offer.checkin + ', ' + 'выезд до ' + arrayElement.offer.checkout;
 
-    var getComfortInAds = function (comfort) {
-      cardElement.querySelector('.popup__feature--' + comfort).textContent = comfort;
-    };
 
-    getComfortInAds('wifi');
-    getComfortInAds('dishwasher');
-    getComfortInAds('parking');
-    getComfortInAds('washer');
-    getComfortInAds('elevator');
-    getComfortInAds('conditioner');
+    for (var i = 0; i < arrayElement.offer.features.length; i++) {
 
-    cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
+      switch (arrayElement.offer.features[i]) {
 
-    var translationValues = function (typeEnglish, typeRussian) {
-      if (arrayElement.offer.type === typeEnglish) {
-        cardElement.querySelector('.popup__type').textContent = typeRussian;
+        case 'wifi':
+          cardElement.querySelector('.popup__feature--wifi').textContent = 'wifi';
+          break;
+
+        case 'dishwasher':
+          cardElement.querySelector('.popup__feature--dishwasher').textContent = 'dishwasher';
+          break;
+
+        case 'parking':
+          cardElement.querySelector('.popup__feature--parking').textContent = 'parking';
+          break;
+
+        case 'washer':
+          cardElement.querySelector('.popup__feature--washer').textContent = 'washer';
+          break;
+
+        case 'elevator':
+          cardElement.querySelector('.popup__feature--elevator').textContent = 'elevator';
+          break;
+
+        case 'conditioner':
+          cardElement.querySelector('.popup__feature--conditioner').textContent = 'conditioner';
+          break;
+      }
+
+    }
+
+    var clearNonExistentFeatures = function (features) {
+      if (cardElement.querySelector('.popup__feature--' + features).textContent === '') {
+        cardElement.querySelector('.popup__feature--' + features).parentNode.removeChild(cardElement.querySelector('.popup__feature--' + features));
       }
     };
 
-    translationValues('flat', 'Квартира');
-    translationValues('bungalo', 'Бунгало');
-    translationValues('palace', 'Дворец');
-    translationValues('house', 'Дом');
+    clearNonExistentFeatures('wifi');
+    clearNonExistentFeatures('dishwasher');
+    clearNonExistentFeatures('parking');
+    clearNonExistentFeatures('washer');
+    clearNonExistentFeatures('elevator');
+    clearNonExistentFeatures('conditioner');
 
-    cardElement.querySelector('.popup__photo').src = arrayElement.offer.photos;
+    cardElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
+
+    switch (arrayElement.offer.type) {
+      case 'flat':
+        cardElement.querySelector('.popup__type').textContent = 'Квартира';
+        break;
+
+      case 'bungalo':
+        cardElement.querySelector('.popup__type').textContent = 'Бунгало';
+        break;
+
+      case 'palace':
+        cardElement.querySelector('.popup__type').textContent = 'Дворец';
+        break;
+
+      case 'house':
+        cardElement.querySelector('.popup__type').textContent = 'Дом';
+        break;
+    }
+
+    var createPhotos = function (arrayPhotos) {
+
+      var fragmentPhotos = document.createDocumentFragment();
+
+      for (i = 0; i < arrayPhotos.length; i++) {
+        var photo = cardPhoto.cloneNode(true);
+        photo.src = arrayPhotos[i];
+        fragmentPhotos.appendChild(photo);
+      }
+
+      return fragmentPhotos;
+    };
+
+    cardElement.querySelector('.popup__photo').parentNode.removeChild(cardElement.querySelector('.popup__photo'));
+    cardElement.querySelector('.popup__photos').appendChild(createPhotos(arrayElement.offer.photos));
+
     cardElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;
 
     return cardElement;
   };
+
 
   // Функция отрисовки сообщения об ошибке из шаблона
   var renderErrorMessage = function (message) {
@@ -92,6 +150,7 @@
 
     mapPins.appendChild(fragmentMapPin);
 
+
     // Рендер объявлений
     var fragmentMapCard = document.createDocumentFragment();
 
@@ -100,6 +159,7 @@
     }
 
     map.appendChild(fragmentMapCard);
+
 
     // Деактивация объявлений после загрузки
     var mapCard = document.querySelectorAll('.map__card');
@@ -244,6 +304,18 @@
     // Добавляем карте класс map--faded
     document.querySelector('.map').classList.add('map--faded');
     form.classList.add('ad-form--disabled');
+
+    // Закрываем окно об успешной отправке сообщения по нажатию на ESC
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        document.querySelector('.success').parentNode.removeChild(document.querySelector('.success'));
+      }
+    });
+
+    // Закрываем окно об успешной отправке сообщения по клику
+    document.addEventListener('click', function () {
+      document.querySelector('.success').parentNode.removeChild(document.querySelector('.success'));
+    });
   };
 
   // Рендер ошибки при загрузке с сервера
@@ -251,6 +323,25 @@
     var fragmentError = document.createDocumentFragment();
     fragmentError.appendChild(renderErrorMessage(errorMessage));
     main.appendChild(fragmentError);
+
+    // Закрываем окно об ошибке по нажатию на ESC
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        document.querySelector('.error').parentNode.removeChild(document.querySelector('.error'));
+      }
+    });
+
+    // Закрываем окно об ошибке по клику
+    document.addEventListener('click', function () {
+      document.querySelector('.error').parentNode.removeChild(document.querySelector('.error'));
+    });
+
+    // Закрываем окно об ошибке по клику на кнопку .error__button
+    var errorBtn = document.querySelector('.error__button');
+    errorBtn.addEventListener('click', function () {
+      document.querySelector('error').parentNode.removeChild(document.querySelector('.error'));
+    });
+
   };
 
 })();

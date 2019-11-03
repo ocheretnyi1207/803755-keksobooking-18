@@ -2,61 +2,98 @@
 
 (function () {
   var mapFilters = document.querySelector('.map__filters');
-  var housingType = mapFilters.querySelector('#housing-type');
-  var housingPrice = mapFilters.querySelector('#housing-price');
-  var housingRooms = mapFilters.querySelector('#housing-rooms');
-  var housingGuests = mapFilters.querySelector('#housing-guests');
 
-
-  var defaultFilter = (housingType.options[0].selected || housingPrice.options[0].selected ||
-    housingRooms.options[0].selected || housingGuests.options[0].selected);
-
-
-  // Удаление лишних элементов при фильтрации по типу жилья
+  // Удаление лишних элементов при фильтрации
   var removeElements = function (childNode, parentNode) {
     Array.from(childNode).forEach(function (element) {
       parentNode.removeChild(element);
     });
   };
 
-  // Функция фильтрации по типу жилья
-  var filterData = function (data, filter, index, parameterFilter) {
-    if (filter.options[index].selected) {
-      var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-      var mapPins = document.querySelector('.map__pins');
-      var mapCard = document.querySelectorAll('.map__card');
-      var map = document.querySelector('.map');
+  // Очистка карты
+  var clearMap = function () {
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var mapPins = document.querySelector('.map__pins');
+    var mapCard = document.querySelectorAll('.map__card');
+    var map = document.querySelector('.map');
 
-      removeElements(mapPin, mapPins);
-      removeElements(mapCard, map);
+    removeElements(mapPin, mapPins);
+    removeElements(mapCard, map);
+  };
 
-      var sortAds = data.filter(function (element) {
-        return element.offer.type === parameterFilter;
-      });
+  var getPriceRange = function (range) {
+    switch (range) {
+      case 'high':
+        return {
+          min: 50000, max: Infinity
+        };
 
-      window.renderElementsLoad(sortAds);
+      case 'middle':
+        return {
+          min: 10000, max: 50000
+        };
+      case 'low':
+        return {
+          min: 0, max: 10000
+        };
+      default:
+        return {
+          min: 0, max: Infinity
+        };
     }
   };
 
   window.filter = function (data) {
 
-    if (defaultFilter) {
-      window.renderElementsLoad(data);
-    }
+    var visibleData = data.slice(0, 5);
+    window.renderElementsLoad(visibleData);
 
-    housingType.addEventListener('change', function () {
+    mapFilters.addEventListener('change', function () {
+      clearMap();
 
-      // Фильтрация по типу дома
-      if (defaultFilter) {
-        window.renderElementsLoad(data);
+      var houseType = mapFilters.querySelector('#housing-type');
+      var housePrice = mapFilters.querySelector('#housing-price');
+      var houseRooms = mapFilters.querySelector('#housing-rooms');
+      var houseGuests = mapFilters.querySelector('#housing-guests');
+      var houseFeatures = mapFilters.querySelectorAll('#housing-features input');
+      var priceRange = getPriceRange(housePrice.value);
+
+      var selectedFeatures = [];
+      for (var i = 0; i < houseFeatures.length; i++) {
+        if (houseFeatures[i].checked) {
+          selectedFeatures.push(houseFeatures[i].value);
+        }
       }
 
-      filterData(data, housingType, 1, 'palace');
-      filterData(data, housingType, 2, 'flat');
-      filterData(data, housingType, 3, 'house');
-      filterData(data, housingType, 4, 'bungalo');
+      var sortData = data.filter(function (element) {
+        return (element.offer.type === houseType.value || houseType.value === 'any') &&
+          (element.offer.rooms === +houseRooms.value || houseRooms.value === 'any') &&
+          (element.offer.guests === +houseGuests.value || houseGuests.value === 'any') &&
+          element.offer.price >= priceRange.min && element.offer.price < priceRange.max &&
+          selectedFeatures.every(function (feature) {
+            return element.offer.features.includes(feature);
+          });
+
+      });
+
+      var visibleFilterData = sortData.slice(0, 5);
+
+
+      var lastTimeout;
+      var debounce = function (cb) {
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+
+        lastTimeout = window.setTimeout(cb, 500);
+      };
+
+      debounce((function () {
+        window.renderElementsLoad(visibleFilterData);
+      }));
 
     });
   };
+
 
 })();
