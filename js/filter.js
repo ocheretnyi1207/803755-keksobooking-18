@@ -77,7 +77,21 @@
       });
 
       var visibleFilterData = sortData.slice(0, 5);
-      window.renderElementsLoad(visibleFilterData);
+
+
+      var lastTimeout;
+      var debounce = function (cb) {
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+
+        lastTimeout = window.setTimeout(cb, 500);
+      };
+
+      debounce((function () {
+        window.renderElementsLoad(visibleFilterData);
+      }));
+
     });
   };
 
