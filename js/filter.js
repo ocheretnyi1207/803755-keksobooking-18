@@ -27,6 +27,7 @@
         return {
           min: 50000, max: Infinity
         };
+
       case 'middle':
         return {
           min: 10000, max: 50000
@@ -87,13 +88,20 @@
           break;
       }
 
-      if (evt.target.id === 'filter-wifi') {
-      console.log(evt.target);
 
-        var sortData = data.filter(function (element) {
-          return (element.offer.features === 'wifi');
+      if (evt.target.value === 'parking' && evt.target.value === 'wifi' && evt.target === document.querySelector('input[type=checkbox]:checked')) {
+
+        sortData = data.filter(function (element) {
+          return element.offer.features.some(function (elem) {
+            return (elem === 'parking' && elem === 'wifi');
+          });
         });
+
+      } else {
+        window.renderElementsLoad(data);
       }
+
+
 
 
       window.renderElementsLoad(sortData);
