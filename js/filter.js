@@ -88,19 +88,13 @@
           break;
       }
 
-
-      if (evt.target.value === 'parking' && evt.target.value === 'wifi' && evt.target === document.querySelector('input[type=checkbox]:checked')) {
-
+      if (evt.target.value === 'wifi') {
         sortData = data.filter(function (element) {
           return element.offer.features.some(function (elem) {
-            return (elem === 'parking' && elem === 'wifi');
+            return elem === 'wifi';
           });
         });
-
-      } else {
-        window.renderElementsLoad(data);
       }
-
 
 
 
