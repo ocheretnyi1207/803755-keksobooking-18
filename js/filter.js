@@ -45,7 +45,7 @@
 
   window.filter = function (data) {
 
-    var visibleData = data.slice(0, 5);
+    var visibleData = data.slice(0, window.util.MAX_VISIBLE_PIN);
     window.renderElementsLoad(visibleData);
 
     mapFilters.addEventListener('change', function () {
@@ -76,7 +76,7 @@
 
       });
 
-      var visibleFilterData = sortData.slice(0, 5);
+      var visibleFilterData = sortData.slice(0, window.util.MAX_VISIBLE_PIN);
 
 
       var lastTimeout;
@@ -85,7 +85,7 @@
           window.clearTimeout(lastTimeout);
         }
 
-        lastTimeout = window.setTimeout(cb, 500);
+        lastTimeout = window.setTimeout(cb, window.util.DEBOUNCE_INTERVAL);
       };
 
       debounce((function () {
