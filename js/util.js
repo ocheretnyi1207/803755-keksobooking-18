@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var NUMBER_ADS = 9; // количество похожих объявлений
+  var NUMBER_ADS = 5; // количество похожих объявлений
   var LOCATION_X_PIN = 570; // координаты метки по горизонтали
   var LOCATION_Y_PIN = 375; // координаты метки по вертикали
   var HEIGHT_POINTER_PIN = 22; // высота указателя метки

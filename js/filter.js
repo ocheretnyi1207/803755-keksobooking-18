@@ -44,7 +44,9 @@
   };
 
   window.filter = function (data) {
-    window.renderElementsLoad(data);
+
+    var visibleData = data.slice(0, 5);
+    window.renderElementsLoad(visibleData);
 
     mapFilters.addEventListener('change', function () {
       clearMap();
@@ -65,15 +67,17 @@
 
       var sortData = data.filter(function (element) {
         return (element.offer.type === houseType.value || houseType.value === 'any') &&
-        (element.offer.rooms === +houseRooms.value || houseRooms.value === 'any') &&
-        (element.offer.guests === +houseGuests.value || houseGuests.value === 'any') &&
-        element.offer.price >= priceRange.min && element.offer.price < priceRange.max &&
-        selectedFeatures.every(function (feature) {
-          return element.offer.features.includes(feature);
-        });
+          (element.offer.rooms === +houseRooms.value || houseRooms.value === 'any') &&
+          (element.offer.guests === +houseGuests.value || houseGuests.value === 'any') &&
+          element.offer.price >= priceRange.min && element.offer.price < priceRange.max &&
+          selectedFeatures.every(function (feature) {
+            return element.offer.features.includes(feature);
+          });
+
       });
 
-      window.renderElementsLoad(sortData);
+      var visibleFilterData = sortData.slice(0, 5);
+      window.renderElementsLoad(visibleFilterData);
     });
   };
 

@@ -23,6 +23,7 @@
     return mapPinElement;
   };
 
+
   // Функция отрисовки объявления из шаблона
   var renderCard = function (arrayElement) {
 
@@ -120,6 +121,7 @@
     return cardElement;
   };
 
+
   // Функция отрисовки сообщения об ошибке из шаблона
   var renderErrorMessage = function (message) {
     var errorElement = errorTemplate.cloneNode(true);
@@ -148,6 +150,7 @@
 
     mapPins.appendChild(fragmentMapPin);
 
+
     // Рендер объявлений
     var fragmentMapCard = document.createDocumentFragment();
 
@@ -156,6 +159,7 @@
     }
 
     map.appendChild(fragmentMapCard);
+
 
     // Деактивация объявлений после загрузки
     var mapCard = document.querySelectorAll('.map__card');
