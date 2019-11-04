@@ -46,9 +46,9 @@
       }
 
       // Отрисовка пинов, объявлений, ошибок
-      window.load(window.renderElementsLoad, window.renderError);
+      window.load(window.filter, window.renderError);
 
-      mapPinMain.removeEventListener('click', window.activateMapClickHandler);
+      mapPinMain.removeEventListener('click', window.activateMapKeydownHandler);
     }
   };
 

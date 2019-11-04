@@ -87,6 +87,7 @@
     evt.preventDefault();
     var mapPinMain = document.querySelector('.map__pin--main');
     mapPinMain.addEventListener('click', window.activateMapClickHandler);
+    mapPinMain.addEventListener('keydown', window.activateMapKeydownHandler);
   });
 
 })();
