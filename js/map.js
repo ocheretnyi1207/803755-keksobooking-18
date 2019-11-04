@@ -14,7 +14,7 @@
 
 
   // Активация страницы по нажатию на кнопку мыши
-  var activateMapClickHandler = function () {
+  window.activateMapClickHandler = function () {
     document.querySelector('.map').classList.remove('map--faded');
     document.querySelector('.ad-form').classList.remove('ad-form--disabled');
 
@@ -26,15 +26,15 @@
     // Отрисовка пинов, объявлений, ошибок
     window.load(window.filter, window.renderError);
 
-    mapPinMain.removeEventListener('click', activateMapClickHandler);
+    mapPinMain.removeEventListener('click', window.activateMapClickHandler);
   };
 
   var mapPinMain = document.querySelector('.map__pin--main');
-  mapPinMain.addEventListener('click', activateMapClickHandler);
+  mapPinMain.addEventListener('click', window.activateMapClickHandler);
 
 
   // Активация страницы по нажатию на Enter
-  var activateMapKeydownHandler = function (evt) {
+  window.activateMapKeydownHandler = function (evt) {
 
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
       document.querySelector('.map').classList.remove('map--faded');
@@ -48,11 +48,11 @@
       // Отрисовка пинов, объявлений, ошибок
       window.load(window.renderElementsLoad, window.renderError);
 
-      mapPinMain.removeEventListener('click', activateMapClickHandler);
+      mapPinMain.removeEventListener('click', window.activateMapClickHandler);
     }
   };
 
-  mapPinMain.addEventListener('keydown', activateMapKeydownHandler);
+  mapPinMain.addEventListener('keydown', window.activateMapKeydownHandler);
 
 
   // Перемещение map__pin--main по карте

@@ -85,6 +85,8 @@
   form.addEventListener('submit', function (evt) {
     window.upload(new FormData(form), window.renderSuccessUpload, window.renderError);
     evt.preventDefault();
+    var mapPinMain = document.querySelector('.map__pin--main');
+    mapPinMain.addEventListener('click', window.activateMapClickHandler);
   });
 
 })();

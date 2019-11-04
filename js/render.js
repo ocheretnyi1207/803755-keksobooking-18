@@ -305,36 +305,52 @@
     document.querySelector('.map').classList.add('map--faded');
     form.classList.add('ad-form--disabled');
 
-    // Закрываем окно об успешной отправке сообщения по нажатию на ESC
-    document.addEventListener('keydown', function (evt) {
+    // Закрываем окно об успешной отправке по нажатию на ESC
+    var successWindowKeydownHandler = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
         document.querySelector('.success').parentNode.removeChild(document.querySelector('.success'));
       }
-    });
 
-    // Закрываем окно об успешной отправке сообщения по клику
-    document.addEventListener('click', function () {
+      document.removeEventListener('keydown', successWindowKeydownHandler);
+    };
+
+    document.addEventListener('keydown', successWindowKeydownHandler);
+
+    // Закрываем окно об успешной отправке по клику
+    var successWindowClickHandler = function () {
       document.querySelector('.success').parentNode.removeChild(document.querySelector('.success'));
-    });
+      document.removeEventListener('click', successWindowClickHandler);
+    };
+
+    document.addEventListener('click', successWindowClickHandler);
+
+
   };
 
-  // Рендер ошибки при загрузке с сервера
+  // Рендер ошибки при загрузке данных с сервера
   window.renderError = function (errorMessage) {
     var fragmentError = document.createDocumentFragment();
     fragmentError.appendChild(renderErrorMessage(errorMessage));
     main.appendChild(fragmentError);
 
     // Закрываем окно об ошибке по нажатию на ESC
-    document.addEventListener('keydown', function (evt) {
+    var errorWindowKeydownHandler = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
         document.querySelector('.error').parentNode.removeChild(document.querySelector('.error'));
       }
-    });
+
+      document.removeEventListener('click', errorWindowKeydownHandler);
+    };
+
+    document.addEventListener('keydown', errorWindowKeydownHandler);
 
     // Закрываем окно об ошибке по клику
-    document.addEventListener('click', function () {
+    var errorWindowClickHandler = function () {
       document.querySelector('.error').parentNode.removeChild(document.querySelector('.error'));
-    });
+      document.removeEventListener('click', errorWindowClickHandler);
+    };
+
+    document.addEventListener('click', errorWindowClickHandler);
 
     // Закрываем окно об ошибке по клику на кнопку .error__button
     var errorBtn = document.querySelector('.error__button');
