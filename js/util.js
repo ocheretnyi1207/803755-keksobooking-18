@@ -7,6 +7,10 @@
   var HEIGHT_POINTER_PIN = 22; // высота указателя метки
   var WIDTH_PIN = 66; // ширина мекти
   var HEIGHT_PIN = 66 + HEIGHT_POINTER_PIN; // высота метки
+  var TOP_LIMIT = 130;
+  var BOTTOM_LIMIT = 630;
+  var LEFT_LIMIT = 0;
+  var RIGHT_LIMIT = 1200;
   var ESC_KEYCODE = 27; // кейкод ESC
   var ENTER_KEYCODE = 13; // кейкод ENTER
   var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
@@ -24,6 +28,10 @@
     HEIGHT_POINTER_PIN: HEIGHT_POINTER_PIN,
     WIDTH_PIN: WIDTH_PIN,
     HEIGHT_PIN: HEIGHT_PIN,
+    TOP_LIMIT: TOP_LIMIT,
+    BOTTOM_LIMIT: BOTTOM_LIMIT,
+    LEFT_LIMIT: LEFT_LIMIT,
+    RIGHT_LIMIT: RIGHT_LIMIT,
     ESC_KEYCODE: ESC_KEYCODE,
     ENTER_KEYCODE: ENTER_KEYCODE,
     URL_LOAD: URL_LOAD,

@@ -26,11 +26,11 @@
     // Отрисовка пинов, объявлений, ошибок
     window.load(window.filter, window.renderError);
 
-    mapPinMain.removeEventListener('click', window.activateMapClickHandler);
+    pinMain.removeEventListener('click', window.activateMapClickHandler);
   };
 
-  var mapPinMain = document.querySelector('.map__pin--main');
-  mapPinMain.addEventListener('click', window.activateMapClickHandler);
+  var pinMain = document.querySelector('.map__pin--main');
+  pinMain.addEventListener('click', window.activateMapClickHandler);
 
 
   // Активация страницы по нажатию на Enter
@@ -48,15 +48,15 @@
       // Отрисовка пинов, объявлений, ошибок
       window.load(window.filter, window.renderError);
 
-      mapPinMain.removeEventListener('click', window.activateMapKeydownHandler);
+      pinMain.removeEventListener('click', window.activateMapKeydownHandler);
     }
   };
 
-  mapPinMain.addEventListener('keydown', window.activateMapKeydownHandler);
+  pinMain.addEventListener('keydown', window.activateMapKeydownHandler);
 
 
   // Перемещение map__pin--main по карте
-  mapPinMain.addEventListener('mousedown', function (evt) {
+  pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoordinates = {
@@ -78,20 +78,20 @@
       };
 
       // Ограничение перемещения метки
-      var isTopLimit = (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) < 130;
-      var isBottomLimit = (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) > 630;
-      var isLeftLimit = (mapPinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) < 0;
-      var isRightLimit = (mapPinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) > 1200;
+      var isTopLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) < window.util.TOP_LIMIT;
+      var isBottomLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) > window.util.BOTTOM_LIMIT;
+      var isLeftLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) < window.util.LEFT_LIMIT;
+      var isRightLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) > window.util.RIGHT_LIMIT;
 
       if (isTopLimit || isBottomLimit || isLeftLimit || isRightLimit) {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
       } else {
-        mapPinMain.style.left = (mapPinMain.offsetLeft - displacement.x) + 'px';
-        mapPinMain.style.top = (mapPinMain.offsetTop - displacement.y) + 'px';
+        pinMain.style.left = (pinMain.offsetLeft - displacement.x) + 'px';
+        pinMain.style.top = (pinMain.offsetTop - displacement.y) + 'px';
       }
 
-      document.querySelector('#address').value = (mapPinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) + ', ' + (mapPinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
+      document.querySelector('#address').value = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) + ', ' + (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
     };
 
     var mouseUpHandler = function (upEvt) {

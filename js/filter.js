@@ -12,13 +12,13 @@
 
   // Очистка карты
   var clearMap = function () {
-    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     var mapPins = document.querySelector('.map__pins');
-    var mapCard = document.querySelectorAll('.map__card');
+    var ads = document.querySelectorAll('.map__card');
     var map = document.querySelector('.map');
 
-    removeElements(mapPin, mapPins);
-    removeElements(mapCard, map);
+    removeElements(pins, mapPins);
+    removeElements(ads, map);
   };
 
   var getPriceRange = function (range) {
