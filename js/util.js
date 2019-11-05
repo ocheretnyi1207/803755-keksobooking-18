@@ -5,8 +5,8 @@
   var LOCATION_X_PIN = 570; // координаты метки по горизонтали
   var LOCATION_Y_PIN = 375; // координаты метки по вертикали
   var HEIGHT_POINTER_PIN = 22; // высота указателя метки
-  var WIDTH_PIN = 66; // ширина мекти
-  var HEIGHT_PIN = 66 + HEIGHT_POINTER_PIN; // высота метки
+  var WIDTH_PIN = 64; // ширина метки
+  var HEIGHT_PIN = 64 + HEIGHT_POINTER_PIN; // высота метки
   var TOP_LIMIT = 130;
   var BOTTOM_LIMIT = 630;
   var LEFT_LIMIT = 0;

@@ -78,10 +78,10 @@
       };
 
       // Ограничение перемещения метки
-      var isTopLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) < window.util.TOP_LIMIT;
-      var isBottomLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) > window.util.BOTTOM_LIMIT;
-      var isLeftLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) < window.util.LEFT_LIMIT;
-      var isRightLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) > window.util.RIGHT_LIMIT;
+      var isTopLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) <= window.util.TOP_LIMIT;
+      var isBottomLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) >= window.util.BOTTOM_LIMIT;
+      var isLeftLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) <= window.util.LEFT_LIMIT;
+      var isRightLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) >= window.util.RIGHT_LIMIT;
 
       if (isTopLimit || isBottomLimit || isLeftLimit || isRightLimit) {
         document.removeEventListener('mousemove', mouseMoveHandler);
