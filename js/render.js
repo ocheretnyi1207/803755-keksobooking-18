@@ -133,7 +133,7 @@
   };
 
   // Рендер элементов при загрузке данных с сервера
-  window.renderElementsLoad = function (data) {
+  var renderElementsLoad = function (data) {
 
     // Рендер пинов
     var fragmentPin = document.createDocumentFragment();
@@ -244,7 +244,7 @@
   };
 
   // Отправка данных на сервер
-  window.renderSuccessUpload = function (successMessage) {
+  var renderSuccessUpload = function (successMessage) {
 
     var fragmentSuccess = document.createDocumentFragment();
     fragmentSuccess.appendChild(renderSuccessMessage(successMessage));
@@ -315,7 +315,7 @@
   };
 
   // Рендер ошибки при загрузке данных с сервера
-  window.renderError = function (errorMessage) {
+  var renderError = function (errorMessage) {
     var fragmentError = document.createDocumentFragment();
     fragmentError.appendChild(renderErrorMessage(errorMessage));
     main.appendChild(fragmentError);
@@ -346,4 +346,9 @@
 
   };
 
+  window.render = {
+    renderElementsLoad: renderElementsLoad,
+    renderSuccessUpload: renderSuccessUpload,
+    renderError: renderError
+  };
 })();

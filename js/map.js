@@ -1,22 +1,26 @@
 'use strict';
 
 (function () {
-  // Добавление атрибута disabled полям формы при неактивной странице
+  var pinMain = document.querySelector('.map__pin--main');
   var formFieldset = document.querySelectorAll('fieldset');
 
+  // Добавление атрибута disabled полям формы при неактивной странице
   for (var i = 0; i < formFieldset.length; i++) {
     formFieldset[i].disabled = 'disabled';
   }
 
-
   // Координаты main__pin--main при неактивной странице
-  document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
+  document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
+  // Функция активации страницы по нажатию на кнопку мыши
+  var activateMapClickHandler = function () {
+    var map = document.querySelector('.map');
+    var mainForm = document.querySelector('.ad-form');
+    var mapFiltersForm = document.querySelector('.map__filters');
 
-  // Активация страницы по нажатию на кнопку мыши
-  window.activateMapClickHandler = function () {
-    document.querySelector('.map').classList.remove('map--faded');
-    document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+    map.classList.remove('map--faded');
+    mainForm.classList.remove('ad-form--disabled');
+    mapFiltersForm.classList.remove('ad-form--disabled');
 
     // Активация полей формы
     for (i = 0; i < formFieldset.length; i++) {
@@ -24,21 +28,22 @@
     }
 
     // Отрисовка пинов, объявлений, ошибок
-    window.load(window.filter, window.renderError);
+    window.backend.load(window.filter.filtrate, window.render.renderError);
 
-    pinMain.removeEventListener('click', window.activateMapClickHandler);
+    pinMain.removeEventListener('click', activateMapClickHandler);
   };
 
-  var pinMain = document.querySelector('.map__pin--main');
-  pinMain.addEventListener('click', window.activateMapClickHandler);
-
-
-  // Активация страницы по нажатию на Enter
-  window.activateMapKeydownHandler = function (evt) {
+  // Функция активации страницы по нажатию на Enter
+  var activateMapKeydownHandler = function (evt) {
 
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
-      document.querySelector('.map').classList.remove('map--faded');
-      document.querySelector('.ad-form').classList.remove('ad-form--disabled');
+      var map = document.querySelector('.map');
+      var mainForm = document.querySelector('.ad-form');
+      var mapFiltersForm = document.querySelector('.map__filters');
+
+      map.classList.remove('map--faded');
+      mainForm.classList.remove('ad-form--disabled');
+      mapFiltersForm.classList.remove('ad-form--disabled');
 
       // Активация полей формы
       for (i = 0; i < formFieldset.length; i++) {
@@ -46,13 +51,14 @@
       }
 
       // Отрисовка пинов, объявлений, ошибок
-      window.load(window.filter, window.renderError);
+      window.backend.load(window.filter.filtrate, window.render.renderError);
 
-      pinMain.removeEventListener('click', window.activateMapKeydownHandler);
+      pinMain.removeEventListener('click', activateMapKeydownHandler);
     }
   };
 
-  pinMain.addEventListener('keydown', window.activateMapKeydownHandler);
+  pinMain.addEventListener('click', activateMapClickHandler);
+  pinMain.addEventListener('keydown', activateMapKeydownHandler);
 
 
   // Перемещение map__pin--main по карте
@@ -105,4 +111,8 @@
     document.addEventListener('mouseup', mouseUpHandler);
   });
 
+  window.map = {
+    activateMapClickHandler: activateMapClickHandler,
+    activateMapKeydownHandler: activateMapKeydownHandler
+  };
 })();

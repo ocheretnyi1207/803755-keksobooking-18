@@ -2,7 +2,7 @@
 
 (function () {
 
-  window.load = function (successCallback, errorCallback) {
+  var load = function (successCallback, errorCallback) {
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -30,7 +30,7 @@
     xhr.timeout = window.util.TIMEOUT;
   };
 
-  window.upload = function (data, successCallback, errorCallback) {
+  var upload = function (data, successCallback, errorCallback) {
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -57,6 +57,11 @@
 
       xhr.timeout = window.util.TIMEOUT;
     });
+  };
+
+  window.backend = {
+    load: load,
+    upload: upload
   };
 
 })();

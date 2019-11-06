@@ -43,10 +43,10 @@
     }
   };
 
-  window.filter = function (data) {
+  var filtrate = function (data) {
 
     var visibleData = data.slice(0, window.util.MAX_VISIBLE_PIN);
-    window.renderElementsLoad(visibleData);
+    window.render.renderElementsLoad(visibleData);
 
     mapFilters.addEventListener('change', function () {
       clearMap();
@@ -89,11 +89,14 @@
       };
 
       debounce((function () {
-        window.renderElementsLoad(visibleFilterData);
+        window.render.renderElementsLoad(visibleFilterData);
       }));
 
     });
   };
 
+  window.filter = {
+    filtrate: filtrate
+  };
 
 })();

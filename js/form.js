@@ -2,13 +2,12 @@
 
 (function () {
   var pinMain = document.querySelector('.map__pin--main');
-  var form = document.querySelector('.ad-form');
-  var btnResetForm = form.querySelector('.ad-form__reset');
+  var mainForm = document.querySelector('.ad-form');
+  var btnResetForm = mainForm.querySelector('.ad-form__reset');
   var selectRoomNumber = document.querySelector('#room_number');
   var selectGuestNumber = document.querySelector('#capacity');
   var selectCheckinTime = document.querySelector('#timein');
   var selectCheckoutTime = document.querySelector('#timeout');
-
 
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
@@ -83,8 +82,8 @@
 
 
   // Отправка данных из формы на сервер
-  form.addEventListener('submit', function (evt) {
-    window.upload(new FormData(form), window.renderSuccessUpload, window.renderError);
+  mainForm.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(mainForm), window.render.renderSuccessUpload, window.render.renderError);
     evt.preventDefault();
     pinMain.addEventListener('click', window.activateMapClickHandler);
     pinMain.addEventListener('keydown', window.activateMapKeydownHandler);
@@ -92,51 +91,73 @@
 
   // Сброс страницы при нажатии на кнокпку 'Очистить'
   btnResetForm.addEventListener('click', function () {
-    // Убираем значения полей
-    form.querySelector('#title').value = '';
-    form.querySelector('#price').value = '';
-    form.querySelector('#description').value = '';
-
-    // Удаляем пины и объявления
     var ads = document.querySelectorAll('.map__card');
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     var map = document.querySelector('.map');
-    var mapPins = document.querySelector('.map__pins');
+    var mapFiltersForm = document.querySelector('.map__filters');
+    var fieldsetMainForm = mainForm.querySelectorAll('fieldset');
+    var selectFilterForm = mapFiltersForm.querySelectorAll('select');
+    var fieldsetFilterForm = mapFiltersForm.querySelectorAll('fieldset');
+    var itTitle = mainForm.querySelector('#title');
+    var inPrice = mainForm.querySelector('#price');
+    var itxDescription = mainForm.querySelector('#description');
+    var chkbxFeaturesMainForm = mainForm.querySelectorAll('input[type=checkbox]:checked');
+    var chkbxFeaturesFilter = mapFiltersForm.querySelectorAll('input[type=checkbox]:checked');
 
-    function removePinsAds(parent, child) {
-      for (var i = 0; i < child.length; i++) {
-        child[i].parentNode.removeChild(child[i]);
-      }
-    }
+    // Функция сброса чекбоксов
+    var resetCheckboxForm = function (fields) {
+      fields.forEach(function (element) {
+        return (element.checked = '');
+      });
+    };
 
-    removePinsAds(map, ads);
-    removePinsAds(mapPins, pins);
+    // Функция очистки карты
+    var clearMap = function (childNode) {
+      childNode.forEach(function (element) {
+        return element.parentNode.removeChild(element);
+      });
+    };
 
-    // Добавляем всем fieldset формы атрибут disabled
-    var fieldsetForm = form.querySelectorAll('fieldset');
+    // Function disable elements
+    var elementsFormDisable = function (elem) {
+      elem.forEach(function (element) {
+        return (element.disabled = 'disabled');
+      });
+    };
 
-    for (var i = 0; i < fieldsetForm.length; i++) {
-      fieldsetForm[i].disabled = 'disabled';
-    }
+    // Сброс полей
+    itTitle.value = '';
+    inPrice.value = '';
+    itxDescription.value = '';
+
+    resetCheckboxForm(chkbxFeaturesMainForm);
+    resetCheckboxForm(chkbxFeaturesFilter);
+
+    selectFilterForm.forEach(function (element) {
+      return (element.value = 'any');
+    });
+
+    // Удаляем пины и объявления
+    clearMap(ads);
+    clearMap(pins);
+
+    // Добавляем класс map--faded карте и ad_form--disabled формам
+    map.classList.add('map--faded');
+    mainForm.classList.add('ad-form--disabled');
+    mapFiltersForm.classList.add('ad-form--disabled');
+
+    // Добавляем всем fieldset атрибут disabled
+    elementsFormDisable(fieldsetMainForm);
+    elementsFormDisable(selectFilterForm);
+    elementsFormDisable(fieldsetFilterForm);
 
     // Возвращаем метку map__pin--main в исходное состояние
     pinMain.style.left = window.util.LOCATION_X_PIN + 'px';
     pinMain.style.top = window.util.LOCATION_Y_PIN + 'px';
-    document.querySelector('#address').value = (window.util.LOCATION_X_PIN + (window.util.WIDTH_PIN / 2)) + ', ' + (window.util.LOCATION_Y_PIN + ((window.util.HEIGHT_PIN - window.util.HEIGHT_POINTER_PIN) / 2));
+    document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
-    // Убираем checked у чекбоксов в фильтре
-    var checkboxFilter = document.querySelectorAll('input[type=checkbox]:checked');
-
-    for (i = 0; i < checkboxFilter.length; i++) {
-      checkboxFilter[i].checked = '';
-    }
-
-    // Добавляем карте класс map--faded
-    document.querySelector('.map').classList.add('map--faded');
-    form.classList.add('ad-form--disabled');
-
-    pinMain.addEventListener('click', window.activateMapClickHandler);
-    pinMain.addEventListener('keydown', window.activateMapKeydownHandler);
+    pinMain.addEventListener('click', window.map.activateMapClickHandler);
+    pinMain.addEventListener('keydown', window.map.activateMapKeydownHandler);
   });
 
 })();
