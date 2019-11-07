@@ -3,24 +3,14 @@
 (function () {
   var mapFilters = document.querySelector('.map__filters');
 
-  // Удаление лишних элементов при фильтрации
-  var removeElements = function (childNode, parentNode) {
-    Array.from(childNode).forEach(function (element) {
-      parentNode.removeChild(element);
+  // Функция очистки карты
+  var clearMap = function (childNode) {
+    childNode.forEach(function (element) {
+      return element.parentNode.removeChild(element);
     });
   };
 
-  // Очистка карты
-  var clearMap = function () {
-    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    var mapPins = document.querySelector('.map__pins');
-    var ads = document.querySelectorAll('.map__card');
-    var map = document.querySelector('.map');
-
-    removeElements(pins, mapPins);
-    removeElements(ads, map);
-  };
-
+  // Функция фильтрации по цене
   var getPriceRange = function (range) {
     switch (range) {
       case 'high':
@@ -49,14 +39,17 @@
     window.render.renderElementsLoad(visibleData);
 
     mapFilters.addEventListener('change', function () {
-      clearMap();
-
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var ads = document.querySelectorAll('.map__card');
       var houseType = mapFilters.querySelector('#housing-type');
       var housePrice = mapFilters.querySelector('#housing-price');
       var houseRooms = mapFilters.querySelector('#housing-rooms');
       var houseGuests = mapFilters.querySelector('#housing-guests');
       var houseFeatures = mapFilters.querySelectorAll('#housing-features input');
       var priceRange = getPriceRange(housePrice.value);
+
+      clearMap(ads);
+      clearMap(pins);
 
       var selectedFeatures = [];
       for (var i = 0; i < houseFeatures.length; i++) {
@@ -78,7 +71,7 @@
 
       var visibleFilterData = sortData.slice(0, window.util.MAX_VISIBLE_PIN);
 
-
+      // Устранение дребезга
       var lastTimeout;
       var debounce = function (cb) {
         if (lastTimeout) {

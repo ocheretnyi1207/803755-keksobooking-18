@@ -85,8 +85,8 @@
   mainForm.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(mainForm), window.render.renderSuccessUpload, window.render.renderError);
     evt.preventDefault();
-    pinMain.addEventListener('click', window.activateMapClickHandler);
-    pinMain.addEventListener('keydown', window.activateMapKeydownHandler);
+    pinMain.addEventListener('click', window.map.activateMapClickHandler);
+    pinMain.addEventListener('keydown', window.map.activateMapKeydownHandler);
   });
 
   // Сброс страницы при нажатии на кнокпку 'Очистить'

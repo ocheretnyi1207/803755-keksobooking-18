@@ -134,43 +134,42 @@
 
   // Рендер элементов при загрузке данных с сервера
   var renderElementsLoad = function (data) {
-
-    // Рендер пинов
     var fragmentPin = document.createDocumentFragment();
-
-    for (var i = 0; i < data.length; i++) {
-      fragmentPin.appendChild(renderPin(data[i]));
-    }
-
-    mapPins.appendChild(fragmentPin);
-
-
-    // Рендер объявлений
     var fragmentAd = document.createDocumentFragment();
 
-    for (i = 0; i < data.length; i++) {
-      fragmentAd.appendChild(renderAd(data[i]));
-    }
 
+    // Рендер пинов и объявлений
+    var renderPinsAds = function (fragment, funcRender) {
+      data.forEach(function (element) {
+        return (fragment.appendChild(funcRender(element)));
+      });
+    };
+
+    renderPinsAds(fragmentPin, renderPin);
+    renderPinsAds(fragmentAd, renderAd);
+
+    mapPins.appendChild(fragmentPin);
     map.appendChild(fragmentAd);
 
 
     // Деактивация объявлений после загрузки
     var ads = document.querySelectorAll('.map__card');
 
-    for (i = 0; i < ads.length; i++) {
-      ads[i].style.display = 'none';
-    }
+    ads.forEach(function (element) {
+      return (element.style.display = 'none');
+    });
 
     map.appendChild(document.querySelector('.map__filters-container'));
+
 
     // Вешаем класс map__pin--active на активную метку
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     var acivePinClickHandler = function (evt) {
+
       evt.preventDefault();
 
-      for (i = 0; i < pins.length; i++) {
+      for (var i = 0; i < pins.length; i++) {
         if (pins[i].classList.contains('map__pin--active')) {
           pins[i].classList.remove('map__pin--active');
         }
@@ -183,6 +182,7 @@
     };
 
     mapPins.addEventListener('click', acivePinClickHandler);
+
 
     // Открытие объявления по клику
     var adOpenClickHandler = function (index) {
@@ -198,9 +198,10 @@
       };
     };
 
-    for (i = 0; i < pins.length; i++) {
+    for (var i = 0; i < pins.length; i++) {
       pins[i].addEventListener('click', adOpenClickHandler(i));
     }
+
 
     // Открытие объявления по нажатию Enter
     var adOpenKeydownHandler = function (index) {
@@ -222,6 +223,7 @@
       pins[i].addEventListener('keydown', adOpenKeydownHandler(i));
     }
 
+
     // Закрытие объявления по клику на кнопку закрытия
     var adCloseClickHandler = function (evt) {
       if (evt.target.className === 'popup__close') {
@@ -230,6 +232,7 @@
     };
 
     map.addEventListener('click', adCloseClickHandler);
+
 
     // Закрытие объявления по нажатию Esc
     document.addEventListener('keydown', function (evt) {
