@@ -3,11 +3,14 @@
 (function () {
   var pinMain = document.querySelector('.map__pin--main');
   var mainForm = document.querySelector('.ad-form');
+  var mapFiltersForm = document.querySelector('.map__filters');
   var btnResetForm = mainForm.querySelector('.ad-form__reset');
   var selectRoomNumber = document.querySelector('#room_number');
   var selectGuestNumber = document.querySelector('#capacity');
   var selectCheckinTime = document.querySelector('#timein');
   var selectCheckoutTime = document.querySelector('#timeout');
+  var map = document.querySelector('.map');
+
 
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
@@ -80,7 +83,6 @@
     }
   });
 
-
   // Отправка данных из формы на сервер
   mainForm.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(mainForm), window.render.renderSuccessUpload, window.render.renderError);
@@ -93,8 +95,6 @@
   btnResetForm.addEventListener('click', function () {
     var ads = document.querySelectorAll('.map__card');
     var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    var map = document.querySelector('.map');
-    var mapFiltersForm = document.querySelector('.map__filters');
     var fieldsetMainForm = mainForm.querySelectorAll('fieldset');
     var selectFilterForm = mapFiltersForm.querySelectorAll('select');
     var fieldsetFilterForm = mapFiltersForm.querySelectorAll('fieldset');

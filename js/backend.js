@@ -19,7 +19,6 @@
       errorCallback('Произошла ошибка соединения');
     });
 
-
     xhr.addEventListener('timeout', function () {
       errorCallback('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });

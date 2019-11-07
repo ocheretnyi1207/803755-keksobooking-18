@@ -2,30 +2,48 @@
 
 (function () {
   var pinMain = document.querySelector('.map__pin--main');
-  var formFieldset = document.querySelectorAll('fieldset');
+  var map = document.querySelector('.map');
+  var mainForm = document.querySelector('.ad-form');
+  var mapFiltersForm = document.querySelector('.map__filters');
+  var fieldsetMainForm = mainForm.querySelectorAll('fieldset');
+  var selectFilterForm = mapFiltersForm.querySelectorAll('select');
+  var fieldsetFilterForm = mapFiltersForm.querySelectorAll('fieldset');
+
+  // Function disable elements
+  var elementsFormDisable = function (elem) {
+    elem.forEach(function (element) {
+      return (element.disabled = 'disabled');
+    });
+  };
 
   // Добавление атрибута disabled полям формы при неактивной странице
-  for (var i = 0; i < formFieldset.length; i++) {
-    formFieldset[i].disabled = 'disabled';
-  }
+  elementsFormDisable(fieldsetMainForm);
+  elementsFormDisable(selectFilterForm);
+  elementsFormDisable(fieldsetFilterForm);
 
   // Координаты main__pin--main при неактивной странице
   document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
   // Функция активации страницы по нажатию на кнопку мыши
   var activateMapClickHandler = function () {
-    var map = document.querySelector('.map');
-    var mainForm = document.querySelector('.ad-form');
-    var mapFiltersForm = document.querySelector('.map__filters');
-
     map.classList.remove('map--faded');
     mainForm.classList.remove('ad-form--disabled');
     mapFiltersForm.classList.remove('ad-form--disabled');
+    var inPrice = mainForm.querySelector('#price');
+
+    // Function enable elements
+    var elementsFormEnable = function (elem) {
+      elem.forEach(function (element) {
+        return (element.disabled = '');
+      });
+    };
+
+    inPrice.min = window.util.MIN_PRICE_ON_ACTIVATE_PAGE;
 
     // Активация полей формы
-    for (i = 0; i < formFieldset.length; i++) {
-      formFieldset[i].disabled = '';
-    }
+    elementsFormEnable(fieldsetMainForm);
+    elementsFormEnable(fieldsetFilterForm);
+    elementsFormEnable(selectFilterForm);
 
     // Отрисовка пинов, объявлений, ошибок
     window.backend.load(window.filter.filtrate, window.render.renderError);
@@ -37,18 +55,24 @@
   var activateMapKeydownHandler = function (evt) {
 
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
-      var map = document.querySelector('.map');
-      var mainForm = document.querySelector('.ad-form');
-      var mapFiltersForm = document.querySelector('.map__filters');
-
       map.classList.remove('map--faded');
       mainForm.classList.remove('ad-form--disabled');
       mapFiltersForm.classList.remove('ad-form--disabled');
+      var inPrice = mainForm.querySelector('#price');
+
+      // Function enable elements
+      var elementsFormEnable = function (elem) {
+        elem.forEach(function (element) {
+          return (element.disabled = '');
+        });
+      };
+
+      inPrice.min = window.util.MIN_PRICE_ON_ACTIVATE_PAGE;
 
       // Активация полей формы
-      for (i = 0; i < formFieldset.length; i++) {
-        formFieldset[i].disabled = '';
-      }
+      elementsFormEnable(fieldsetMainForm);
+      elementsFormEnable(fieldsetFilterForm);
+      elementsFormEnable(selectFilterForm);
 
       // Отрисовка пинов, объявлений, ошибок
       window.backend.load(window.filter.filtrate, window.render.renderError);
