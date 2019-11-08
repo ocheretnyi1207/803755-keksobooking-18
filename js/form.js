@@ -5,80 +5,74 @@
   var mainForm = document.querySelector('.ad-form');
   var mapFiltersForm = document.querySelector('.map__filters');
   var btnResetForm = mainForm.querySelector('.ad-form__reset');
-  var selectRoomNumber = document.querySelector('#room_number');
-  var selectGuestNumber = document.querySelector('#capacity');
-  var selectCheckinTime = document.querySelector('#timein');
-  var selectCheckoutTime = document.querySelector('#timeout');
+  var isRoomNumber = document.querySelector('#room_number');
+  var isGuestNumber = document.querySelector('#capacity');
+  var isGuestNumberOptions = isGuestNumber.querySelectorAll('option');
+  var isCheckinTime = document.querySelector('#timein');
+  var isCheckoutTime = document.querySelector('#timeout');
   var map = document.querySelector('.map');
+  var isType = mainForm.querySelector('#type');
+  var inPrice = mainForm.querySelector('#price');
 
-
-  // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
-  var dependPriceChangeOfTypeHouse = function (idSelect, idPriceFieldForm, indexOption, valueMinPrice, valuePlaceholder) {
-    if (document.querySelector(idSelect).options[indexOption].selected) {
-      document.querySelector(idPriceFieldForm).min = valueMinPrice;
-      document.querySelector(idPriceFieldForm).placeholder = valuePlaceholder;
-    }
+  // Словари
+  var typeHouseInPrice = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 10000
   };
 
-  document.querySelector('#type').addEventListener('change', function () {
-    dependPriceChangeOfTypeHouse('#type', '#price', 0, 0, '0');
-    dependPriceChangeOfTypeHouse('#type', '#price', 1, 1000, '1000');
-    dependPriceChangeOfTypeHouse('#type', '#price', 2, 5000, '5000');
-    dependPriceChangeOfTypeHouse('#type', '#price', 3, 10000, '10000');
-  });
+  var roomsCount = {
+    1: [1],
+    2: [1, 2],
+    3: [1, 2, 3],
+    100: [0]
+  };
+
+  var isTypeChangeHandler = function () {
+    inPrice.value = typeHouseInPrice[isType.value];
+    inPrice.min = typeHouseInPrice[isType.value];
+    inPrice.placeholder = typeHouseInPrice[isType.value];
+  };
+
+  var checkCountRoom = function (value) {
+    isGuestNumberOptions.forEach(function (element) {
+      return (element.disabled = 'disabled');
+    });
+
+    roomsCount[value].forEach(function (userChoice) {
+      isGuestNumberOptions.forEach(function (roomsCountUserChoice) {
+        if (Number(roomsCountUserChoice.value) === userChoice) {
+          roomsCountUserChoice.disabled = '';
+          roomsCountUserChoice.selected = 'selected';
+        }
+      });
+    });
+  };
+
+  // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
+  isType.addEventListener('change', isTypeChangeHandler);
 
 
   // Сценарий соответствия количества гостей и количества комнат
-  selectGuestNumber.options[0].disabled = 'disabled';
-  selectGuestNumber.options[1].disabled = 'disabled';
-  selectGuestNumber.options[2].selected = 'selected';
-  selectGuestNumber.options[3].disabled = 'disabled';
-
-  selectRoomNumber.addEventListener('change', function () {
-    if (selectRoomNumber.options[0].selected) {
-      selectGuestNumber.options[0].disabled = 'disabled';
-      selectGuestNumber.options[1].disabled = 'disabled';
-      selectGuestNumber.options[2].disabled = '';
-      selectGuestNumber.options[2].selected = 'selected';
-      selectGuestNumber.options[3].disabled = 'disabled';
-    }
-    if (selectRoomNumber.options[1].selected) {
-      selectGuestNumber.options[0].disabled = 'disabled';
-      selectGuestNumber.options[1].disabled = '';
-      selectGuestNumber.options[1].selected = 'selected';
-      selectGuestNumber.options[2].disabled = '';
-      selectGuestNumber.options[3].disabled = 'disabled';
-    }
-    if (selectRoomNumber.options[2].selected) {
-      selectGuestNumber.options[0].disabled = '';
-      selectGuestNumber.options[1].disabled = '';
-      selectGuestNumber.options[2].disabled = '';
-      selectGuestNumber.options[0].selected = 'selected';
-      selectGuestNumber.options[3].disabled = 'disabled';
-    }
-    if (selectRoomNumber.options[3].selected) {
-      selectGuestNumber.options[0].disabled = 'disabled';
-      selectGuestNumber.options[1].disabled = 'disabled';
-      selectGuestNumber.options[2].disabled = 'disabled';
-      selectGuestNumber.options[3].disabled = '';
-      selectGuestNumber.options[3].selected = 'selected';
-    }
+  isRoomNumber.addEventListener('change', function (evt) {
+    checkCountRoom(evt.target.value);
   });
 
 
-  // Сценарий соответствия времени заезда и времени выезда
-  selectCheckinTime.addEventListener('change', function () {
-    for (var i = 0; i < selectCheckinTime.length; i++) {
-      if (selectCheckinTime[i].selected) {
-        selectCheckoutTime[i].selected = 'selected';
+  // Сценарий соответствия времени заезда и времени выездa
+  isCheckinTime.addEventListener('change', function () {
+    for (var i = 0; i < isCheckinTime.length; i++) {
+      if (isCheckinTime[i].selected) {
+        isCheckoutTime[i].selected = 'selected';
       }
     }
   });
 
-  selectCheckoutTime.addEventListener('change', function () {
-    for (var i = 0; i < selectCheckoutTime.length; i++) {
-      if (selectCheckoutTime[i].selected) {
-        selectCheckinTime[i].selected = 'selected';
+  isCheckoutTime.addEventListener('change', function () {
+    for (var i = 0; i < isCheckoutTime.length; i++) {
+      if (isCheckoutTime[i].selected) {
+        isCheckinTime[i].selected = 'selected';
       }
     }
   });
@@ -99,7 +93,6 @@
     var selectFilterForm = mapFiltersForm.querySelectorAll('select');
     var fieldsetFilterForm = mapFiltersForm.querySelectorAll('fieldset');
     var itTitle = mainForm.querySelector('#title');
-    var inPrice = mainForm.querySelector('#price');
     var itxDescription = mainForm.querySelector('#description');
     var chkbxFeaturesMainForm = mainForm.querySelectorAll('input[type=checkbox]:checked');
     var chkbxFeaturesFilter = mapFiltersForm.querySelectorAll('input[type=checkbox]:checked');
