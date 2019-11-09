@@ -14,6 +14,30 @@
   var pinMain = document.querySelector('.map__pin--main');
 
 
+  // Функция сброса чекбоксов
+  var resetCheckboxForm = function (fields) {
+    fields.forEach(function (element) {
+      return (element.checked = '');
+    });
+  };
+
+
+  // Функция очистки карты
+  var clearMap = function (childNode) {
+    childNode.forEach(function (element) {
+      return element.parentNode.removeChild(element);
+    });
+  };
+
+
+  // Function disable elements
+  var elementsFormDisable = function (elem) {
+    elem.forEach(function (element) {
+      return (element.disabled = 'disabled');
+    });
+  };
+
+
   // Функция отрисовки пинов из шаблона
   var renderPin = function (arrayElement) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -25,6 +49,7 @@
     return pinElement;
   };
 
+
   // Функция отрисовки объявления из шаблона
   var renderAd = function (arrayElement) {
     var adElement = adTemplate.cloneNode(true);
@@ -34,6 +59,7 @@
     adElement.querySelector('.popup__type').textContent = arrayElement.offer.type;
     adElement.querySelector('.popup__text--capacity').textContent = arrayElement.offer.rooms + ' комнаты для ' + arrayElement.offer.guests + ' гостей';
     adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayElement.offer.checkin + ', ' + 'выезд до ' + arrayElement.offer.checkout;
+
 
     for (var i = 0; i < arrayElement.offer.features.length; i++) {
       switch (arrayElement.offer.features[i]) {
@@ -77,25 +103,17 @@
     clearNonExistentFeatures('elevator');
     clearNonExistentFeatures('conditioner');
 
+
     adElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
 
-    switch (arrayElement.offer.type) {
-      case 'flat':
-        adElement.querySelector('.popup__type').textContent = 'Квартира';
-        break;
+    var translationTypeHouse = {
+      'bungalo': 'Бунгало',
+      'flat': 'Квартирa',
+      'house': 'Дом',
+      'palace': 'Дворец'
+    };
 
-      case 'bungalo':
-        adElement.querySelector('.popup__type').textContent = 'Бунгало';
-        break;
-
-      case 'palace':
-        adElement.querySelector('.popup__type').textContent = 'Дворец';
-        break;
-
-      case 'house':
-        adElement.querySelector('.popup__type').textContent = 'Дом';
-        break;
-    }
+    adElement.querySelector('.popup__type').textContent = translationTypeHouse[arrayElement.offer.type];
 
     var createPhotos = function (arrayPhotos) {
       var fragmentPhotos = document.createDocumentFragment();
@@ -117,6 +135,7 @@
     return adElement;
   };
 
+
   // Функция отрисовки сообщения об ошибке из шаблона
   var renderErrorMessage = function (message) {
     var errorElement = errorTemplate.cloneNode(true);
@@ -125,6 +144,7 @@
     return errorElement;
   };
 
+
   // Функция отрисовки сообщения об успешной отправке данных из шаблона
   var renderSuccessMessage = function (message) {
     var successElement = successTemplate.cloneNode(true);
@@ -132,6 +152,7 @@
 
     return successElement;
   };
+
 
   // Рендер элементов при загрузке данных с сервера
   var renderElementsLoad = function (data) {
@@ -244,6 +265,7 @@
     document.addEventListener('keydown', adCloseKeydownHandler);
   };
 
+
   // Отправка данных на сервер
   var renderSuccessUpload = function (successMessage) {
     var fragmentSuccess = document.createDocumentFragment();
@@ -260,27 +282,6 @@
 
     fragmentSuccess.appendChild(renderSuccessMessage(successMessage));
     main.appendChild(fragmentSuccess);
-
-    // Функция сброса чекбоксов
-    var resetCheckboxForm = function (fields) {
-      fields.forEach(function (element) {
-        return (element.checked = '');
-      });
-    };
-
-    // Функция очистки карты
-    var clearMap = function (childNode) {
-      childNode.forEach(function (element) {
-        return element.parentNode.removeChild(element);
-      });
-    };
-
-    // Function disable elements
-    var elementsFormDisable = function (elem) {
-      elem.forEach(function (element) {
-        return (element.disabled = 'disabled');
-      });
-    };
 
     var successWindowKeydownHandler = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
@@ -333,6 +334,7 @@
 
   };
 
+
   // Рендер ошибки при загрузке данных с сервера
   var renderError = function (errorMessage) {
     var fragmentError = document.createDocumentFragment();
@@ -365,9 +367,13 @@
     });
   };
 
+
   window.render = {
     renderElementsLoad: renderElementsLoad,
     renderSuccessUpload: renderSuccessUpload,
-    renderError: renderError
+    renderError: renderError,
+    resetCheckboxForm: resetCheckboxForm,
+    clearMap: clearMap,
+    elementsFormDisable: elementsFormDisable
   };
 })();

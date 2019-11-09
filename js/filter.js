@@ -3,13 +3,6 @@
 (function () {
   var mapFilters = document.querySelector('.map__filters');
 
-  // Функция очистки карты
-  var clearMap = function (childNode) {
-    childNode.forEach(function (element) {
-      return element.parentNode.removeChild(element);
-    });
-  };
-
   // Функция фильтрации по цене
   var getPriceRange = function (range) {
     switch (range) {
@@ -48,8 +41,8 @@
       var houseFeatures = mapFilters.querySelectorAll('#housing-features input');
       var priceRange = getPriceRange(housePrice.value);
 
-      clearMap(ads);
-      clearMap(pins);
+      window.render.clearMap(ads);
+      window.render.clearMap(pins);
 
       var selectedFeatures = [];
       for (var i = 0; i < houseFeatures.length; i++) {

@@ -9,20 +9,23 @@
   var selectFilterForm = mapFiltersForm.querySelectorAll('select');
   var fieldsetFilterForm = mapFiltersForm.querySelectorAll('fieldset');
 
-  // Function disable elements
-  var elementsFormDisable = function (elem) {
+  // Function enable elements
+  var elementsFormEnable = function (elem) {
     elem.forEach(function (element) {
-      return (element.disabled = 'disabled');
+      return (element.disabled = '');
     });
   };
 
+
   // Добавление атрибута disabled полям формы при неактивной странице
-  elementsFormDisable(fieldsetMainForm);
-  elementsFormDisable(selectFilterForm);
-  elementsFormDisable(fieldsetFilterForm);
+  window.render.elementsFormDisable(fieldsetMainForm);
+  window.render.elementsFormDisable(selectFilterForm);
+  window.render.elementsFormDisable(fieldsetFilterForm);
+
 
   // Координаты main__pin--main при неактивной странице
   document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
+
 
   // Функция активации страницы по нажатию на кнопку мыши
   var activateMapClickHandler = function () {
@@ -31,14 +34,8 @@
     mapFiltersForm.classList.remove('ad-form--disabled');
     var inPrice = mainForm.querySelector('#price');
 
-    // Function enable elements
-    var elementsFormEnable = function (elem) {
-      elem.forEach(function (element) {
-        return (element.disabled = '');
-      });
-    };
-
     inPrice.min = window.util.MIN_PRICE_ON_ACTIVATE_PAGE;
+    inPrice.placeholder = window.util.MIN_PRICE_ON_ACTIVATE_PAGE;
 
     // Активация полей формы
     elementsFormEnable(fieldsetMainForm);
@@ -51,6 +48,7 @@
     pinMain.removeEventListener('click', activateMapClickHandler);
   };
 
+
   // Функция активации страницы по нажатию на Enter
   var activateMapKeydownHandler = function (evt) {
 
@@ -60,14 +58,8 @@
       mapFiltersForm.classList.remove('ad-form--disabled');
       var inPrice = mainForm.querySelector('#price');
 
-      // Function enable elements
-      var elementsFormEnable = function (elem) {
-        elem.forEach(function (element) {
-          return (element.disabled = '');
-        });
-      };
-
       inPrice.min = window.util.MIN_PRICE_ON_ACTIVATE_PAGE;
+      inPrice.placeholder = window.util.MIN_PRICE_ON_ACTIVATE_PAGE;
 
       // Активация полей формы
       elementsFormEnable(fieldsetMainForm);
@@ -80,6 +72,7 @@
       pinMain.removeEventListener('click', activateMapKeydownHandler);
     }
   };
+
 
   pinMain.addEventListener('click', activateMapClickHandler);
   pinMain.addEventListener('keydown', activateMapKeydownHandler);
@@ -121,7 +114,7 @@
         pinMain.style.top = (pinMain.offsetTop - displacement.y) + 'px';
       }
 
-      document.querySelector('#address').value = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) + ', ' + (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
+      document.querySelector('#address').value = (pinMain.offsetLeft - displacement.x + window.util.CENTER_X_PIN) + ', ' + (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
     };
 
     var mouseUpHandler = function (upEvt) {
@@ -134,6 +127,7 @@
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
   });
+
 
   window.map = {
     activateMapClickHandler: activateMapClickHandler,

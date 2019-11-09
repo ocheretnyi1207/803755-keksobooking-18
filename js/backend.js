@@ -28,13 +28,16 @@
     return xhr;
   };
 
+
   var load = function (successCallback, errorCallback) {
     createXhr('GET', window.util.URL_LOAD, successCallback, errorCallback).send();
   };
 
+
   var upload = function (data, successCallback, errorCallback) {
     createXhr('POST', window.util.URL_UPLOAD, successCallback, errorCallback).send(data);
   };
+
 
   window.backend = {
     load: load,

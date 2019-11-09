@@ -29,12 +29,6 @@
     100: [0]
   };
 
-  var isTypeChangeHandler = function () {
-    inPrice.value = typeHouseInPrice[isType.value];
-    inPrice.min = typeHouseInPrice[isType.value];
-    inPrice.placeholder = typeHouseInPrice[isType.value];
-  };
-
   var checkCountRoom = function (value) {
     isGuestNumberOptions.forEach(function (element) {
       return (element.disabled = 'disabled');
@@ -50,11 +44,26 @@
     });
   };
 
+  var isTypeChangeHandler = function () {
+    inPrice.value = typeHouseInPrice[isType.value];
+    inPrice.min = typeHouseInPrice[isType.value];
+    inPrice.placeholder = typeHouseInPrice[isType.value];
+  };
+
+
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   isType.addEventListener('change', isTypeChangeHandler);
 
 
   // Сценарий соответствия количества гостей и количества комнат
+  isGuestNumberOptions.forEach(function (element) {
+    if (element.value !== '1') {
+      element.disabled = 'disabled';
+    } else {
+      element.selected = 'selected';
+    }
+  });
+
   isRoomNumber.addEventListener('change', function (evt) {
     checkCountRoom(evt.target.value);
   });
@@ -97,42 +106,21 @@
     var chkbxFeaturesMainForm = mainForm.querySelectorAll('input[type=checkbox]:checked');
     var chkbxFeaturesFilter = mapFiltersForm.querySelectorAll('input[type=checkbox]:checked');
 
-    // Функция сброса чекбоксов
-    var resetCheckboxForm = function (fields) {
-      fields.forEach(function (element) {
-        return (element.checked = '');
-      });
-    };
-
-    // Функция очистки карты
-    var clearMap = function (childNode) {
-      childNode.forEach(function (element) {
-        return element.parentNode.removeChild(element);
-      });
-    };
-
-    // Function disable elements
-    var elementsFormDisable = function (elem) {
-      elem.forEach(function (element) {
-        return (element.disabled = 'disabled');
-      });
-    };
-
     // Сброс полей
     itTitle.value = '';
     inPrice.value = '';
     itxDescription.value = '';
 
-    resetCheckboxForm(chkbxFeaturesMainForm);
-    resetCheckboxForm(chkbxFeaturesFilter);
+    window.render.resetCheckboxForm(chkbxFeaturesMainForm);
+    window.render.resetCheckboxForm(chkbxFeaturesFilter);
 
     selectFilterForm.forEach(function (element) {
       return (element.value = 'any');
     });
 
     // Удаляем пины и объявления
-    clearMap(ads);
-    clearMap(pins);
+    window.render.clearMap(ads);
+    window.render.clearMap(pins);
 
     // Добавляем класс map--faded карте и ad_form--disabled формам
     map.classList.add('map--faded');
@@ -140,9 +128,9 @@
     mapFiltersForm.classList.add('ad-form--disabled');
 
     // Добавляем всем fieldset атрибут disabled
-    elementsFormDisable(fieldsetMainForm);
-    elementsFormDisable(selectFilterForm);
-    elementsFormDisable(fieldsetFilterForm);
+    window.render.elementsFormDisable(fieldsetMainForm);
+    window.render.elementsFormDisable(selectFilterForm);
+    window.render.elementsFormDisable(fieldsetFilterForm);
 
     // Возвращаем метку map__pin--main в исходное состояние
     pinMain.style.left = window.util.LOCATION_X_PIN + 'px';
