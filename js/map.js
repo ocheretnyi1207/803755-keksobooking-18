@@ -87,6 +87,7 @@
       y: evt.clientY
     };
 
+
     var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
@@ -100,19 +101,45 @@
         y: moveEvt.clientY
       };
 
+
       // Ограничение перемещения метки
+
+      var pinCoordX = pinMain.offsetLeft - displacement.x;
+      var pinCoordY = pinMain.offsetTop - displacement.y;
+
+      /*
       var isTopLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) <= window.util.TOP_LIMIT;
       var isBottomLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) >= window.util.BOTTOM_LIMIT;
-      var isLeftLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) <= window.util.LEFT_LIMIT;
+      var isLeftLimit = ( + (window.util.WIDTH_PIN / 2)) <= window.util.LEFT_LIMIT;
       var isRightLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) >= window.util.RIGHT_LIMIT;
+      *
 
-      if (isTopLimit || isBottomLimit || isLeftLimit || isRightLimit) {
+       if (isTopLimit || isBottomLimit || isLeftLimit || isRightLimit) {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
       } else {
         pinMain.style.left = (pinMain.offsetLeft - displacement.x) + 'px';
         pinMain.style.top = (pinMain.offsetTop - displacement.y) + 'px';
       }
+      */
+
+
+      if (pinCoordX < window.util.LEFT_LIMIT - window.util.CENTER_X_PIN) {
+        pinCoordX = map.offsetLeft - window.util.CENTER_X_PIN;
+
+      } else if (pinCoordX > window.util.RIGHT_LIMIT - window.util.CENTER_X_PIN) {
+        pinCoordX = map.offsetLeft + window.util.RIGHT_LIMIT - window.util.CENTER_X_PIN;
+      }
+
+      if (pinCoordY < window.util.TOP_LIMIT - window.util.HEIGHT_PIN) {
+        pinCoordY = map.offsetTop;
+      } else if (pinCoordY > window.util.BOTTOM_LIMIT) {
+        pinCoordY = map.offsetTop + window.util.BOTTOM_LIMIT;
+      }
+
+      pinMain.style.left = (pinMain.offsetLeft - displacement.x) + 'px';
+      pinMain.style.top = (pinMain.offsetTop - displacement.y) + 'px';
+
 
       document.querySelector('#address').value = (pinMain.offsetLeft - displacement.x + window.util.CENTER_X_PIN) + ', ' + (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
     };

@@ -13,7 +13,6 @@
   var mapFiltersForm = document.querySelector('.map__filters');
   var pinMain = document.querySelector('.map__pin--main');
 
-
   // Функция сброса чекбоксов
   var resetCheckboxForm = function (fields) {
     fields.forEach(function (element) {
@@ -21,6 +20,12 @@
     });
   };
 
+  // Function remove Child Nodes
+  var removeChilds = function (node) {
+    while (node.firstChild) {
+      node.firstChild.remove();
+    }
+  };
 
   // Функция очистки карты
   var clearMap = function (childNode) {
@@ -61,47 +66,21 @@
     adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayElement.offer.checkin + ', ' + 'выезд до ' + arrayElement.offer.checkout;
 
 
-    for (var i = 0; i < arrayElement.offer.features.length; i++) {
-      switch (arrayElement.offer.features[i]) {
+    removeChilds(adElement.querySelector('.popup__features'));
 
-        case 'wifi':
-          adElement.querySelector('.popup__feature--wifi').textContent = 'wifi';
-          break;
-
-        case 'dishwasher':
-          adElement.querySelector('.popup__feature--dishwasher').textContent = 'dishwasher';
-          break;
-
-        case 'parking':
-          adElement.querySelector('.popup__feature--parking').textContent = 'parking';
-          break;
-
-        case 'washer':
-          adElement.querySelector('.popup__feature--washer').textContent = 'washer';
-          break;
-
-        case 'elevator':
-          adElement.querySelector('.popup__feature--elevator').textContent = 'elevator';
-          break;
-
-        case 'conditioner':
-          adElement.querySelector('.popup__feature--conditioner').textContent = 'conditioner';
-          break;
+    var createLi = function (featureArr) {
+      var liElement = adTemplate.querySelector('.popup__feature');
+      var fragmentLi = document.createDocumentFragment();
+      for (var i = 0; i < featureArr.length; i++) {
+        var featureElement = liElement.cloneNode(true);
+        featureElement.className = 'popup__feature';
+        featureElement.classList.add('popup__feature--' + featureArr[i]);
+        fragmentLi.appendChild(featureElement);
       }
-    }
-
-    var clearNonExistentFeatures = function (features) {
-      if (adElement.querySelector('.popup__feature--' + features).textContent === '') {
-        adElement.querySelector('.popup__feature--' + features).parentNode.removeChild(adElement.querySelector('.popup__feature--' + features));
-      }
+      return fragmentLi;
     };
 
-    clearNonExistentFeatures('wifi');
-    clearNonExistentFeatures('dishwasher');
-    clearNonExistentFeatures('parking');
-    clearNonExistentFeatures('washer');
-    clearNonExistentFeatures('elevator');
-    clearNonExistentFeatures('conditioner');
+    adElement.querySelector('.popup__features').appendChild(createLi(arrayElement.offer.features));
 
 
     adElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
@@ -115,10 +94,11 @@
 
     adElement.querySelector('.popup__type').textContent = translationTypeHouse[arrayElement.offer.type];
 
+
     var createPhotos = function (arrayPhotos) {
       var fragmentPhotos = document.createDocumentFragment();
 
-      for (i = 0; i < arrayPhotos.length; i++) {
+      for (var i = 0; i < arrayPhotos.length; i++) {
         var photo = adPhoto.cloneNode(true);
         photo.src = arrayPhotos[i];
         fragmentPhotos.appendChild(photo);
@@ -129,6 +109,7 @@
 
     adElement.querySelector('.popup__photo').parentNode.removeChild(adElement.querySelector('.popup__photo'));
     adElement.querySelector('.popup__photos').appendChild(createPhotos(arrayElement.offer.photos));
+
 
     adElement.querySelector('.popup__avatar').src = arrayElement.author.avatar;
 

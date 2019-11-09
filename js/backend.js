@@ -20,7 +20,7 @@
     if (url === window.util.URL_UPLOAD) {
       xhr.addEventListener('load', function () {
         if (xhr.status === window.util.SERVER_RESPONCE_SUCCESS) {
-          successCallback('Выше объявление было успешно размещено!');
+          successCallback('Ваше объявление было успешно размещено!');
         } else {
           errorCallback('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
         }
