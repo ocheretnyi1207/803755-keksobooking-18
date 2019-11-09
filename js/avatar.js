@@ -23,9 +23,9 @@
           previewAvatar.src = reader.result;
         }
         if (evt.target === ifPhoto) {
-          previewPhoto.backgroundImage = 'url(' + reader.result + ')';
-          previewPhoto.backgroundRepeat = 'no-repeat';
-          previewPhoto.backgroundSize = 'cover';
+          previewPhoto.style.backgroundImage = 'url(' + reader.result + ')';
+          previewPhoto.style.backgroundRepeat = 'no-repeat';
+          previewPhoto.style.backgroundSize = 'cover';
         }
       });
 

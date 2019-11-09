@@ -308,7 +308,7 @@
     });
 
     // Reset avatars
-    window.avatar.previewAvatar = window.util.DEFAULT_FOTO;
+    window.avatar.previewAvatar.src = window.util.DEFAULT_FOTO;
     window.avatar.previewPhoto.style = '';
 
     // Удаляем пины и объявления
@@ -335,7 +335,6 @@
 
     // Закрываем окно об успешной отправке по нажатию на ESC
     document.addEventListener('keydown', successWindowKeydownHandler);
-
   };
 
 

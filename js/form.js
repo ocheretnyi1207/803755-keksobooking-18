@@ -119,7 +119,7 @@
     });
 
     // Reset avatars
-    window.avatar.previewAvatar = window.util.DEFAULT_FOTO;
+    window.avatar.previewAvatar.src = window.util.DEFAULT_FOTO;
     window.avatar.previewPhoto.style = '';
 
     // Удаляем пины и объявления
