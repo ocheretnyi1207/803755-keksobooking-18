@@ -118,6 +118,10 @@
       return (element.value = 'any');
     });
 
+    // Reset avatars
+    window.avatar.previewAvatar = window.util.DEFAULT_FOTO;
+    window.avatar.previewPhoto.style = '';
+
     // Удаляем пины и объявления
     window.render.clearMap(ads);
     window.render.clearMap(pins);

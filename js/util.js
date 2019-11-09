@@ -23,6 +23,7 @@
   var DEBOUNCE_INTERVAL = 500;
   var MIN_PRICE_ON_ACTIVATE_PAGE = 1000;
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var DEFAULT_FOTO = 'img/muffin-grey.svg';
 
 
   window.util = {
@@ -47,6 +48,7 @@
     MAX_VISIBLE_PIN: MAX_VISIBLE_PIN,
     DEBOUNCE_INTERVAL: DEBOUNCE_INTERVAL,
     MIN_PRICE_ON_ACTIVATE_PAGE: MIN_PRICE_ON_ACTIVATE_PAGE,
-    FILE_TYPES: FILE_TYPES
+    FILE_TYPES: FILE_TYPES,
+    DEFAULT_FOTO: DEFAULT_FOTO
   };
 })();

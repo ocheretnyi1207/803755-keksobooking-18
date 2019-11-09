@@ -35,4 +35,9 @@
 
   ifAvatar.addEventListener('change', changePhoto);
   ifPhoto.addEventListener('change', changePhoto);
+
+  window.avatar = {
+    previewAvatar: previewAvatar,
+    previewPhoto: previewPhoto
+  };
 })();
