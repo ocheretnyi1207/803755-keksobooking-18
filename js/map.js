@@ -8,6 +8,22 @@
   var fieldsetMainForm = mainForm.querySelectorAll('fieldset');
   var selectFilterForm = mapFiltersForm.querySelectorAll('select');
   var fieldsetFilterForm = mapFiltersForm.querySelectorAll('fieldset');
+  var itAddress = mainForm.querySelector('#address');
+  var pinMainCurrentX = pinMain.offsetLeft;
+  var pinMainCurrentY = pinMain.offsetTop;
+  var cursorX = parseInt(pinMain.style.left, 10);
+  var cursorY = parseInt(pinMain.style.top, 10);
+  var pinMainXMin = window.util.LEFT_LIMIT - window.util.CENTER_X_PIN;
+  var pinMainXMax = window.util.RIGHT_LIMIT - window.util.CENTER_X_PIN;
+  var pinMainYMin = window.util.TOP_LIMIT - window.util.HEIGHT_PIN;
+  var pinMainYMax = window.util.BOTTOM_LIMIT - window.util.HEIGHT_PIN;
+
+
+  function getMainPinCoordinate() {
+    itAddress.value = Math.round(pinMainCurrentX + window.util.CENTER_X_PIN) + ', ' +
+      Math.round(pinMainCurrentY + window.util.HEIGHT_PIN);
+  }
+
 
   // Function enable elements
   var elementsFormEnable = function (elem) {
@@ -24,7 +40,7 @@
 
 
   // Координаты main__pin--main при неактивной странице
-  document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
+  itAddress.value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
 
   // Функция активации страницы по нажатию на кнопку мыши
@@ -78,11 +94,11 @@
   pinMain.addEventListener('keydown', activateMapKeydownHandler);
 
 
-  // Перемещение map__pin--main по карте
+  // Перемещение метки по карте
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    var startCoordinates = {
+    var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
@@ -91,57 +107,38 @@
     var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var displacement = {
-        x: startCoordinates.x - moveEvt.clientX,
-        y: startCoordinates.y - moveEvt.clientY
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
       };
 
-      startCoordinates = {
+      startCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
+      pinMainCurrentX = pinMainCurrentX - shift.x;
+      pinMainCurrentY = pinMainCurrentY - shift.y;
 
-      // Ограничение перемещения метки
+      cursorX = cursorX - shift.x;
+      cursorY = cursorY - shift.y;
 
-      var pinCoordX = pinMain.offsetLeft - displacement.x;
-      var pinCoordY = pinMain.offsetTop - displacement.y;
-
-      /*
-      var isTopLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) <= window.util.TOP_LIMIT;
-      var isBottomLimit = (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN) >= window.util.BOTTOM_LIMIT;
-      var isLeftLimit = ( + (window.util.WIDTH_PIN / 2)) <= window.util.LEFT_LIMIT;
-      var isRightLimit = (pinMain.offsetLeft - displacement.x + (window.util.WIDTH_PIN / 2)) >= window.util.RIGHT_LIMIT;
-      *
-
-       if (isTopLimit || isBottomLimit || isLeftLimit || isRightLimit) {
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      } else {
-        pinMain.style.left = (pinMain.offsetLeft - displacement.x) + 'px';
-        pinMain.style.top = (pinMain.offsetTop - displacement.y) + 'px';
+      if (pinMainCurrentX > pinMainXMax || cursorX > pinMainXMax) {
+        pinMainCurrentX = pinMainXMax;
+      } else if (pinMainCurrentX < pinMainXMin || cursorX < pinMainXMin) {
+        pinMainCurrentX = pinMainXMin;
       }
-      */
-
-
-      if (pinCoordX < window.util.LEFT_LIMIT - window.util.CENTER_X_PIN) {
-        pinCoordX = map.offsetLeft - window.util.CENTER_X_PIN;
-
-      } else if (pinCoordX > window.util.RIGHT_LIMIT - window.util.CENTER_X_PIN) {
-        pinCoordX = map.offsetLeft + window.util.RIGHT_LIMIT - window.util.CENTER_X_PIN;
+      if (pinMainCurrentY > pinMainYMax || cursorY > pinMainYMax) {
+        pinMainCurrentY = pinMainYMax;
+      } else if (pinMainCurrentY < pinMainYMin || cursorY < pinMainYMin) {
+        pinMainCurrentY = pinMainYMin;
       }
 
-      if (pinCoordY < window.util.TOP_LIMIT - window.util.HEIGHT_PIN) {
-        pinCoordY = map.offsetTop;
-      } else if (pinCoordY > window.util.BOTTOM_LIMIT) {
-        pinCoordY = map.offsetTop + window.util.BOTTOM_LIMIT;
-      }
+      pinMain.style.top = pinMainCurrentY + 'px';
+      pinMain.style.left = pinMainCurrentX + 'px';
 
-      pinMain.style.left = (pinMain.offsetLeft - displacement.x) + 'px';
-      pinMain.style.top = (pinMain.offsetTop - displacement.y) + 'px';
+      getMainPinCoordinate();
 
-
-      document.querySelector('#address').value = (pinMain.offsetLeft - displacement.x + window.util.CENTER_X_PIN) + ', ' + (pinMain.offsetTop - displacement.y + window.util.HEIGHT_PIN);
     };
 
     var mouseUpHandler = function (upEvt) {
@@ -154,7 +151,6 @@
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
   });
-
 
   window.map = {
     activateMapClickHandler: activateMapClickHandler,
