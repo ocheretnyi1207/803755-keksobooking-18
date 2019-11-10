@@ -51,4 +51,5 @@
     FILE_TYPES: FILE_TYPES,
     DEFAULT_FOTO: DEFAULT_FOTO
   };
+
 })();
