@@ -110,6 +110,16 @@
     itTitle.value = '';
     inPrice.value = '';
     itxDescription.value = '';
+    isRoomNumber.value = '1';
+
+
+    isGuestNumberOptions.forEach(function (element) {
+      if (element.value !== '1') {
+        element.disabled = 'disabled';
+      } else {
+        element.selected = 'selected';
+      }
+    });
 
     window.render.resetCheckboxForm(chkbxFeaturesMainForm);
     window.render.resetCheckboxForm(chkbxFeaturesFilter);

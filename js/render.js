@@ -261,6 +261,9 @@
     var itxDescription = mainForm.querySelector('#description');
     var chkbxFeaturesMainForm = mainForm.querySelectorAll('input[type=checkbox]:checked');
     var chkbxFeaturesFilter = mapFiltersForm.querySelectorAll('input[type=checkbox]:checked');
+    var isRoomNumber = document.querySelector('#room_number');
+    var isGuestNumber = document.querySelector('#capacity');
+    var isGuestNumberOptions = isGuestNumber.querySelectorAll('option');
 
     fragmentSuccess.appendChild(renderSuccessMessage(successMessage));
     main.appendChild(fragmentSuccess);
@@ -281,6 +284,16 @@
     itTitle.value = '';
     inPrice.value = '';
     itxDescription.value = '';
+    isRoomNumber.value = '1';
+
+
+    isGuestNumberOptions.forEach(function (element) {
+      if (element.value !== '1') {
+        element.disabled = 'disabled';
+      } else {
+        element.selected = 'selected';
+      }
+    });
 
     resetCheckboxForm(chkbxFeaturesMainForm);
     resetCheckboxForm(chkbxFeaturesFilter);
