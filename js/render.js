@@ -85,6 +85,7 @@
 
     adElement.querySelector('.popup__description').textContent = arrayElement.offer.description;
 
+
     var translationTypeHouse = {
       'bungalo': 'Бунгало',
       'flat': 'Квартирa',
