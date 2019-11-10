@@ -128,6 +128,7 @@
       } else if (pinMainCurrentX < pinMainXMin || cursorX < pinMainXMin) {
         pinMainCurrentX = pinMainXMin;
       }
+
       if (pinMainCurrentY > pinMainYMax || cursorY > pinMainYMax) {
         pinMainCurrentY = pinMainYMax;
       } else if (pinMainCurrentY < pinMainYMin || cursorY < pinMainYMin) {
