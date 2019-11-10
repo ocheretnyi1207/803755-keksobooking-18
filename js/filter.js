@@ -3,24 +3,7 @@
 (function () {
   var mapFilters = document.querySelector('.map__filters');
 
-  // Удаление лишних элементов при фильтрации
-  var removeElements = function (childNode, parentNode) {
-    Array.from(childNode).forEach(function (element) {
-      parentNode.removeChild(element);
-    });
-  };
-
-  // Очистка карты
-  var clearMap = function () {
-    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    var mapPins = document.querySelector('.map__pins');
-    var mapCard = document.querySelectorAll('.map__card');
-    var map = document.querySelector('.map');
-
-    removeElements(mapPin, mapPins);
-    removeElements(mapCard, map);
-  };
-
+  // Функция фильтрации по цене
   var getPriceRange = function (range) {
     switch (range) {
       case 'high':
@@ -43,20 +26,23 @@
     }
   };
 
-  window.filter = function (data) {
+  var filtrate = function (data) {
 
     var visibleData = data.slice(0, window.util.MAX_VISIBLE_PIN);
-    window.renderElementsLoad(visibleData);
+    window.render.renderElementsLoad(visibleData);
 
     mapFilters.addEventListener('change', function () {
-      clearMap();
-
+      var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+      var ads = document.querySelectorAll('.map__card');
       var houseType = mapFilters.querySelector('#housing-type');
       var housePrice = mapFilters.querySelector('#housing-price');
       var houseRooms = mapFilters.querySelector('#housing-rooms');
       var houseGuests = mapFilters.querySelector('#housing-guests');
       var houseFeatures = mapFilters.querySelectorAll('#housing-features input');
       var priceRange = getPriceRange(housePrice.value);
+
+      window.render.clearMap(ads);
+      window.render.clearMap(pins);
 
       var selectedFeatures = [];
       for (var i = 0; i < houseFeatures.length; i++) {
@@ -78,7 +64,7 @@
 
       var visibleFilterData = sortData.slice(0, window.util.MAX_VISIBLE_PIN);
 
-
+      // Устранение дребезга
       var lastTimeout;
       var debounce = function (cb) {
         if (lastTimeout) {
@@ -89,11 +75,14 @@
       };
 
       debounce((function () {
-        window.renderElementsLoad(visibleFilterData);
+        window.render.renderElementsLoad(visibleFilterData);
       }));
 
     });
   };
 
+  window.filter = {
+    filtrate: filtrate
+  };
 
 })();

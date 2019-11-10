@@ -2,61 +2,55 @@
 
 (function () {
 
-  window.load = function (successCallback, errorCallback) {
-
+  var createXhr = function (method, url, successCallback, errorCallback) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
+    xhr.open(method, url);
 
-    xhr.open('GET', window.util.URL_LOAD);
-    xhr.send();
+    if (url === window.util.URL_LOAD) {
+      xhr.addEventListener('load', function () {
+        if (xhr.status === window.util.SERVER_RESPONCE_SUCCESS) {
+          successCallback(xhr.response);
+        } else {
+          errorCallback('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
+    }
 
-    xhr.addEventListener('load', function () {
-      if (xhr.status === window.util.SERVER_RESPONCE_SUCCESS) {
-        successCallback(xhr.response);
-      } else {
-        errorCallback('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
+    if (url === window.util.URL_UPLOAD) {
+      xhr.addEventListener('load', function () {
+        if (xhr.status === window.util.SERVER_RESPONCE_SUCCESS) {
+          successCallback('Ваше объявление было успешно размещено!');
+        } else {
+          errorCallback('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
+    }
 
     xhr.addEventListener('error', function () {
       errorCallback('Произошла ошибка соединения');
     });
-
 
     xhr.addEventListener('timeout', function () {
       errorCallback('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
     xhr.timeout = window.util.TIMEOUT;
+
+    return xhr;
   };
 
-  window.upload = function (data, successCallback, errorCallback) {
+  var load = function (successCallback, errorCallback) {
+    createXhr('GET', window.util.URL_LOAD, successCallback, errorCallback).send();
+  };
 
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
+  var upload = function (data, successCallback, errorCallback) {
+    createXhr('POST', window.util.URL_UPLOAD, successCallback, errorCallback).send(data);
+  };
 
-    xhr.open('POST', window.util.URL_UPLOAD);
-    xhr.send(data);
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === window.util.SERVER_RESPONCE_SUCCESS) {
-        successCallback('Данные были успешно отправлены');
-      } else {
-        errorCallback('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
-
-
-      xhr.addEventListener('error', function () {
-        errorCallback('Произошла ошибка соединения');
-      });
-
-
-      xhr.addEventListener('timeout', function () {
-        errorCallback('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-      });
-
-      xhr.timeout = window.util.TIMEOUT;
-    });
+  window.backend = {
+    load: load,
+    upload: upload
   };
 
 })();
