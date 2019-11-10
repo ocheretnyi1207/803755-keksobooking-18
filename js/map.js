@@ -40,7 +40,7 @@
 
 
   // Координаты main__pin--main при неактивной странице
-  itAddress.value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
+  itAddress.value = Math.round(window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + Math.round(window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
 
   // Функция активации страницы по нажатию на кнопку мыши
