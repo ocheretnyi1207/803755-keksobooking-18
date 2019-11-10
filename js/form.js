@@ -105,6 +105,7 @@
     var itxDescription = mainForm.querySelector('#description');
     var chkbxFeaturesMainForm = mainForm.querySelectorAll('input[type=checkbox]:checked');
     var chkbxFeaturesFilter = mapFiltersForm.querySelectorAll('input[type=checkbox]:checked');
+    var itAddress = mainForm.querySelector('#address');
 
     // Сброс полей
     itTitle.value = '';
@@ -118,6 +119,7 @@
         element.disabled = 'disabled';
       } else {
         element.selected = 'selected';
+        element.disabled = '';
       }
     });
 
@@ -149,7 +151,7 @@
     // Возвращаем метку map__pin--main в исходное состояние
     pinMain.style.left = window.util.LOCATION_X_PIN + 'px';
     pinMain.style.top = window.util.LOCATION_Y_PIN + 'px';
-    document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
+    itAddress.value = Math.round(window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + Math.round(window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
     pinMain.addEventListener('click', window.map.activateMapClickHandler);
     pinMain.addEventListener('keydown', window.map.activateMapKeydownHandler);

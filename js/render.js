@@ -264,6 +264,7 @@
     var isRoomNumber = document.querySelector('#room_number');
     var isGuestNumber = document.querySelector('#capacity');
     var isGuestNumberOptions = isGuestNumber.querySelectorAll('option');
+    var itAddress = mainForm.querySelector('#address');
 
     fragmentSuccess.appendChild(renderSuccessMessage(successMessage));
     main.appendChild(fragmentSuccess);
@@ -292,6 +293,7 @@
         element.disabled = 'disabled';
       } else {
         element.selected = 'selected';
+        element.disabled = '';
       }
     });
 
@@ -323,7 +325,7 @@
     // Возвращаем метку map__pin--main в исходное состояние
     pinMain.style.left = window.util.LOCATION_X_PIN + 'px';
     pinMain.style.top = window.util.LOCATION_Y_PIN + 'px';
-    document.querySelector('#address').value = (window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + (window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
+    itAddress.value = Math.round(window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + Math.round(window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
     // Закрываем окно об успешной отправке по клику
     document.addEventListener('click', successWindowClickHandler);
