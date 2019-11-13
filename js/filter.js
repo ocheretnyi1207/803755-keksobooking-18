@@ -45,11 +45,11 @@
       window.render.clearMap(pins);
 
       var selectedFeatures = [];
-      for (var i = 0; i < houseFeatures.length; i++) {
-        if (houseFeatures[i].checked) {
-          selectedFeatures.push(houseFeatures[i].value);
+      houseFeatures.forEach(function (element) {
+        if (element.checked) {
+          selectedFeatures.push(element.value);
         }
-      }
+      });
 
       var sortData = data.filter(function (element) {
         return (element.offer.type === houseType.value || houseType.value === 'any') &&

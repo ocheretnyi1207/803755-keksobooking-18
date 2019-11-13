@@ -71,12 +71,14 @@
     var createLi = function (featureArr) {
       var liElement = adTemplate.querySelector('.popup__feature');
       var fragmentLi = document.createDocumentFragment();
-      for (var i = 0; i < featureArr.length; i++) {
+
+      featureArr.forEach(function (element) {
         var featureElement = liElement.cloneNode(true);
         featureElement.className = 'popup__feature';
-        featureElement.classList.add('popup__feature--' + featureArr[i]);
+        featureElement.classList.add('popup__feature--' + element);
         fragmentLi.appendChild(featureElement);
-      }
+      });
+
       return fragmentLi;
     };
 
@@ -99,11 +101,11 @@
     var createPhotos = function (arrayPhotos) {
       var fragmentPhotos = document.createDocumentFragment();
 
-      for (var i = 0; i < arrayPhotos.length; i++) {
+      arrayPhotos.forEach(function (element) {
         var photo = adPhoto.cloneNode(true);
-        photo.src = arrayPhotos[i];
+        photo.src = element;
         fragmentPhotos.appendChild(photo);
-      }
+      });
 
       return fragmentPhotos;
     };
@@ -151,11 +153,11 @@
 
       evt.preventDefault();
 
-      for (var i = 0; i < pins.length; i++) {
-        if (pins[i].classList.contains('map__pin--active')) {
-          pins[i].classList.remove('map__pin--active');
+      pins.forEach(function (element) {
+        if (element.classList.contains('map__pin--active')) {
+          element.classList.remove('map__pin--active');
         }
-      }
+      });
 
       if (evt.target.tagName === 'IMG' && evt.target.className !== 'map__pin--main') {
         evt.target.closest('.map__pin').classList.add('map__pin--active');
@@ -166,11 +168,12 @@
     var adOpenClickHandler = function (index) {
       return function () {
 
-        for (var j = 0; j < ads.length; j++) {
-          if (ads[j].style.display === 'block') {
-            ads[j].style.display = 'none';
+        ads.forEach(function (element) {
+          if (element.style.display === 'block') {
+            element.style.display = 'none';
           }
-        }
+        });
+
 
         ads[index].style.display = 'block';
       };
@@ -180,11 +183,11 @@
       return function (evt) {
 
         if (evt.keyCode === window.ENTER_KEYCODE) {
-          for (var j = 0; j < ads.length; j++) {
-            if (ads[j].style.display === 'block') {
-              ads[j].style.display = 'none';
+          ads.forEach(function (element) {
+            if (element.style.display === 'block') {
+              element.style.display = 'none';
             }
-          }
+          });
 
           ads[index].style.display = 'block';
         }
@@ -199,11 +202,11 @@
 
     var adCloseKeydownHandler = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
-        for (i = 0; i < ads.length; i++) {
-          if (ads[i].style.display === 'block') {
-            ads[i].style.display = 'none';
+        ads.forEach(function (element) {
+          if (element.style.display === 'block') {
+            element.style.display = 'none';
           }
-        }
+        });
       }
     };
 
