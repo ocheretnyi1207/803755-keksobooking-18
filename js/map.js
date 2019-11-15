@@ -19,7 +19,7 @@
   var pinMainYMax = window.util.BOTTOM_LIMIT - window.util.HEIGHT_PIN;
 
 
-  function getMainPinCoordinate() {
+  function getPinMainCoordinate() {
     itAddress.value = Math.round(pinMainCurrentX + window.util.CENTER_X_PIN) + ', ' +
       Math.round(pinMainCurrentY + window.util.HEIGHT_PIN);
   }
@@ -59,7 +59,7 @@
     elementsFormEnable(selectFilterForm);
 
     // Отрисовка пинов, объявлений, ошибок
-    window.backend.load(window.filter.filtrate, window.render.renderError);
+    window.backend.load(window.filter.dataFiltrate, window.render.renderError);
 
     pinMain.removeEventListener('click', activateClickHandler);
   };
@@ -83,7 +83,7 @@
       elementsFormEnable(selectFilterForm);
 
       // Отрисовка пинов, объявлений, ошибок
-      window.backend.load(window.filter.filtrate, window.render.renderError);
+      window.backend.load(window.filter.dataFiltrate, window.render.renderError);
 
       pinMain.removeEventListener('click', activateKeydownHandler);
     }
@@ -138,7 +138,7 @@
       pinMain.style.top = pinMainCurrentY + 'px';
       pinMain.style.left = pinMainCurrentX + 'px';
 
-      getMainPinCoordinate();
+      getPinMainCoordinate();
 
     };
 

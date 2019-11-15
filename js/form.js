@@ -52,6 +52,14 @@
     inPrice.placeholder = typeHouseInPrice[isType.value];
   };
 
+  var checkinCheckoutTime = function (element, target) {
+    element.forEach(function (it) {
+      if (target.value === it.value) {
+        it.selected = 'selected';
+      }
+    });
+  };
+
 
   // Изменение min значения поля цены за ночь в зависимости от типа выбранного жилья
   isType.addEventListener('change', isTypeChangeHandler);
@@ -72,14 +80,6 @@
 
 
   // Сценарий соответствия времени заезда и времени выездa
-  var checkinCheckoutTime = function (element, target) {
-    element.forEach(function (it) {
-      if (target.value === it.value) {
-        it.selected = 'selected';
-      }
-    });
-  }
-
   isCheckinTime.addEventListener('change', function (evt) {
     checkinCheckoutTime(isCheckoutTimeOptions, evt.target);
   });

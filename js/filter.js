@@ -26,7 +26,7 @@
     }
   };
 
-  var filtrate = function (data) {
+  var dataFiltrate = function (data) {
 
     var visibleData = data.slice(0, window.util.MAX_VISIBLE_PIN);
     window.render.renderElementsLoad(visibleData);
@@ -82,7 +82,7 @@
   };
 
   window.filter = {
-    filtrate: filtrate
+    dataFiltrate: dataFiltrate
   };
 
 })();

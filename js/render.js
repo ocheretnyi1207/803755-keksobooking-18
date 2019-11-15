@@ -174,7 +174,6 @@
           }
         });
 
-
         ads[index].style.display = 'block';
       };
     };
@@ -236,6 +235,7 @@
     for (var i = 0; i < pins.length; i++) {
       pins[i].addEventListener('click', adOpenClickHandler(i));
     }
+
 
     // Открытие объявления по нажатию Enter
     for (i = 0; i < pins.length; i++) {
@@ -308,7 +308,7 @@
     });
 
     // Reset avatars
-    window.avatar.previewAvatar.src = window.util.DEFAULT_FOTO;
+    window.avatar.previewUserPic.src = window.util.DEFAULT_FOTO;
     window.avatar.previewPhoto.style = '';
 
     // Удаляем пины и объявления
