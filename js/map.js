@@ -44,7 +44,7 @@
 
 
   // Функция активации страницы по нажатию на кнопку мыши
-  var activateMapClickHandler = function () {
+  var activateClickHandler = function () {
     map.classList.remove('map--faded');
     mainForm.classList.remove('ad-form--disabled');
     mapFiltersForm.classList.remove('ad-form--disabled');
@@ -61,12 +61,12 @@
     // Отрисовка пинов, объявлений, ошибок
     window.backend.load(window.filter.filtrate, window.render.renderError);
 
-    pinMain.removeEventListener('click', activateMapClickHandler);
+    pinMain.removeEventListener('click', activateClickHandler);
   };
 
 
   // Функция активации страницы по нажатию на Enter
-  var activateMapKeydownHandler = function (evt) {
+  var activateKeydownHandler = function (evt) {
 
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
       map.classList.remove('map--faded');
@@ -85,13 +85,13 @@
       // Отрисовка пинов, объявлений, ошибок
       window.backend.load(window.filter.filtrate, window.render.renderError);
 
-      pinMain.removeEventListener('click', activateMapKeydownHandler);
+      pinMain.removeEventListener('click', activateKeydownHandler);
     }
   };
 
 
-  pinMain.addEventListener('click', activateMapClickHandler);
-  pinMain.addEventListener('keydown', activateMapKeydownHandler);
+  pinMain.addEventListener('click', activateClickHandler);
+  pinMain.addEventListener('keydown', activateKeydownHandler);
 
 
   // Перемещение метки по карте
@@ -154,7 +154,7 @@
   });
 
   window.map = {
-    activateMapClickHandler: activateMapClickHandler,
-    activateMapKeydownHandler: activateMapKeydownHandler
+    activateClickHandler: activateClickHandler,
+    activateKeydownHandler: activateKeydownHandler
   };
 })();

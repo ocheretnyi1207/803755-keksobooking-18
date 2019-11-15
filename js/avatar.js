@@ -3,7 +3,7 @@
 (function () {
   var ifAvatar = document.querySelector('#avatar');
   var ifPhoto = document.querySelector('#images');
-  var previewAvatar = document.querySelector('.ad-form-header__preview img');
+  var previewUserPic = document.querySelector('.ad-form-header__preview img');
   var previewPhoto = document.querySelector('.ad-form__photo');
 
   var changePhoto = function (evt) {
@@ -20,7 +20,7 @@
 
       reader.addEventListener('load', function () {
         if (evt.target === ifAvatar) {
-          previewAvatar.src = reader.result;
+          previewUserPic.src = reader.result;
         }
         if (evt.target === ifPhoto) {
           previewPhoto.style.backgroundImage = 'url(' + reader.result + ')';
@@ -37,7 +37,7 @@
   ifPhoto.addEventListener('change', changePhoto);
 
   window.avatar = {
-    previewAvatar: previewAvatar,
+    previewUserPic: previewUserPic,
     previewPhoto: previewPhoto
   };
 })();

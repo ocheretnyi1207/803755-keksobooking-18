@@ -9,7 +9,9 @@
   var isGuestNumber = document.querySelector('#capacity');
   var isGuestNumberOptions = isGuestNumber.querySelectorAll('option');
   var isCheckinTime = document.querySelector('#timein');
+  var isCheckinTimeOptions = isCheckinTime.querySelectorAll('option');
   var isCheckoutTime = document.querySelector('#timeout');
+  var isCheckoutTimeOptions = isCheckoutTime.querySelectorAll('option');
   var map = document.querySelector('.map');
   var isType = mainForm.querySelector('#type');
   var inPrice = mainForm.querySelector('#price');
@@ -70,28 +72,28 @@
 
 
   // Сценарий соответствия времени заезда и времени выездa
-  isCheckinTime.addEventListener('change', function () {
-    for (var i = 0; i < isCheckinTime.length; i++) {
-      if (isCheckinTime[i].selected) {
-        isCheckoutTime[i].selected = 'selected';
+  var checkinCheckoutTime = function (element, target) {
+    element.forEach(function (it) {
+      if (target.value === it.value) {
+        it.selected = 'selected';
       }
-    }
+    });
+  }
+
+  isCheckinTime.addEventListener('change', function (evt) {
+    checkinCheckoutTime(isCheckoutTimeOptions, evt.target);
   });
 
-  isCheckoutTime.addEventListener('change', function () {
-    for (var i = 0; i < isCheckoutTime.length; i++) {
-      if (isCheckoutTime[i].selected) {
-        isCheckinTime[i].selected = 'selected';
-      }
-    }
+  isCheckoutTime.addEventListener('change', function (evt) {
+    checkinCheckoutTime(isCheckinTimeOptions, evt.target);
   });
 
   // Отправка данных из формы на сервер
   mainForm.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(mainForm), window.render.renderSuccessUpload, window.render.renderError);
     evt.preventDefault();
-    pinMain.addEventListener('click', window.map.activateMapClickHandler);
-    pinMain.addEventListener('keydown', window.map.activateMapKeydownHandler);
+    pinMain.addEventListener('click', window.map.activateClickHandler);
+    pinMain.addEventListener('keydown', window.map.activateKeydownHandler);
   });
 
   // Сброс страницы при нажатии на кнокпку 'Очистить'
@@ -131,7 +133,7 @@
     });
 
     // Reset avatars
-    window.avatar.previewAvatar.src = window.util.DEFAULT_FOTO;
+    window.avatar.previewUserPic.src = window.util.DEFAULT_FOTO;
     window.avatar.previewPhoto.style = '';
 
     // Удаляем пины и объявления
@@ -153,8 +155,8 @@
     pinMain.style.top = window.util.LOCATION_Y_PIN + 'px';
     itAddress.value = Math.round(window.util.LOCATION_X_PIN + window.util.CENTER_X_PIN) + ', ' + Math.round(window.util.LOCATION_Y_PIN + window.util.CENTER_Y_PIN);
 
-    pinMain.addEventListener('click', window.map.activateMapClickHandler);
-    pinMain.addEventListener('keydown', window.map.activateMapKeydownHandler);
+    pinMain.addEventListener('click', window.map.activateClickHandler);
+    pinMain.addEventListener('keydown', window.map.activateKeydownHandler);
   });
 
 })();
