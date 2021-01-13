@@ -15,8 +15,8 @@
   var RIGHT_LIMIT = 1200;
   var ESC_KEYCODE = 27; // кейкод ESC
   var ENTER_KEYCODE = 13; // кейкод ENTER
-  var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
-  var URL_UPLOAD = 'https://js.dump.academy/keksobooking/';
+  var URL_LOAD = 'https://21.javascript.pages.academy/keksobooking/data';
+  var URL_UPLOAD = 'https://21.javascript.pages.academy/keksobooking';
   var SERVER_RESPONCE_SUCCESS = 200;
   var TIMEOUT = 10000;
   var MAX_VISIBLE_PIN = 5;
